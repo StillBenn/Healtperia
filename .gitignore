@@ -1,0 +1,8 @@
+# Editor / OS junk
+.vscode/
+.claude/
+.DS_Store
+Thumbs.db
+
+# Stray leftover working folder (Windows handle lock during restructure)
+codes/

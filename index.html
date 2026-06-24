@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Treatperia — Küresel çapta sağlık: güvenilir klinikler, doktorlar, acenteler ve hastaneler." />
+  <title>Treatperia — Küresel Çapta Sağlık</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+  <!-- ============ HERO (with overlaid non-sticky header) ============ -->
+  <section id="home" class="hero">
+    <video class="hero-video"
+           autoplay muted loop playsinline preload="auto"
+           poster="./assets/images/ANASAYFA.jpg">
+      <source src="./assets/videos/MAIN_PAGE_VIDEO.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner">
+        <a href="./index.html" class="logo-link" id="logoHome" aria-label="Treatperia — Anasayfa">
+          <img src="./assets/images/LOGO__SLOGANLI_PNG.png" alt="Treatperia" class="logo" />
+        </a>
+
+        <nav class="main-nav" aria-label="Ana navigasyon">
+          <ul class="nav-list">
+            <li><a href="#home"        class="nav-link" data-i18n="nav.home">Anasayfa</a></li>
+            <li><a href="#about"       class="nav-link" data-i18n="nav.about">Hakkımızda</a></li>
+            <li><a href="#blog"        class="nav-link" data-i18n="nav.blog">Blog</a></li>
+            <li><a href="#help-center" class="nav-link" data-i18n="nav.help">Yardım Merkezi</a></li>
+            <li><a href="#account"     class="nav-link nav-cta" data-i18n="nav.account">Hesabım</a></li>
+          </ul>
+        </nav>
+
+        <div class="lang-switch" data-lang-switch>
+          <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Dil seçimi">
+            <span class="flag flag-tr" data-lang-flag aria-hidden="true"></span>
+            <span class="lang-name" data-lang-name>TR</span>
+            <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <ul class="lang-menu" role="listbox">
+            <li role="option" data-lang="tr" data-short="TR" class="selected"><span class="flag flag-tr"></span> Türkçe</li>
+            <li role="option" data-lang="en" data-short="EN"><span class="flag flag-en"></span> English</li>
+            <li role="option" data-lang="de" data-short="DE"><span class="flag flag-de"></span> Deutsch</li>
+            <li role="option" data-lang="ru" data-short="RU"><span class="flag flag-ru"></span> Русский</li>
+            <li role="option" data-lang="fr" data-short="FR"><span class="flag flag-fr"></span> Français</li>
+            <li role="option" data-lang="es" data-short="ES"><span class="flag flag-es"></span> Español</li>
+            <li role="option" data-lang="it" data-short="IT"><span class="flag flag-it"></span> Italiano</li>
+            <li role="option" data-lang="ar" data-short="AR"><span class="flag flag-ar"></span> العربية</li>
+            <li role="option" data-lang="zh" data-short="ZH"><span class="flag flag-zh"></span> 中文</li>
+            <li role="option" data-lang="hi" data-short="HI"><span class="flag flag-hi"></span> हिन्दी</li>
+            <li role="option" data-lang="ko" data-short="KO"><span class="flag flag-ko"></span> 한국어</li>
+            <li role="option" data-lang="ja" data-short="JA"><span class="flag flag-ja"></span> 日本語</li>
+            <li role="option" data-lang="pt" data-short="PT"><span class="flag flag-pt"></span> Português</li>
+            <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
+            <li role="option" data-lang="pl" data-short="PL"><span class="flag flag-pl"></span> Polski</li>
+            <li role="option" data-lang="uk" data-short="UK"><span class="flag flag-uk"></span> Українська</li>
+            <li role="option" data-lang="ro" data-short="RO"><span class="flag flag-ro"></span> Română</li>
+            <li role="option" data-lang="bg" data-short="BG"><span class="flag flag-bg"></span> Български</li>
+            <li role="option" data-lang="az" data-short="AZ"><span class="flag flag-az"></span> Azərbaycan</li>
+            <li role="option" data-lang="fa" data-short="FA"><span class="flag flag-fa"></span> فارسی</li>
+          </ul>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Navigasyonu aç/kapat" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="hero-content">
+      <h1 class="hero-title" data-i18n="hero.title">Küresel Çapta Sağlık</h1>
+      <p class="hero-subtitle" data-i18n="hero.subtitle">
+        Küresel çapta güvenilir tedavi, klinikleri, doktorları, acenteleri ve hastaneleri keşfedin!
+      </p>
+
+      <div class="index-cards" role="list">
+
+        <a href="./pages/treatment-index.html" class="index-card card-treatment" role="listitem">
+          <div class="card-media">
+            <div class="card-art art-treatment" aria-hidden="true">
+              <svg viewBox="0 0 120 120" class="art-svg">
+                <defs>
+                  <linearGradient id="gTreat" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#9ad0ff" stop-opacity=".55"/>
+                    <stop offset="100%" stop-color="#3a86e6" stop-opacity=".15"/>
+                  </linearGradient>
+                </defs>
+                <rect x="30" y="30" width="60" height="60" rx="14" fill="url(#gTreat)" stroke="#cfe2ff" stroke-opacity=".55" stroke-width="1.5"/>
+                <path d="M60 46v28M46 60h28" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" data-i18n="card.treatment.title">Tedavi İndeksi</h3>
+            <p class="card-desc" data-i18n="card.treatment.desc">Tedavi ve prosedürlere göz atın</p>
+          </div>
+        </a>
+
+        <a href="./pages/doctor-index.html" class="index-card card-doctor" role="listitem">
+          <div class="card-media">
+            <div class="card-art art-doctor" aria-hidden="true">
+              <svg viewBox="0 0 120 120" class="art-svg">
+                <defs>
+                  <linearGradient id="gDoctor" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#9ed1ff" stop-opacity=".55"/>
+                    <stop offset="100%" stop-color="#3a86e6" stop-opacity=".15"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="60" cy="46" r="18" fill="url(#gDoctor)" stroke="#cfe2ff" stroke-opacity=".55" stroke-width="1.5"/>
+                <path d="M28 100c2-18 16-28 32-28s30 10 32 28" fill="url(#gDoctor)" stroke="#cfe2ff" stroke-opacity=".55" stroke-width="1.5"/>
+                <path d="M50 72v8a10 10 0 0 0 20 0v-8" stroke="#fff" stroke-opacity=".75" stroke-width="2" fill="none"/>
+                <circle cx="70" cy="90" r="4" fill="#fff" fill-opacity=".75"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" data-i18n="card.doctor.title">Doktor İndeksi</h3>
+            <p class="card-desc" data-i18n="card.doctor.desc">Alanında doğrulanmış uzmanlar</p>
+          </div>
+        </a>
+
+        <a href="./pages/hospital-index.html" class="index-card card-hospital" role="listitem">
+          <div class="card-media">
+            <div class="card-art art-hospital" aria-hidden="true">
+              <svg viewBox="0 0 120 120" class="art-svg">
+                <defs>
+                  <linearGradient id="gHosp" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#a3d2ff" stop-opacity=".55"/>
+                    <stop offset="100%" stop-color="#3a86e6" stop-opacity=".15"/>
+                  </linearGradient>
+                </defs>
+                <rect x="20" y="36" width="80" height="60" rx="4" fill="url(#gHosp)" stroke="#cfe2ff" stroke-opacity=".55" stroke-width="1.5"/>
+                <path d="M40 36V24h40v12" stroke="#cfe2ff" stroke-opacity=".7" stroke-width="1.5" fill="none"/>
+                <path d="M60 50v24M48 62h24" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" data-i18n="card.hospital.title">Hastane İndeksi</h3>
+            <p class="card-desc" data-i18n="card.hospital.desc">Uluslararası tanınmış hastaneler</p>
+          </div>
+        </a>
+
+        <a href="./pages/clinic-index.html" class="index-card card-clinic" role="listitem">
+          <div class="card-media">
+            <div class="card-art art-clinic" aria-hidden="true">
+              <svg viewBox="0 0 120 120" class="art-svg">
+                <defs>
+                  <linearGradient id="gClinic" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#7dc1ff" stop-opacity=".55"/>
+                    <stop offset="100%" stop-color="#4ea8ff" stop-opacity=".15"/>
+                  </linearGradient>
+                </defs>
+                <path d="M20 90V50l40-28 40 28v40H20z" fill="url(#gClinic)" stroke="#cfe2ff" stroke-opacity=".5" stroke-width="1.5"/>
+                <path d="M55 70h10v20h-10zM45 60h30" stroke="#fff" stroke-width="2" stroke-opacity=".75" fill="none"/>
+                <path d="M60 38v18M51 47h18" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" data-i18n="card.clinic.title">Klinik İndeksi</h3>
+            <p class="card-desc" data-i18n="card.clinic.desc">Dünya çapında akredite klinikler</p>
+          </div>
+        </a>
+
+        <a href="./pages/agency-index.html" class="index-card card-agency" role="listitem">
+          <div class="card-media">
+            <div class="card-art art-agency" aria-hidden="true">
+              <svg viewBox="0 0 120 120" class="art-svg">
+                <defs>
+                  <linearGradient id="gAgency" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8fc7ff" stop-opacity=".55"/>
+                    <stop offset="100%" stop-color="#3a86e6" stop-opacity=".15"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r="32" fill="url(#gAgency)" stroke="#cfe2ff" stroke-opacity=".55" stroke-width="1.5"/>
+                <path d="M28 60h64M60 28a40 40 0 0 1 0 64M60 28a40 40 0 0 0 0 64" stroke="#fff" stroke-opacity=".7" stroke-width="1.5" fill="none"/>
+                <circle cx="60" cy="60" r="4" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" data-i18n="card.agency.title">Acente İndeksi</h3>
+            <p class="card-desc" data-i18n="card.agency.desc">Güvenilir tıbbi seyahat acenteleri</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY TRUST US ============ -->
+  <section id="why-trust-us" class="why-trust">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-eyebrow" data-i18n="trust.eyebrow">Sözümüz</span>
+        <h2 class="section-title" data-i18n="trust.title">Neden Bize Güvenmelisiniz?</h2>
+        <p class="section-lead" data-i18n="trust.lead">Şeffaflık, doğrulanmış kimlik bilgileri ve küresel hasta güvenliği taahhüdü üzerine kuruludur.</p>
+      </div>
+
+      <div class="trust-grid">
+        <article class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <h3 data-i18n="trust.verified.title">Doğrulanmış Sağlık Sağlayıcıları</h3>
+          <p data-i18n="trust.verified.desc">Her klinik, doktor ve hastane listelenmeden önce incelenir ve onaylanır.</p>
+        </article>
+
+        <article class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
+            </svg>
+          </div>
+          <h3 data-i18n="trust.support.title">Uluslararası Hasta Desteği</h3>
+          <p data-i18n="trust.support.desc">Seyahat, tedavi ve tedavi sonrası takip için uçtan uca koordinasyon.</p>
+        </article>
+
+        <article class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4 6h16M4 12h10M4 18h16"/>
+              <circle cx="18" cy="12" r="2.5"/>
+            </svg>
+          </div>
+          <h3 data-i18n="trust.transparent.title">Şeffaf Tedavi Bilgileri</h3>
+          <p data-i18n="trust.transparent.desc">İşlemler, süreler ve maliyetler hakkında net, açık bilgiler — gizli ücret yok.</p>
+        </article>
+
+        <article class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 11.5a8.38 8.38 0 0 1-9 8.5 8.5 8.5 0 0 1-7.6-4.7L3 21l1.7-1.4A8.38 8.38 0 0 1 3 11.5a8.5 8.5 0 0 1 17 0z"/>
+            </svg>
+          </div>
+          <h3 data-i18n="trust.multi.title">Çok Dilli İletişim</h3>
+          <p data-i18n="trust.multi.desc">Birden fazla dilde, 7/24 hasta koordinatörleri.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MOBILE APP ============ -->
+  <section id="mobile-app" class="mobile-app">
+    <div class="container mobile-app-inner">
+      <div class="app-text">
+        <span class="section-eyebrow light" data-i18n="app.eyebrow">Treatperia Mobil</span>
+        <h2 class="section-title light" data-i18n="app.title">Cebinizdeki sağlık</h2>
+        <p class="section-lead light" data-i18n="app.lead">
+          Sağlayıcıları keşfedin, randevularınızı yönetin ve dünyanın her yerinden bakım ekipleriyle bağlantı kurun.
+        </p>
+
+        <div class="store-badges">
+          <a href="#" class="store-badge" aria-label="App Store'dan indirin">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.4-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.8-3.5.8-.7 0-1.9-.8-3.1-.8C6.7 7.4 5 8.7 4 10.7c-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2-.1 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.5-1-2.5-3.7zM14 5.4c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.5 2.8-1.3z"/>
+            </svg>
+            <span>
+              <small data-i18n="app.download">İndir</small>
+              <strong>App Store</strong>
+            </span>
+          </a>
+
+          <a href="#" class="store-badge" aria-label="Google Play'den edinin">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#00C2FF" d="M3.6 2.3c-.4.4-.6 1-.6 1.7v16c0 .7.2 1.3.6 1.7l9-9-9-10.4z"/>
+              <path fill="#FFCE00" d="M16.5 8.8 5.7 2.7l8.3 8.6 2.5-2.5z"/>
+              <path fill="#00E676" d="m5.7 21.3 10.8-6.1-2.5-2.5-8.3 8.6z"/>
+              <path fill="#FF3D00" d="m20.4 10.5-2.7-1.5-2.9 3 2.9 3 2.8-1.6c.9-.6.9-2.3-.1-2.9z"/>
+            </svg>
+            <span>
+              <small data-i18n="app.getiton">Edinin</small>
+              <strong>Google Play</strong>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="app-visual" aria-hidden="true">
+        <div class="phone-mock">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="screen-top">
+              <span class="status-time">9:41</span>
+              <span class="status-dots"><i></i><i></i><i></i></span>
+            </div>
+            <div class="screen-hero">
+              <div class="screen-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6">
+                  <circle cx="12" cy="8" r="4"/>
+                  <path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+                </svg>
+              </div>
+              <div class="screen-titles">
+                <strong>Dr. Aydın</strong>
+                <small>Kardiyoloji · İstanbul</small>
+              </div>
+            </div>
+            <div class="screen-row"></div>
+            <div class="screen-row short"></div>
+            <div class="screen-cta">
+              <span data-i18n="app.book">Randevu Al</span>
+            </div>
+            <div class="screen-grid">
+              <div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+        </div>
+        <div class="glow-orb"></div>
+
+        <!-- floating health-themed accents -->
+        <div class="med-float med-float-a">
+          <span class="med-float-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12h3.5l1.8-5 3 11 2.2-7 1.4 2.5H22"/>
+            </svg>
+          </span>
+          <span class="med-float-text"><strong>72</strong> BPM</span>
+        </div>
+
+        <div class="med-float med-float-b badge">
+          <span class="med-float-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path class="med-heartbeat" d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/>
+            </svg>
+          </span>
+        </div>
+
+        <div class="med-float med-float-c">
+          <span class="med-float-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </span>
+          <span class="med-float-text"><strong>Güvenli</strong> kayıt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER (minimal, compact) ============ -->
+  <footer class="site-footer" id="account">
+    <div class="container footer-mini">
+
+      <div class="footer-top">
+        <div class="foot-block question">
+          <span class="foot-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7v.5"/>
+              <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+          </span>
+          <span class="foot-text" data-i18n="footer.haveQuestion">Bir sorum var?</span>
+        </div>
+
+        <div class="foot-block follow">
+          <span class="foot-text" data-i18n="footer.follow">Bizi takip edin</span>
+          <ul class="foot-socials" aria-label="Sosyal medya">
+            <li><a href="https://wa.me/" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M19.05 4.95A10 10 0 0 0 4 18.16L2.5 22l3.94-1.46A10 10 0 1 0 19.05 4.95zM12 20.2a8.2 8.2 0 0 1-4.2-1.16l-.3-.18-2.34.87.79-2.41-.2-.31a8.2 8.2 0 1 1 6.25 3.19zm4.69-6.16c-.26-.13-1.52-.75-1.76-.83-.24-.09-.41-.13-.59.13-.17.26-.67.83-.82 1-.15.17-.3.19-.56.06-.26-.13-1.08-.4-2.06-1.27-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.4.11-.53.11-.11.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.42-.81-1.94-.21-.51-.43-.44-.59-.45h-.5c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.14 0 1.26.92 2.48 1.05 2.65.13.17 1.8 2.74 4.36 3.85.61.26 1.08.42 1.45.54.61.19 1.16.17 1.6.1.49-.07 1.52-.62 1.74-1.22.22-.6.22-1.11.15-1.22-.07-.11-.24-.17-.5-.3z"/>
+              </svg>
+            </a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </a></li>
+            <li><a href="https://x.com" target="_blank" rel="noopener" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.8l-5.34-6.83L4.3 22H1.04l8.02-9.16L1.5 2H8.4l4.83 6.22L18.244 2zm-2.39 18h1.93L7.25 4H5.18l10.674 16z"/>
+              </svg>
+            </a></li>
+            <li><a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.25-1.5 1.5-1.5h1.6V4.4c-.28-.04-1.23-.12-2.34-.12-2.32 0-3.9 1.42-3.9 4v2.22H7.8v3h2.5V21h3.2z"/>
+              </svg>
+            </a></li>
+            <li><a href="mailto:info@treatperia.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3 7l9 6 9-6"/>
+              </svg>
+            </a></li>
+          </ul>
+        </div>
+      </div>
+
+      <a class="foot-email" href="mailto:info@treatperia.com">info@treatperia.com</a>
+
+      <hr class="foot-divider" />
+
+      <div class="footer-bottom-mini">
+        <span class="foot-copy">&copy; <span id="year"></span> <span data-i18n="footer.copy">Tüm Hakları Saklıdır.</span></span>
+        <span class="foot-entity">Treatperia Sağlık Hizmetleri GmbH</span>
+        <ul class="foot-legal">
+          <li><a href="#" data-i18n="footer.terms">Şartlar</a></li>
+          <li><a href="#" data-i18n="footer.privacy">Gizlilik</a></li>
+          <li><a href="#" data-i18n="footer.compliance">Uyumluluklar</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
