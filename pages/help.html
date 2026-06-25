@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yardım Merkezi — Healthperia</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="help-body">
+
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="../index.html" class="logo-link" aria-label="Healthperia — Anasayfa">
+        <img src="../assets/images/LOGO__SLOGANLI_PNG.png" alt="Healthperia" class="logo" />
+      </a>
+      <nav class="main-nav" aria-label="Ana navigasyon">
+        <ul class="nav-list">
+          <li><a href="../index.html"        class="nav-link" data-i18n="nav.home">Anasayfa</a></li>
+          <li><a href="about.html"           class="nav-link" data-i18n="nav.about">Hakkımızda</a></li>
+          <li><a href="../index.html#blog"   class="nav-link" data-i18n="nav.blog">Blog</a></li>
+          <li><a href="help.html"            class="nav-link" data-i18n="nav.help">Yardım Merkezi</a></li>
+          <li><a href="../index.html#account" class="nav-link nav-cta" data-i18n="nav.account">Hesabım</a></li>
+        </ul>
+      </nav>
+      <div class="lang-switch" data-lang-switch>
+        <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Dil seçimi">
+          <span class="flag flag-tr" data-lang-flag aria-hidden="true"></span>
+          <span class="lang-name" data-lang-name>TR</span>
+          <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="lang-menu" role="listbox">
+          <li role="option" data-lang="tr" data-short="TR" class="selected"><span class="flag flag-tr"></span> Türkçe</li>
+          <li role="option" data-lang="en" data-short="EN"><span class="flag flag-en"></span> English</li>
+          <li role="option" data-lang="de" data-short="DE"><span class="flag flag-de"></span> Deutsch</li>
+          <li role="option" data-lang="ru" data-short="RU"><span class="flag flag-ru"></span> Русский</li>
+          <li role="option" data-lang="fr" data-short="FR"><span class="flag flag-fr"></span> Français</li>
+          <li role="option" data-lang="es" data-short="ES"><span class="flag flag-es"></span> Español</li>
+          <li role="option" data-lang="it" data-short="IT"><span class="flag flag-it"></span> Italiano</li>
+          <li role="option" data-lang="ar" data-short="AR"><span class="flag flag-ar"></span> العربية</li>
+          <li role="option" data-lang="zh" data-short="ZH"><span class="flag flag-zh"></span> 中文</li>
+          <li role="option" data-lang="hi" data-short="HI"><span class="flag flag-hi"></span> हिन्दी</li>
+          <li role="option" data-lang="ko" data-short="KO"><span class="flag flag-ko"></span> 한국어</li>
+          <li role="option" data-lang="ja" data-short="JA"><span class="flag flag-ja"></span> 日本語</li>
+          <li role="option" data-lang="pt" data-short="PT"><span class="flag flag-pt"></span> Português</li>
+          <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
+          <li role="option" data-lang="pl" data-short="PL"><span class="flag flag-pl"></span> Polski</li>
+          <li role="option" data-lang="uk" data-short="UK"><span class="flag flag-uk"></span> Українська</li>
+          <li role="option" data-lang="ro" data-short="RO"><span class="flag flag-ro"></span> Română</li>
+          <li role="option" data-lang="bg" data-short="BG"><span class="flag flag-bg"></span> Български</li>
+          <li role="option" data-lang="az" data-short="AZ"><span class="flag flag-az"></span> Azərbaycan</li>
+          <li role="option" data-lang="fa" data-short="FA"><span class="flag flag-fa"></span> فارسی</li>
+        </ul>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Navigasyonu aç/kapat" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main class="help-page" id="helpPage">
+    <!-- background: world + drifting stars -->
+    <div class="hc-bg" aria-hidden="true">
+      <svg class="hc-globe" viewBox="0 0 420 420">
+        <g fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="210" cy="210" r="170"/>
+          <ellipse cx="210" cy="210" rx="170" ry="56"/>
+          <ellipse cx="210" cy="210" rx="170" ry="112"/>
+          <ellipse cx="210" cy="210" rx="170" ry="150"/>
+          <ellipse cx="210" cy="210" rx="56" ry="170"/>
+          <ellipse cx="210" cy="210" rx="112" ry="170"/>
+          <ellipse cx="210" cy="210" rx="150" ry="170"/>
+        </g>
+      </svg>
+      <div class="hc-stars">
+      <span class="hc-star" style="left:26.6%;top:68.2%;width:1.5px;height:1.5px;animation-delay:1.0s;animation-duration:11.5s;"></span>
+      <span class="hc-star" style="left:29.8%;top:16.0%;width:2.3px;height:2.3px;animation-delay:0.1s;animation-duration:7.8s;"></span>
+      <span class="hc-star" style="left:78.2%;top:89.1%;width:2.0px;height:2.0px;animation-delay:7.1s;animation-duration:9.6s;"></span>
+      <span class="hc-star" style="left:41.4%;top:2.2%;width:1.1px;height:1.1px;animation-delay:2.8s;animation-duration:11.4s;"></span>
+      <span class="hc-star" style="left:61.9%;top:81.7%;width:2.4px;height:2.4px;animation-delay:5.4s;animation-duration:8.1s;"></span>
+      <span class="hc-star" style="left:62.8%;top:3.1%;width:1.3px;height:1.3px;animation-delay:0.8s;animation-duration:13.6s;"></span>
+      <span class="hc-star" style="left:32.0%;top:98.5%;width:1.0px;height:1.0px;animation-delay:2.5s;animation-duration:9.6s;"></span>
+      <span class="hc-star" style="left:54.5%;top:66.4%;width:1.6px;height:1.6px;animation-delay:6.3s;animation-duration:12.4s;"></span>
+      <span class="hc-star" style="left:81.0%;top:24.5%;width:2.1px;height:2.1px;animation-delay:3.8s;animation-duration:13.6s;"></span>
+      <span class="hc-star" style="left:29.7%;top:77.9%;width:1.1px;height:1.1px;animation-delay:0.1s;animation-duration:12.1s;"></span>
+      <span class="hc-star" style="left:18.7%;top:58.7%;width:1.4px;height:1.4px;animation-delay:2.4s;animation-duration:12.6s;"></span>
+      <span class="hc-star" style="left:82.9%;top:70.8%;width:1.5px;height:1.5px;animation-delay:0.9s;animation-duration:7.2s;"></span>
+      <span class="hc-star" style="left:0.1%;top:74.1%;width:1.3px;height:1.3px;animation-delay:6.4s;animation-duration:12.0s;"></span>
+      <span class="hc-star" style="left:94.0%;top:1.9%;width:1.4px;height:1.4px;animation-delay:1.4s;animation-duration:9.7s;"></span>
+      <span class="hc-star" style="left:64.2%;top:89.9%;width:2.2px;height:2.2px;animation-delay:3.3s;animation-duration:10.7s;"></span>
+      <span class="hc-star" style="left:66.6%;top:91.2%;width:1.4px;height:1.4px;animation-delay:1.5s;animation-duration:9.3s;"></span>
+      <span class="hc-star" style="left:7.4%;top:95.8%;width:2.4px;height:2.4px;animation-delay:1.5s;animation-duration:13.0s;"></span>
+      <span class="hc-star" style="left:31.9%;top:14.0%;width:2.6px;height:2.6px;animation-delay:0.6s;animation-duration:7.3s;"></span>
+      <span class="hc-star" style="left:52.2%;top:81.3%;width:1.1px;height:1.1px;animation-delay:6.1s;animation-duration:9.1s;"></span>
+      <span class="hc-star" style="left:34.1%;top:5.8%;width:2.3px;height:2.3px;animation-delay:4.7s;animation-duration:7.7s;"></span>
+      <span class="hc-star" style="left:15.2%;top:8.4%;width:2.6px;height:2.6px;animation-delay:0.8s;animation-duration:14.6s;"></span>
+      <span class="hc-star" style="left:67.4%;top:8.2%;width:2.5px;height:2.5px;animation-delay:5.0s;animation-duration:13.6s;"></span>
+      <span class="hc-star" style="left:61.1%;top:24.9%;width:1.7px;height:1.7px;animation-delay:2.4s;animation-duration:8.7s;"></span>
+      <span class="hc-star" style="left:71.3%;top:64.2%;width:1.7px;height:1.7px;animation-delay:7.5s;animation-duration:7.7s;"></span>
+      <span class="hc-star" style="left:38.2%;top:36.3%;width:2.2px;height:2.2px;animation-delay:7.2s;animation-duration:15.9s;"></span>
+      <span class="hc-star" style="left:70.8%;top:23.0%;width:1.8px;height:1.8px;animation-delay:0.5s;animation-duration:9.5s;"></span>
+      <span class="hc-star" style="left:38.0%;top:31.5%;width:1.1px;height:1.1px;animation-delay:2.3s;animation-duration:10.7s;"></span>
+      <span class="hc-star" style="left:83.4%;top:2.6%;width:1.5px;height:1.5px;animation-delay:2.3s;animation-duration:12.6s;"></span>
+      <span class="hc-star" style="left:84.9%;top:79.9%;width:1.4px;height:1.4px;animation-delay:4.4s;animation-duration:11.4s;"></span>
+      <span class="hc-star" style="left:86.6%;top:60.1%;width:2.3px;height:2.3px;animation-delay:7.2s;animation-duration:8.5s;"></span>
+      <span class="hc-star" style="left:16.1%;top:7.4%;width:2.2px;height:2.2px;animation-delay:2.1s;animation-duration:10.7s;"></span>
+      <span class="hc-star" style="left:56.0%;top:76.9%;width:1.9px;height:1.9px;animation-delay:3.1s;animation-duration:8.6s;"></span>
+      <span class="hc-star" style="left:49.9%;top:64.4%;width:2.1px;height:2.1px;animation-delay:3.3s;animation-duration:14.5s;"></span>
+      <span class="hc-star" style="left:62.9%;top:18.7%;width:2.1px;height:2.1px;animation-delay:7.5s;animation-duration:13.5s;"></span>
+      <span class="hc-star" style="left:75.5%;top:63.1%;width:2.4px;height:2.4px;animation-delay:3.1s;animation-duration:13.6s;"></span>
+      <span class="hc-star" style="left:32.7%;top:1.8%;width:2.3px;height:2.3px;animation-delay:7.9s;animation-duration:12.4s;"></span>
+      <span class="hc-star" style="left:57.0%;top:51.6%;width:2.7px;height:2.7px;animation-delay:1.2s;animation-duration:13.5s;"></span>
+      <span class="hc-star" style="left:53.3%;top:58.7%;width:1.4px;height:1.4px;animation-delay:3.3s;animation-duration:10.8s;"></span>
+      <span class="hc-star" style="left:30.5%;top:43.4%;width:1.7px;height:1.7px;animation-delay:3.7s;animation-duration:14.0s;"></span>
+      <span class="hc-star" style="left:40.5%;top:95.0%;width:1.3px;height:1.3px;animation-delay:4.8s;animation-duration:11.3s;"></span>
+      </div>
+    </div>
+
+    <div class="hc-wrap">
+      <aside class="hc-left">
+        <h2 class="hc-group-title">Yardım Merkezi</h2>
+        <ul class="hc-menu">
+          <li><button type="button" class="hc-menu-item" data-target="cat-hesap">HESAP İŞLEMLERİ</button></li>
+          <li><button type="button" class="hc-menu-item" data-target="cat-kilavuz">KULLANIM KILAVUZU</button></li>
+          <li><button type="button" class="hc-menu-item" data-target="cat-sss">SIKÇA SORULAN SORULAR</button></li>
+          <li><button type="button" class="hc-menu-item" data-target="cat-guvenlik">GÜVENLİK VE GİZLİLİK</button></li>
+          <li><button type="button" class="hc-menu-item" data-target="cat-yasal">YASAL BİLGİLENDİRMELER</button></li>
+        </ul>
+
+        <h2 class="hc-group-title hc-group-contact">İletişime Geç</h2>
+        <ul class="hc-menu hc-contact-menu">
+          <li><button type="button" class="hc-menu-item" data-target="con-de">Almanya</button></li>
+          <li><button type="button" class="hc-menu-item" data-target="con-tr">Türkiye</button></li>
+        </ul>
+      </aside>
+
+      <section class="hc-right" id="hcRight">
+        <div class="hc-hint" id="hcHint">
+          <span class="hc-hint-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+          <p>Size yardımcı olabilmemiz için soldaki menüden bir konu seçin.</p>
+        </div>
+        <div class="hc-panel" id="cat-hesap">
+          <h2 class="hc-panel-title">HESAP İŞLEMLERİ</h2>
+          <article class="hc-qa">
+            <h3>Üyelik zorunlu mu?</h3>
+            <p>Healthperia olarak, kullanıcılarımıza üyelik zorunluluğu getirmemekteyiz. Hizmetlerimizi üye olmadan da kullanabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Bireysel Üyelik nedir?</h3>
+            <p>Healthperia platformunda sağlık hizmeti almak için kullanılan bir üyelik türüdür. Bireysel kullanıcı üyeliği oluşturmak için ekranın sağ üst köşesinde bulunan 'Hesabım' ikonuna tıklayınız. Açılan giriş ekranında, Gmail ve iCloud ikonlarını kullanarak hızlıca üye olabilirsiniz. Alternatif olarak, 'Üye Ol' kısmına tıklayınız. Açılan sayfadaki temel bilgileri doldurarak üye olabilirsiniz</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Sağlık Hizmetleri Sağlayıcı Üyeliği Nedir?</h3>
+            <p>Healthperia platformunda sağlık hizmetlerini yayınlamak için gerekli olan zorunlu üyelik türüdür. Sağlık Hizmetleri Sağlayıcı üyeliği oluşturmak için ekranın sağ üst köşesinde yer alan 'Hesabım' simgesine tıklayınız. Açılan giriş ekranında, 'Üye Ol' seçeneğine tıklayınız. Ardından, 'Sağlık Hizmetleri Sağlayıcısı mısınız?' ifadesine tıklayarak ilgili sayfaya yönlendirilirsiniz. Açılan sayfada size uygun olan üyelik türünü seçip gerekli temel bilgileri doldurarak üyelik işleminizi tamamlayabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Şifremi unuttum!</h3>
+            <p>Şifrenizi sıfırlamak için ekranın sağ üst köşesinde bulunan 'Hesabım' simgesine tıklayın. Açılan giriş ekranında, 'Şifremi Unuttum!' seçeneğine tıklayın. Karşınıza çıkan alana e-posta adresinizi girip 'Sıfırla' düğmesine tıklayın. E-posta adresinize şifre sıfırlama bağlantısı gönderilecektir. Bu bağlantıya tıklayarak yeni bir şifre belirleyebilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Hesabımı nasıl silebilirim?</h3>
+            <p>Healthperia sisteminde hesap silme işlemi kullanıcılar tarafından doğrudan gerçekleştirilemez. Altı ay boyunca giriş yapılmayan hesaplar, sistem tarafından otomatik silinir. Konuyla ilgili daha ayrıntılı bilgi almak için lütfen yardım merkeziyle iletişime geçin.</p>
+          </article>
+        </div>
+        <div class="hc-panel" id="cat-kilavuz">
+          <h2 class="hc-panel-title">KULLANIM KILAVUZU</h2>
+          <article class="hc-qa">
+            <h3>"i" ikonu nedir ne işe yarar?</h3>
+            <p>Healthperia sistemindeki her sayfanın sol üst köşesinde bir 'i' (bilgilendirme) ikonu bulunur. Bu ikon, bulunduğunuz sayfa hakkında yardım ve rehberlik sağlayan bir bilgilendirme aracıdır. İlgili sayfa hakkında daha fazla bilgi almak için bu ikonu kullanabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Biz Kimiz?</h3>
+            <p>Burası, Healthperia platformunun misyonunu, vizyonunu ve sunduğu hizmetlerin genel bir özetini bulabileceğiniz bir alandır. Platform hakkında daha fazla bilgi edinmek için bu bağlantıya tıklayabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Hesabım</h3>
+            <p>Sağ üst köşede bulunan 'Hesabım' ikonuna basarak hesap yönetim paneline gidebilir, orada profilinizle ilgili tüm işlemlerinizi gerçekleştirebilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Bildirim ikonu</h3>
+            <p>Hesap simgesinin yanında yer alan bildirim ikonu, önemli güncellemeler ve bilgilendirmeler hakkında bilgi verir. Bu ikona, basarak sistem bildirimlerine ulaşabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Dil Seçimi</h3>
+            <p>Healthperia yapay zeka dil desteği, doğal dil işleme teknolojilerini kullanarak birçok dili anlayabilen, işleyebilen ve bu dillerde yanıt verebilen bir yazılımdır. Sistem içerisindeki tüm içerikler, yapay zeka desteğiyle çevrilir. Sayfaların sağ üst köşesinde bulunan bayrak simgesine tıklayarak yapay zeka destekli sistem dilini değiştirebilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Tedavi Arama Barı</h3>
+            <p>Ana sayfanın ortasında yer alan tedavi arama barı, kullanıcıların spesifik tedavi seçeneklerini kolayca bulmalarını sağlamak için tasarlanmıştır. Bu arama barını, kullanarak seçmiş olduğunuz kriterlere göre tedavi araması yapabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Uluslararası Sağlık Kütüphanesi / Indeks</h3>
+            <p>Bu bölüm kullanıcıları; doktorlar, klinikler ve sağlık acenteleri hakkında kapsamlı bilgilere ulaşabilecekleri bir indeks sayfasına yönlendirir. İndeks bölümüne giderek, ihtiyaç duyduğunuz sağlık hizmeti sağlayıcılarını kolaylıkla bulabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Blog</h3>
+            <p>Sağlık alanıyla ilgili ihtiyaç duyduğunuz tedavi bilgilerine ve uzman görüşlerine buradan ulaşabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Haberler</h3>
+            <p>Sağlık sektöründeki güncel gelişmelere ve önemli duyurulara bu kısımdan ulaşabilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Mobil Uygulama</h3>
+            <p>Ana sayfanın alt kısmında bulunan Google Play Store ve Apple Store ikonlarına tıklayarak healthperia uygulamasını mobil cihazınıza kolayca indirebilirsiniz.</p>
+          </article>
+        </div>
+        <div class="hc-panel" id="cat-sss">
+          <h2 class="hc-panel-title">SIKÇA SORULAN SORULAR</h2>
+          <article class="hc-qa">
+            <h3>Neden Healthperia?</h3>
+            <p>Healthperia, tarafsızlık misyonu ile kurum, kişi gözetmeksizin tüm kullanıcılarına ücretsiz üyelik imkanı sunar. Doktor, Klinik veya Acente kategorilerinde araştırma olanağı sağlar. Yapay zeka destekli mesajlaşma sistemi ile iletişim sorununu ortadan kaldırarak, hasta ve tedavi sağlayıcının ana dilinde mesajlaşmasına olanak tanır. Hasta ve tedavi sağlayıcılar arasında anında ve aracısız iletişim kurma imkanı verir. Sağlık sektöründe güvenilir bir kaynaktır.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Healthperia Hastalardan kazanç sağlar mı?</h3>
+            <p>Hayır, healthperia hastalarından herhangi bir ücret talep etmemektedir.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Tedavi Fiyatlarını kim belirler?</h3>
+            <p>Healthperia'nın tedavi fiyatlarını belirleme konusunda yetkisi yoktur! Tedavi fiyatları sadece, tedaviyi yayınlayan 'Sağlık Hizmetleri Sağlayıcısı' tarafından belirlenir. Her hizmet sağlayıcının kendi fiyat politikası vardır, müdahale edilemez.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Aradığım tedavi kategorisini bulamıyorum?</h3>
+            <p>Healthperia'da aradığınız tedaviyi bulamıyorsanız lütfen bize bildirin. Hemen gerekli çalışmalara başlayalım ve güncellemelerimizi yapalım. Unutmayın, sizin için varız. Sizden gelen önerilerle gelişmeye devam ediyoruz.</p>
+          </article>
+        </div>
+        <div class="hc-panel" id="cat-guvenlik">
+          <h2 class="hc-panel-title">GÜVENLİK VE GİZLİLİK</h2>
+          <article class="hc-qa">
+            <h3>Bilgi Toplama ve Kullanımı</h3>
+            <p>* Kişisel bilgileriniz, yalnızca size daha iyi hizmet sunabilmek amacıyla toplanır ve işlenir.</p>
+            <p>* Toplanan bilgiler, sağlık hizmetleri arayışınızda en uygun seçenekleri sunmak, hizmet sağlayıcılarla sizin adınıza iletişime geçmek gibi amaçlarla kullanılabilir. Ancak, bu bilgiler sadece sizin onayınız doğrultusunda ilgili taraflarla paylaşılır.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Gizliliğin Korunması</h3>
+            <p>* Kişisel bilgilerinizin güvenliği için gerekli tüm teknik ve idari önlemleri alıyoruz. Bu kapsamda, verilerinizin korunması için şifreleme, güvenlik duvarları ve diğer ileri düzey güvenlik teknolojileri kullanılmaktadır.</p>
+            <p>* Kişisel bilgilerinizin paylaşımı konusunda, üçüncü taraflar sadece sizin açık rızanızla bu bilgilere erişebilir.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Kullanıcı Hakları</h3>
+            <p>* Kişisel bilgilerinizin işlenmesiyle ilgili her türlü bilgiye erişim hakkına sahipsiniz.</p>
+            <p>* Bilgilerinizin güncellenmesini, düzeltilmesini veya silinmesini talep edebilirsiniz.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Altyapı Güvenliği</h3>
+            <p>* Veri tabanına erişim, yalnızca gerekli yetkilere sahip kullanıcılarla sınırlıdır. Her kullanıcı için sadece gerekli olduğu kadar erişim yetkisi sağlanmaktadır.                                                                                                                                                                                                              * Sunucular, ağlar ve uygulamalar sürekli olarak izlenmektedir. Anomali tespiti ve olay yönetimi araçları bu süreçte kritik rol oynamaktadır.</p>
+          </article>
+        </div>
+        <div class="hc-panel" id="cat-yasal">
+          <h2 class="hc-panel-title">YASAL BİLGİLENDİRMELER</h2>
+          <article class="hc-qa">
+            <h3>Genel Yasal Çerçeve</h3>
+            <p>Healthperia olarak, sağlık hizmetleri sunumunda yerel ve uluslararası yasal düzenlemelere tam uyum sağlıyoruz. Platformumuz, tüm faaliyetlerinde ilgili sağlık, tüketici ve veri koruma yasalarına uygun hareket eder.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Sağlık Hizmetleri Yönetmelikleri</h3>
+            <p>Sağlık Turizmi Düzenlemeleri: Platformumuzda yer alan tüm sağlık hizmeti sağlayıcıları, faaliyet gösterdikleri ülkelerin sağlık turizmi düzenlemelerine uygun olarak hizmet sunmaktadır.</p>
+            <p>Hizmet Sağlayıcı Yetkinlikleri: Healthperia üzerinden sunulan hizmetler, yalnızca yetkili ve lisanslı sağlık profesyonelleri tarafından sağlanır.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Veri Koruma ve Gizlilik</h3>
+            <p>KVKK ve GDPR Uyumluluğu: Kullanıcı verilerinin korunması konusunda Türkiye Cumhuriyeti Kişisel Verilerin Korunması Kanunu (KVKK) ve Avrupa Birliği Genel Veri Koruma Tüzüğü (GDPR) ile tam uyum içerisindeyiz. Kullanıcılarımızın kişisel verileri, güvenli ve şeffaf bir şekilde işlenir.</p>
+            <p>Gizlilik Politikası: Kişisel verilerin toplanması, saklanması ve işlenmesi ile ilgili detaylar Gizlilik Politikamızda açıklanmaktadır.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Kullanım Şartları</h3>
+            <p>Hizmet Koşulları: Healthperia'yı kullanan tüm kullanıcılar, platformun kullanım koşullarını kabul etmiş sayılır. Bu koşullar, hizmetin güvenli ve verimli bir şekilde sunulmasını sağlamak amacıyla belirlenmiştir.</p>
+            <p>Sorumluluk Reddi: Healthperia, kullanıcıların platform üzerinden aldığı sağlık hizmetlerinin sonuçlarından sorumlu değildir. Kullanıcılar, hizmet sağlayıcılar arasındaki ilişkiyi kendi sorumlulukları altında yönetir.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>Uluslararası Düzenlemeler</h3>
+            <p>Çapraz Sınır Sağlık Hizmetleri: Healthperia, farklı ülkelerdeki sağlık hizmetlerine erişim sağlayarak uluslararası düzenlemelere uygun hareket eder. Her bir ülkenin sağlık hizmetleri düzenlemeleri, bu hizmetlerin sunulmasında dikkate alınır.</p>
+          </article>
+          <article class="hc-qa">
+            <h3>İlgili Kanunlar ve Yönetmelikler</h3>
+            <p>Healthperia'nın faaliyetleri, aşağıdaki başlıca yasal düzenlemeler çerçevesinde yürütülmektedir:</p>
+            <p>*Tüketicinin Korunması Hakkında Kanun</p>
+            <p>*Sağlık Hizmetleri Temel Kanunu</p>
+            <p>*Uluslararası Sağlık Turizmi Yönetmeliği</p>
+            <p>*Kişisel Verilerin Korunması Kanunu (KVKK)</p>
+            <p>*Avrupa Birliği Genel Veri Koruma Tüzüğü (GDPR)</p>
+          </article>
+          <article class="hc-qa">
+            <h3>İletişim</h3>
+            <p>Herhangi bir sorunuz veya endişeniz olması durumunda, info@healthperia.com adresinden bizimle iletişime geçebilirsiniz.</p>
+          </article>
+        </div>
+        <div class="hc-panel hc-contact-panel" id="con-de">
+          <h2 class="hc-panel-title">Almanya</h2>
+          <ul class="hc-contact-list">
+            <li><span class="hc-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span><span class="hc-addr">Königstraße 28, 70173 Stuttgart, Deutschland</span></li>
+            <li><span class="hc-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><a href="mailto:info@healthperia.com">info@healthperia.com</a></li>
+            <li><span class="hc-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-1z"/></svg></span><a href="tel:+493012345678">+49 30 1234 5678</a></li>
+            <li><span class="hc-ci wa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.95A10 10 0 0 0 4 18.16L2.5 22l3.94-1.46A10 10 0 1 0 19.05 4.95zM12 20.2a8.2 8.2 0 0 1-4.2-1.16l-.3-.18-2.34.87.79-2.41-.2-.31a8.2 8.2 0 1 1 6.25 3.19zm4.69-6.16c-.26-.13-1.52-.75-1.76-.83-.24-.09-.41-.13-.59.13-.17.26-.67.83-.82 1-.15.17-.3.19-.56.06-.26-.13-1.08-.4-2.06-1.27-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.4.11-.53.11-.11.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.42-.81-1.94-.21-.51-.43-.44-.59-.45h-.5c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.14 0 1.26.92 2.48 1.05 2.65.13.17 1.8 2.74 4.36 3.85.61.26 1.08.42 1.45.54.61.19 1.16.17 1.6.1.49-.07 1.52-.62 1.74-1.22.22-.6.22-1.11.15-1.22-.07-.11-.24-.17-.5-.3z"/></svg></span><a href="https://wa.me/491512345678" target="_blank" rel="noopener">+49 151 2345 6789</a></li>
+          </ul>
+        </div>
+        <div class="hc-panel hc-contact-panel" id="con-tr">
+          <h2 class="hc-panel-title">Türkiye</h2>
+          <ul class="hc-contact-list">
+            <li><span class="hc-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span><span class="hc-addr">Bağdat Caddesi No: 124, Kadıköy, 34710 İstanbul, Türkiye</span></li>
+            <li><span class="hc-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><a href="mailto:info@healthperia.com">info@healthperia.com</a></li>
+            <li><span class="hc-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-1z"/></svg></span><a href="tel:+902121234567">+90 212 123 45 67</a></li>
+            <li><span class="hc-ci wa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.95A10 10 0 0 0 4 18.16L2.5 22l3.94-1.46A10 10 0 1 0 19.05 4.95zM12 20.2a8.2 8.2 0 0 1-4.2-1.16l-.3-.18-2.34.87.79-2.41-.2-.31a8.2 8.2 0 1 1 6.25 3.19zm4.69-6.16c-.26-.13-1.52-.75-1.76-.83-.24-.09-.41-.13-.59.13-.17.26-.67.83-.82 1-.15.17-.3.19-.56.06-.26-.13-1.08-.4-2.06-1.27-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.4.11-.53.11-.11.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.42-.81-1.94-.21-.51-.43-.44-.59-.45h-.5c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.14 0 1.26.92 2.48 1.05 2.65.13.17 1.8 2.74 4.36 3.85.61.26 1.08.42 1.45.54.61.19 1.16.17 1.6.1.49-.07 1.52-.62 1.74-1.22.22-.6.22-1.11.15-1.22-.07-.11-.24-.17-.5-.3z"/></svg></span><a href="https://wa.me/905321234567" target="_blank" rel="noopener">+90 532 123 45 67</a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="account">
+    <div class="container footer-mini">
+      <div class="footer-top">
+        <div class="foot-block question">
+          <span class="foot-text" data-i18n="footer.haveQuestion">Bir sorum var?</span>
+          <span class="foot-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8A2.5 2.5 0 0 1 17.5 16H10l-4 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9.6 8.1a2.4 2.4 0 1 1 3.3 2.5c-.7.4-1 .9-1 1.6"/><circle cx="11.9" cy="14.2" r="0.95" fill="currentColor" stroke="none"/></svg></span>
+        </div>
+        <div class="foot-block follow">
+          <span class="foot-text" data-i18n="footer.follow">Bizi takip edin</span>
+          <ul class="foot-socials" aria-label="Sosyal medya">
+            <li><a href="https://wa.me/" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.95A10 10 0 0 0 4 18.16L2.5 22l3.94-1.46A10 10 0 1 0 19.05 4.95zM12 20.2a8.2 8.2 0 0 1-4.2-1.16l-.3-.18-2.34.87.79-2.41-.2-.31a8.2 8.2 0 1 1 6.25 3.19zm4.69-6.16c-.26-.13-1.52-.75-1.76-.83-.24-.09-.41-.13-.59.13-.17.26-.67.83-.82 1-.15.17-.3.19-.56.06-.26-.13-1.08-.4-2.06-1.27-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.4.11-.53.11-.11.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.42-.81-1.94-.21-.51-.43-.44-.59-.45h-.5c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.14 0 1.26.92 2.48 1.05 2.65.13.17 1.8 2.74 4.36 3.85.61.26 1.08.42 1.45.54.61.19 1.16.17 1.6.1.49-.07 1.52-.62 1.74-1.22.22-.6.22-1.11.15-1.22-.07-.11-.24-.17-.5-.3z"/></svg></a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></li>
+            <li><a href="https://x.com" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.8l-5.34-6.83L4.3 22H1.04l8.02-9.16L1.5 2H8.4l4.83 6.22L18.244 2zm-2.39 18h1.93L7.25 4H5.18l10.674 16z"/></svg></a></li>
+            <li><a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.25-1.5 1.5-1.5h1.6V4.4c-.28-.04-1.23-.12-2.34-.12-2.32 0-3.9 1.42-3.9 4v2.22H7.8v3h2.5V21h3.2z"/></svg></a></li>
+            <li><a href="mailto:info@healthperia.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="foot-email" href="mailto:info@healthperia.com">info@healthperia.com</a>
+      <hr class="foot-divider" />
+      <div class="footer-bottom-mini">
+        <span class="foot-copy">&copy; <span id="year"></span> <span data-i18n="footer.copy">Tüm Hakları Saklıdır.</span></span>
+        <span class="foot-entity">Healthperia Sağlık Hizmetleri GmbH</span>
+        <ul class="foot-legal">
+          <li><a href="#" data-i18n="footer.terms">Şartlar</a></li>
+          <li><a href="#" data-i18n="footer.privacy">Gizlilik</a></li>
+          <li><a href="#" data-i18n="footer.compliance">Uyumluluklar</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" id="scrollTop" type="button" aria-label="Sayfanın başına dön">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg>
+  </button>
+
+  <script src="../js/main.js"></script>
+  <script>
+    (function(){
+      var page=document.getElementById('helpPage');
+      var items=document.querySelectorAll('.hc-menu-item');
+      var panels=document.querySelectorAll('.hc-panel');
+      var hint=document.getElementById('hcHint');
+      var right=document.getElementById('hcRight');
+      items.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id=btn.getAttribute('data-target');
+          items.forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          panels.forEach(function(p){ p.classList.remove('active'); });
+          var t=document.getElementById(id);
+          if(t){ t.classList.add('active'); }
+          if(hint){ hint.style.display='none'; }
+          page.classList.add('has-selection');
+          if(right){ right.scrollTop=0; }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

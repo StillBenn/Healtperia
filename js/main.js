@@ -600,7 +600,8 @@
     docEl.style.scrollBehavior = 'auto';   // JS engine takes over from CSS
     window.addEventListener('wheel', (e) => {
       if (e.ctrlKey) return;                                   // pinch-zoom
-      if (e.target.closest && e.target.closest('.lang-menu')) return; // inner scroll area
+      // let inner scroll areas use the wheel natively
+      if (e.target.closest && e.target.closest('.lang-menu, .hc-right, .hc-left')) return;
       e.preventDefault();
       if (!animating) { currentY = window.scrollY; targetY = currentY; }
       let delta = e.deltaY;
@@ -615,6 +616,35 @@
     }, { passive: true });
     window.addEventListener('resize', () => { targetY = clampY(targetY); });
   }
+
+  /* ---- premium soft wheel scrolling for inner scroll panes (e.g. Help Center) ---- */
+  const attachSoftScroll = (el) => {
+    if (!smoothEnabled) return;                 // touch / reduced-motion → native
+    let target = el.scrollTop, current = el.scrollTop, running = false;
+    const maxS = () => el.scrollHeight - el.clientHeight;
+    const clampS = (v) => Math.max(0, Math.min(v, maxS()));
+    const tick = () => {
+      const diff = target - current;
+      if (Math.abs(diff) < 0.5) { current = target; el.scrollTop = current; running = false; return; }
+      current += diff * 0.11;                    // easing — soft, gradual
+      el.scrollTop = current;
+      requestAnimationFrame(tick);
+    };
+    const run = () => { if (!running) { running = true; requestAnimationFrame(tick); } };
+    el.addEventListener('wheel', (e) => {
+      if (e.ctrlKey) return;
+      if (maxS() <= 0) return;                   // nothing to scroll
+      e.preventDefault();
+      if (!running) { current = el.scrollTop; target = current; }
+      let d = e.deltaY;
+      if (e.deltaMode === 1) d *= 16;
+      else if (e.deltaMode === 2) d *= el.clientHeight;
+      target = clampS(target + d);
+      run();
+    }, { passive: false });
+    el.addEventListener('scroll', () => { if (!running) { current = el.scrollTop; target = current; } }, { passive: true });
+  };
+  document.querySelectorAll('.hc-right').forEach(attachSoftScroll);
 
   /* smooth in-page anchor links */
   const anchorOffset = () => (header ? header.offsetHeight : 0) + 12;
