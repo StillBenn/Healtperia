@@ -1,6 +1,6 @@
-# Treatperia
+# Healthperia
 
-**Treatperia** is an international healthcare library — a premium, multilingual web platform that connects patients with trusted clinics, doctors, agencies, hospitals, and treatments worldwide.
+**Healthperia** is an international healthcare library — a premium, multilingual web platform that connects patients with trusted clinics, doctors, agencies, hospitals, and treatments worldwide.
 
 🔗 **Live site (GitHub Pages):** https://stillbenn.github.io/Healtperia/
 

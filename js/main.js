@@ -1,5 +1,5 @@
 /* ============================================================
-   Treatperia — main.js
+   Healthperia — main.js
    Header state · mobile nav · i18n (20 languages)
    language switcher · premium smooth scrolling
    ============================================================ */
@@ -58,7 +58,7 @@
       'trust.support.title':'International Patient Support','trust.support.desc':'End-to-end coordination for travel, treatment, and post-care follow-up.',
       'trust.transparent.title':'Transparent Treatment Information','trust.transparent.desc':'Clear, upfront details on procedures, timelines, and costs — no hidden fees.',
       'trust.multi.title':'Multilingual Communication','trust.multi.desc':'Patient coordinators available in multiple languages, around the clock.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Healthcare in your pocket',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Healthcare in your pocket',
       'app.lead':'Discover providers, manage appointments, and connect with care teams from anywhere in the world.',
       'app.download':'Download on the','app.getiton':'Get it on','app.book':'Book Appointment',
       'footer.question':'Have a question?','footer.haveQuestion':'Have a question?','footer.follow':'Follow us','footer.contactHeading':'Get in Touch With Us','footer.tagline':'International Healthcare Library — trusted access to global care.','footer.contactCol':'Contact','footer.companyCol':'Company','footer.copy':'All rights reserved.',
@@ -81,7 +81,7 @@
       'trust.support.title':'Uluslararası Hasta Desteği','trust.support.desc':'Seyahat, tedavi ve tedavi sonrası takip için uçtan uca koordinasyon.',
       'trust.transparent.title':'Şeffaf Tedavi Bilgileri','trust.transparent.desc':'İşlemler, süreler ve maliyetler hakkında net, açık bilgiler — gizli ücret yok.',
       'trust.multi.title':'Çok Dilli İletişim','trust.multi.desc':'Birden fazla dilde, 7/24 hasta koordinatörleri.',
-      'app.eyebrow':'Treatperia Mobil','app.title':'Cebinizdeki sağlık',
+      'app.eyebrow':'Healthperia Mobil','app.title':'Cebinizdeki sağlık',
       'app.lead':'Sağlayıcıları keşfedin, randevularınızı yönetin ve dünyanın her yerinden bakım ekipleriyle bağlantı kurun.',
       'app.download':'İndir','app.getiton':'Edinin','app.book':'Randevu Al',
       'footer.question':'Bir sorunuz mu var?','footer.haveQuestion':'Bir sorum var?','footer.follow':'Bizi takip edin','footer.contactHeading':'Bizimle İletişime Geçin','footer.tagline':'Uluslararası Sağlık Kütüphanesi — güvenilir küresel sağlık hizmetlerine erişim.','footer.contactCol':'İletişim','footer.companyCol':'Şirket','footer.copy':'Tüm Hakları Saklıdır.',
@@ -104,7 +104,7 @@
       'trust.support.title':'Internationale Patientenbetreuung','trust.support.desc':'Komplette Koordination für Reise, Behandlung und Nachsorge.',
       'trust.transparent.title':'Transparente Behandlungsinformationen','trust.transparent.desc':'Klare, offene Angaben zu Verfahren, Zeitrahmen und Kosten — keine versteckten Gebühren.',
       'trust.multi.title':'Mehrsprachige Kommunikation','trust.multi.desc':'Patientenkoordinatoren rund um die Uhr in mehreren Sprachen verfügbar.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Gesundheit in Ihrer Tasche',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Gesundheit in Ihrer Tasche',
       'app.lead':'Anbieter entdecken, Termine verwalten und von überall mit Behandlungsteams in Kontakt treten.',
       'app.download':'Laden im','app.getiton':'Jetzt bei','app.book':'Termin buchen',
       'footer.question':'Haben Sie eine Frage?','footer.haveQuestion':'Eine Frage?','footer.follow':'Folgen Sie uns','footer.contactHeading':'Kontaktieren Sie uns','footer.tagline':'Internationale Gesundheitsbibliothek — vertrauensvoller Zugang zu globaler Versorgung.','footer.contactCol':'Kontakt','footer.companyCol':'Unternehmen','footer.copy':'Alle Rechte vorbehalten.',
@@ -127,7 +127,7 @@
       'trust.support.title':'Международная поддержка пациентов','trust.support.desc':'Полная координация поездки, лечения и постлечебного ухода.',
       'trust.transparent.title':'Прозрачная информация о лечении','trust.transparent.desc':'Чёткие сведения о процедурах, сроках и стоимости — без скрытых платежей.',
       'trust.multi.title':'Многоязычная коммуникация','trust.multi.desc':'Координаторы доступны круглосуточно на нескольких языках.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Здоровье в кармане',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Здоровье в кармане',
       'app.lead':'Открывайте поставщиков, управляйте записями и связывайтесь с командой ухода из любой точки мира.',
       'app.download':'Загрузить в','app.getiton':'Доступно в','app.book':'Записаться',
       'footer.question':'Есть вопрос?','footer.haveQuestion':'Есть вопрос?','footer.follow':'Следите за нами','footer.contactHeading':'Свяжитесь с нами','footer.tagline':'Международная Библиотека Здравоохранения — надёжный доступ к глобальной помощи.','footer.contactCol':'Контакты','footer.companyCol':'Компания','footer.copy':'Все права защищены.',
@@ -150,7 +150,7 @@
       'trust.support.title':'Soutien international aux patients','trust.support.desc':'Coordination complète pour le voyage, le traitement et le suivi.',
       'trust.transparent.title':'Informations transparentes','trust.transparent.desc':'Détails clairs et anticipés sur les procédures, délais et coûts — sans frais cachés.',
       'trust.multi.title':'Communication multilingue','trust.multi.desc':'Coordinateurs disponibles dans plusieurs langues, 24h/24.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'La santé dans votre poche',
+      'app.eyebrow':'Healthperia Mobile','app.title':'La santé dans votre poche',
       'app.lead':'Découvrez les prestataires, gérez vos rendez-vous et connectez-vous aux équipes de soins partout dans le monde.',
       'app.download':'Télécharger sur','app.getiton':'Disponible sur','app.book':'Prendre rendez-vous',
       'footer.question':'Une question ?','footer.haveQuestion':'Une question ?','footer.follow':'Suivez-nous','footer.contactHeading':'Contactez-nous','footer.tagline':'Bibliothèque Internationale de Santé — accès de confiance aux soins mondiaux.','footer.contactCol':'Contact','footer.companyCol':'Entreprise','footer.copy':'Tous droits réservés.',
@@ -173,7 +173,7 @@
       'trust.support.title':'Soporte internacional al paciente','trust.support.desc':'Coordinación integral para viaje, tratamiento y seguimiento.',
       'trust.transparent.title':'Información transparente','trust.transparent.desc':'Detalles claros y previos sobre procedimientos, plazos y costes — sin tarifas ocultas.',
       'trust.multi.title':'Comunicación multilingüe','trust.multi.desc':'Coordinadores disponibles en varios idiomas, las 24 horas.',
-      'app.eyebrow':'Treatperia Móvil','app.title':'Salud en tu bolsillo',
+      'app.eyebrow':'Healthperia Móvil','app.title':'Salud en tu bolsillo',
       'app.lead':'Descubra proveedores, gestione citas y conecte con equipos de atención desde cualquier lugar.',
       'app.download':'Descargar en','app.getiton':'Disponible en','app.book':'Reservar cita',
       'footer.question':'¿Tiene una pregunta?','footer.haveQuestion':'¿Tiene una pregunta?','footer.follow':'Síguenos','footer.contactHeading':'Contáctenos','footer.tagline':'Biblioteca Internacional de Salud — acceso confiable a la atención global.','footer.contactCol':'Contacto','footer.companyCol':'Empresa','footer.copy':'Todos los derechos reservados.',
@@ -196,7 +196,7 @@
       'trust.support.title':'Supporto internazionale ai pazienti','trust.support.desc':'Coordinamento completo per viaggio, trattamento e follow-up.',
       'trust.transparent.title':'Informazioni trasparenti','trust.transparent.desc':'Dettagli chiari e anticipati su procedure, tempi e costi — senza costi nascosti.',
       'trust.multi.title':'Comunicazione multilingue','trust.multi.desc':'Coordinatori disponibili in più lingue, 24 ore su 24.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'La salute in tasca',
+      'app.eyebrow':'Healthperia Mobile','app.title':'La salute in tasca',
       'app.lead':'Scopri i fornitori, gestisci gli appuntamenti e connettiti con i team di cura ovunque nel mondo.',
       'app.download':'Scarica su','app.getiton':'Disponibile su','app.book':'Prenota visita',
       'footer.question':'Hai una domanda?','footer.haveQuestion':'Hai una domanda?','footer.follow':'Seguici','footer.contactHeading':'Contattaci','footer.tagline':'Biblioteca Internazionale della Salute — accesso affidabile alle cure globali.','footer.contactCol':'Contatti','footer.companyCol':'Azienda','footer.copy':'Tutti i diritti riservati.',
@@ -219,7 +219,7 @@
       'trust.support.title':'دعم دولي للمرضى','trust.support.desc':'تنسيق شامل للسفر والعلاج والمتابعة بعد الرعاية.',
       'trust.transparent.title':'معلومات علاجية شفافة','trust.transparent.desc':'تفاصيل واضحة ومسبقة عن الإجراءات والمواعيد والتكاليف — بدون رسوم خفية.',
       'trust.multi.title':'تواصل متعدد اللغات','trust.multi.desc':'منسقو المرضى متاحون بعدة لغات على مدار الساعة.',
-      'app.eyebrow':'Treatperia للجوال','app.title':'الرعاية الصحية في جيبك',
+      'app.eyebrow':'Healthperia للجوال','app.title':'الرعاية الصحية في جيبك',
       'app.lead':'اكتشف مقدمي الخدمة وأدر مواعيدك وتواصل مع فرق الرعاية من أي مكان في العالم.',
       'app.download':'حمّل من','app.getiton':'احصل عليه على','app.book':'احجز موعدًا',
       'footer.question':'هل لديك سؤال؟','footer.haveQuestion':'هل لديك سؤال؟','footer.follow':'تابعنا','footer.contactHeading':'تواصل معنا','footer.tagline':'المكتبة الدولية للرعاية الصحية — وصول موثوق إلى الرعاية العالمية.','footer.contactCol':'اتصل بنا','footer.companyCol':'الشركة','footer.copy':'جميع الحقوق محفوظة.',
@@ -242,7 +242,7 @@
       'trust.support.title':'国际患者支持','trust.support.desc':'提供旅行、治疗和术后随访的全程协调服务。',
       'trust.transparent.title':'透明的治疗信息','trust.transparent.desc':'清晰、提前告知的程序、时间和费用 — 无隐藏费用。',
       'trust.multi.title':'多语言沟通','trust.multi.desc':'提供多种语言、全天候的患者协调员服务。',
-      'app.eyebrow':'Treatperia 移动版','app.title':'随身健康助手',
+      'app.eyebrow':'Healthperia 移动版','app.title':'随身健康助手',
       'app.lead':'发现服务提供者、管理预约，并随时随地与护理团队联系。',
       'app.download':'下载于','app.getiton':'获取于','app.book':'预约挂号',
       'footer.question':'有问题吗？','footer.haveQuestion':'有问题吗？','footer.follow':'关注我们','footer.contactHeading':'联系我们','footer.tagline':'国际医疗图书馆 — 可信赖的全球医疗服务。','footer.contactCol':'联系','footer.companyCol':'公司','footer.copy':'保留所有权利。',
@@ -265,7 +265,7 @@
       'trust.support.title':'अंतर्राष्ट्रीय रोगी सहायता','trust.support.desc':'यात्रा, उपचार और देखभाल के बाद के लिए संपूर्ण समन्वय।',
       'trust.transparent.title':'पारदर्शी उपचार जानकारी','trust.transparent.desc':'प्रक्रियाओं, समय-सीमा और लागत पर स्पष्ट जानकारी — कोई छिपा शुल्क नहीं।',
       'trust.multi.title':'बहुभाषी संचार','trust.multi.desc':'कई भाषाओं में चौबीसों घंटे रोगी समन्वयक उपलब्ध।',
-      'app.eyebrow':'Treatperia मोबाइल','app.title':'आपकी जेब में स्वास्थ्य',
+      'app.eyebrow':'Healthperia मोबाइल','app.title':'आपकी जेब में स्वास्थ्य',
       'app.lead':'सेवा प्रदाताओं की खोज करें, अपॉइंटमेंट प्रबंधित करें और दुनिया में कहीं से भी देखभाल टीमों से जुड़ें।',
       'app.download':'डाउनलोड करें','app.getiton':'प्राप्त करें','app.book':'अपॉइंटमेंट लें',
       'footer.question':'कोई प्रश्न है?','footer.haveQuestion':'कोई प्रश्न है?','footer.follow':'हमें फ़ॉलो करें','footer.contactHeading':'हमसे संपर्क करें','footer.tagline':'अंतर्राष्ट्रीय स्वास्थ्य पुस्तकालय — वैश्विक देखभाल तक विश्वसनीय पहुँच।','footer.contactCol':'संपर्क','footer.companyCol':'कंपनी','footer.copy':'सर्वाधिकार सुरक्षित।',
@@ -288,7 +288,7 @@
       'trust.support.title':'국제 환자 지원','trust.support.desc':'여행, 치료, 사후 관리를 위한 전 과정 조정.',
       'trust.transparent.title':'투명한 치료 정보','trust.transparent.desc':'시술, 일정, 비용에 대한 명확한 사전 안내 — 숨겨진 비용 없음.',
       'trust.multi.title':'다국어 커뮤니케이션','trust.multi.desc':'여러 언어로 24시간 환자 코디네이터 이용 가능.',
-      'app.eyebrow':'Treatperia 모바일','app.title':'주머니 속의 의료',
+      'app.eyebrow':'Healthperia 모바일','app.title':'주머니 속의 의료',
       'app.lead':'제공자를 찾고, 예약을 관리하고, 어디서나 케어 팀과 연결하세요.',
       'app.download':'다운로드','app.getiton':'다운로드','app.book':'예약하기',
       'footer.question':'질문이 있으신가요?','footer.haveQuestion':'질문이 있으신가요?','footer.follow':'팔로우','footer.contactHeading':'문의하기','footer.tagline':'국제 의료 라이브러리 — 글로벌 케어에 대한 신뢰할 수 있는 접근.','footer.contactCol':'연락처','footer.companyCol':'회사','footer.copy':'판권 소유.',
@@ -311,7 +311,7 @@
       'trust.support.title':'国際患者サポート','trust.support.desc':'渡航、治療、アフターケアまで一貫した調整。',
       'trust.transparent.title':'透明性のある治療情報','trust.transparent.desc':'手順、期間、費用に関する明確な事前情報 — 隠れた費用なし。',
       'trust.multi.title':'多言語コミュニケーション','trust.multi.desc':'複数の言語で24時間対応の患者コーディネーター。',
-      'app.eyebrow':'Treatperia モバイル','app.title':'ポケットの中の医療',
+      'app.eyebrow':'Healthperia モバイル','app.title':'ポケットの中の医療',
       'app.lead':'提供者を見つけ、予約を管理し、世界中どこからでもケアチームとつながります。',
       'app.download':'ダウンロード','app.getiton':'入手する','app.book':'予約する',
       'footer.question':'ご質問がありますか？','footer.haveQuestion':'ご質問がありますか？','footer.follow':'フォローする','footer.contactHeading':'お問い合わせ','footer.tagline':'国際ヘルスケアライブラリ — 世界中のケアへの信頼できるアクセス。','footer.contactCol':'連絡先','footer.companyCol':'会社','footer.copy':'無断複写・転載を禁じます。',
@@ -334,7 +334,7 @@
       'trust.support.title':'Apoio internacional ao paciente','trust.support.desc':'Coordenação completa para viagem, tratamento e acompanhamento.',
       'trust.transparent.title':'Informações transparentes','trust.transparent.desc':'Detalhes claros e antecipados sobre procedimentos, prazos e custos — sem taxas ocultas.',
       'trust.multi.title':'Comunicação multilíngue','trust.multi.desc':'Coordenadores disponíveis em vários idiomas, 24 horas por dia.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Saúde no seu bolso',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Saúde no seu bolso',
       'app.lead':'Descubra prestadores, gerencie consultas e conecte-se com equipes de cuidado de qualquer lugar.',
       'app.download':'Baixar na','app.getiton':'Disponível no','app.book':'Agendar consulta',
       'footer.question':'Tem uma pergunta?','footer.haveQuestion':'Tem uma pergunta?','footer.follow':'Siga-nos','footer.contactHeading':'Fale Conosco','footer.tagline':'Biblioteca Internacional de Saúde — acesso confiável a cuidados globais.','footer.contactCol':'Contato','footer.companyCol':'Empresa','footer.copy':'Todos os direitos reservados.',
@@ -357,7 +357,7 @@
       'trust.support.title':'Internationale patiëntondersteuning','trust.support.desc':'Volledige coördinatie voor reis, behandeling en nazorg.',
       'trust.transparent.title':'Transparante behandelinformatie','trust.transparent.desc':'Duidelijke, vooraf gegeven details over procedures, tijdlijnen en kosten — geen verborgen kosten.',
       'trust.multi.title':'Meertalige communicatie','trust.multi.desc':'Patiëntcoördinatoren beschikbaar in meerdere talen, de klok rond.',
-      'app.eyebrow':'Treatperia Mobiel','app.title':'Zorg in je zak',
+      'app.eyebrow':'Healthperia Mobiel','app.title':'Zorg in je zak',
       'app.lead':'Ontdek aanbieders, beheer afspraken en verbind met zorgteams vanaf elke locatie.',
       'app.download':'Download in de','app.getiton':'Ontdek het op','app.book':'Afspraak maken',
       'footer.question':'Heeft u een vraag?','footer.haveQuestion':'Heeft u een vraag?','footer.follow':'Volg ons','footer.contactHeading':'Neem contact op','footer.tagline':'Internationale Zorgbibliotheek — vertrouwde toegang tot wereldwijde zorg.','footer.contactCol':'Contact','footer.companyCol':'Bedrijf','footer.copy':'Alle rechten voorbehouden.',
@@ -380,7 +380,7 @@
       'trust.support.title':'Międzynarodowe wsparcie pacjenta','trust.support.desc':'Kompleksowa koordynacja podróży, leczenia i opieki po zabiegu.',
       'trust.transparent.title':'Przejrzyste informacje o leczeniu','trust.transparent.desc':'Jasne, podane z góry szczegóły procedur, terminów i kosztów — bez ukrytych opłat.',
       'trust.multi.title':'Komunikacja wielojęzyczna','trust.multi.desc':'Koordynatorzy pacjentów dostępni w wielu językach, całą dobę.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Zdrowie w kieszeni',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Zdrowie w kieszeni',
       'app.lead':'Odkrywaj dostawców, zarządzaj wizytami i łącz się z zespołami opieki z dowolnego miejsca.',
       'app.download':'Pobierz z','app.getiton':'Pobierz z','app.book':'Umów wizytę',
       'footer.question':'Masz pytanie?','footer.haveQuestion':'Masz pytanie?','footer.follow':'Obserwuj nas','footer.contactHeading':'Skontaktuj się z nami','footer.tagline':'Międzynarodowa Biblioteka Zdrowia — zaufany dostęp do globalnej opieki.','footer.contactCol':'Kontakt','footer.companyCol':'Firma','footer.copy':'Wszelkie prawa zastrzeżone.',
@@ -403,7 +403,7 @@
       'trust.support.title':'Міжнародна підтримка пацієнтів','trust.support.desc':'Повна координація подорожі, лікування та подальшого догляду.',
       'trust.transparent.title':'Прозора інформація про лікування','trust.transparent.desc':'Чіткі, заздалегідь надані деталі про процедури, терміни та вартість — без прихованих платежів.',
       'trust.multi.title':'Багатомовне спілкування','trust.multi.desc':'Координатори пацієнтів доступні багатьма мовами, цілодобово.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Здоровʼя у кишені',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Здоровʼя у кишені',
       'app.lead':'Відкривайте надавачів, керуйте записами та звʼязуйтеся з командами догляду звідусіль.',
       'app.download':'Завантажити в','app.getiton':'Доступно в','app.book':'Записатися',
       'footer.question':'Маєте запитання?','footer.haveQuestion':'Маєте запитання?','footer.follow':'Стежте за нами','footer.contactHeading':'Звʼяжіться з нами','footer.tagline':'Міжнародна Бібліотека Охорони Здоровʼя — надійний доступ до глобальної допомоги.','footer.contactCol':'Контакти','footer.companyCol':'Компанія','footer.copy':'Усі права захищено.',
@@ -426,7 +426,7 @@
       'trust.support.title':'Sprijin internațional pentru pacienți','trust.support.desc':'Coordonare completă pentru călătorie, tratament și îngrijire ulterioară.',
       'trust.transparent.title':'Informații transparente','trust.transparent.desc':'Detalii clare și anticipate despre proceduri, termene și costuri — fără taxe ascunse.',
       'trust.multi.title':'Comunicare multilingvă','trust.multi.desc':'Coordonatori de pacienți disponibili în mai multe limbi, non-stop.',
-      'app.eyebrow':'Treatperia Mobile','app.title':'Sănătatea în buzunar',
+      'app.eyebrow':'Healthperia Mobile','app.title':'Sănătatea în buzunar',
       'app.lead':'Descoperiți furnizori, gestionați programări și conectați-vă cu echipele de îngrijire de oriunde.',
       'app.download':'Descărcați din','app.getiton':'Disponibil pe','app.book':'Programare',
       'footer.question':'Aveți o întrebare?','footer.haveQuestion':'Aveți o întrebare?','footer.follow':'Urmăriți-ne','footer.contactHeading':'Contactați-ne','footer.tagline':'Biblioteca Internațională de Sănătate — acces de încredere la îngrijirea globală.','footer.contactCol':'Contact','footer.companyCol':'Companie','footer.copy':'Toate drepturile rezervate.',
@@ -449,7 +449,7 @@
       'trust.support.title':'Международна подкрепа за пациенти','trust.support.desc':'Пълна координация за пътуване, лечение и последващи грижи.',
       'trust.transparent.title':'Прозрачна информация за лечението','trust.transparent.desc':'Ясни, предварителни детайли за процедури, срокове и разходи — без скрити такси.',
       'trust.multi.title':'Многоезична комуникация','trust.multi.desc':'Координатори на пациенти на няколко езика, денонощно.',
-      'app.eyebrow':'Treatperia Мобайл','app.title':'Здраве в джоба ви',
+      'app.eyebrow':'Healthperia Мобайл','app.title':'Здраве в джоба ви',
       'app.lead':'Открийте доставчици, управлявайте срещи и се свържете с екипи за грижа отвсякъде.',
       'app.download':'Изтеглете от','app.getiton':'Налично в','app.book':'Запазете час',
       'footer.question':'Имате въпрос?','footer.haveQuestion':'Имате въпрос?','footer.follow':'Последвайте ни','footer.contactHeading':'Свържете се с нас','footer.tagline':'Международна Здравна Библиотека — надежден достъп до глобална грижа.','footer.contactCol':'Контакт','footer.companyCol':'Компания','footer.copy':'Всички права запазени.',
@@ -472,7 +472,7 @@
       'trust.support.title':'Beynəlxalq pasiyent dəstəyi','trust.support.desc':'Səyahət, müalicə və müalicədən sonrakı qayğı üçün tam koordinasiya.',
       'trust.transparent.title':'Şəffaf müalicə məlumatı','trust.transparent.desc':'Prosedurlar, müddətlər və xərclər barədə aydın, əvvəlcədən məlumat — gizli ödəniş yoxdur.',
       'trust.multi.title':'Çoxdilli ünsiyyət','trust.multi.desc':'Bir neçə dildə, gecə-gündüz pasiyent koordinatorları.',
-      'app.eyebrow':'Treatperia Mobil','app.title':'Cibinizdə səhiyyə',
+      'app.eyebrow':'Healthperia Mobil','app.title':'Cibinizdə səhiyyə',
       'app.lead':'Təminatçıları kəşf edin, görüşləri idarə edin və dünyanın istənilən yerindən qayğı komandaları ilə əlaqə saxlayın.',
       'app.download':'Yükləyin','app.getiton':'Əldə edin','app.book':'Görüş təyin et',
       'footer.question':'Sualınız var?','footer.haveQuestion':'Sualınız var?','footer.follow':'Bizi izləyin','footer.contactHeading':'Bizimlə əlaqə saxlayın','footer.tagline':'Beynəlxalq Səhiyyə Kitabxanası — qlobal qayğıya etibarlı çıxış.','footer.contactCol':'Əlaqə','footer.companyCol':'Şirkət','footer.copy':'Bütün hüquqlar qorunur.',
@@ -495,7 +495,7 @@
       'trust.support.title':'پشتیبانی بین‌المللی بیماران','trust.support.desc':'هماهنگی کامل برای سفر، درمان و پیگیری پس از مراقبت.',
       'trust.transparent.title':'اطلاعات درمانی شفاف','trust.transparent.desc':'جزئیات روشن و از پیش‌اعلام‌شده درباره روش‌ها، زمان‌بندی و هزینه‌ها — بدون هزینه پنهان.',
       'trust.multi.title':'ارتباط چندزبانه','trust.multi.desc':'هماهنگ‌کنندگان بیمار به چند زبان، شبانه‌روزی در دسترس.',
-      'app.eyebrow':'Treatperia موبایل','app.title':'سلامت در جیب شما',
+      'app.eyebrow':'Healthperia موبایل','app.title':'سلامت در جیب شما',
       'app.lead':'ارائه‌دهندگان را کشف کنید، نوبت‌ها را مدیریت کنید و از هر کجای جهان با تیم‌های مراقبت ارتباط بگیرید.',
       'app.download':'دانلود از','app.getiton':'دریافت از','app.book':'رزرو نوبت',
       'footer.question':'سؤالی دارید؟','footer.haveQuestion':'سؤالی دارید؟','footer.follow':'ما را دنبال کنید','footer.contactHeading':'با ما در تماس باشید','footer.tagline':'کتابخانه بین‌المللی سلامت — دسترسی مطمئن به مراقبت‌های جهانی.','footer.contactCol':'تماس','footer.companyCol':'شرکت','footer.copy':'تمامی حقوق محفوظ است.',
@@ -639,6 +639,18 @@
     });
   }
 
+  /* back-to-top button — appears after scrolling down, soft scroll to top */
+  const toTop = document.getElementById('scrollTop');
+  if (toTop) {
+    const toggleToTop = () => {
+      if (window.scrollY > window.innerHeight * 0.9) toTop.classList.add('visible');
+      else toTop.classList.remove('visible');
+    };
+    window.addEventListener('scroll', toggleToTop, { passive: true });
+    toggleToTop();
+    toTop.addEventListener('click', () => scrollToY(0));
+  }
+
   /* ---------- Video autoplay safety ---------- */
   const video = document.querySelector('.hero-video');
   if (video) {
@@ -646,7 +658,23 @@
       const p = video.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
     };
-    video.addEventListener('canplay', tryPlay, { once: true });
+
+    /* reveal the video only once it can actually play — before that the hero
+       shows ONLY the dark navy gradient, never any image or first frame */
+    const reveal = () => {
+      video.classList.add('video-ready');
+      tryPlay();
+    };
+
+    if (video.readyState >= 3) {
+      reveal();                                  // already buffered enough
+    } else {
+      video.addEventListener('canplay', reveal, { once: true });
+      video.addEventListener('loadeddata', reveal, { once: true });
+      /* safety net: never leave the hero blank if the events don't fire */
+      setTimeout(reveal, 5000);
+    }
+
     document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
   }
 
@@ -692,6 +720,24 @@
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     revealTargets.forEach((el) => io.observe(el));
+  }
+
+  /* ---------- About-page finale: hands glide in when it enters view ---------- */
+  const finale = document.querySelector('[data-finale]');
+  if (finale) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      finale.classList.add('in');
+    } else {
+      const fo = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            finale.classList.add('in');
+            fo.unobserve(finale);
+          }
+        });
+      }, { threshold: 0.25 });
+      fo.observe(finale);
+    }
   }
 
 })();
