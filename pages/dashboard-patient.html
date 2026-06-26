@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hasta Paneli — Healthperia</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="app-body">
+
+  <div class="app-shell">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-head">
+        <a href="../index.html" class="sidebar-logo" aria-label="Healthperia">
+          <img src="../assets/images/LOGO__SLOGANLI_PNG.png" alt="Healthperia" />
+        </a>
+        <button class="sidebar-close" id="sidebarClose" aria-label="Menüyü kapat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Panel menüsü">
+        <span class="sidebar-group">Menü</span>
+        <a class="side-link is-active" data-section="overview" href="#overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          Genel Bakış</a>
+        <a class="side-link" data-section="appointments" href="#appointments">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+          Randevularım<span class="side-badge" id="apptBadge">2</span></a>
+        <a class="side-link" data-section="messages" href="#messages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Mesajlar<span class="side-badge alt" id="msgBadge">3</span></a>
+        <a class="side-link" data-section="records" href="#records">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 11v6M9 14h6"/></svg>
+          Tıbbi Kayıtlar</a>
+        <a class="side-link" data-section="doctors" href="#doctors">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          Doktor Bul</a>
+
+        <span class="sidebar-group">Hesap</span>
+        <a class="side-link" data-section="profile" href="#profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          Profilim</a>
+        <a class="side-link" data-section="settings" href="#settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 0 1-4 0v-.1A1.7 1.7 0 0 0 7 19.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.7 1.7 0 0 0 4.7 8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          Ayarlar</a>
+      </nav>
+
+      <button class="sidebar-logout" id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Çıkış Yap
+      </button>
+    </aside>
+    <div class="app-overlay" id="appOverlay"></div>
+
+    <!-- ============ MAIN ============ -->
+    <div class="app-main">
+
+      <header class="app-topbar">
+        <button class="topbar-burger" id="burger" aria-label="Menü">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-title">
+          <h1 id="pageTitle">Genel Bakış</h1>
+          <p id="pageCrumb">Hasta Paneli</p>
+        </div>
+
+        <div class="topbar-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="search" placeholder="Doktor, klinik veya tedavi ara…" />
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" aria-label="Bildirimler"><span class="dot"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          </button>
+          <div class="user-menu" id="userMenu">
+            <button class="user-trigger" id="userTrigger">
+              <span class="avatar" id="navAvatar">AD</span>
+              <span class="user-meta">
+                <strong id="navName">—</strong>
+                <small>Hasta</small>
+              </span>
+              <svg class="user-caret" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="user-dropdown">
+              <a href="#profile" data-section="profile">Profilim</a>
+              <a href="#settings" data-section="settings">Ayarlar</a>
+              <hr/>
+              <button id="logoutBtn2">Çıkış Yap</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="app-content">
+
+        <!-- ===== OVERVIEW ===== -->
+        <section class="panel is-active" data-panel="overview">
+          <div class="welcome-banner">
+            <div class="welcome-text">
+              <span class="welcome-eyebrow">Hoş geldiniz 👋</span>
+              <h2 id="welcomeName">—</h2>
+              <p>Bugün sağlığınız için ne yapmak istersiniz? Yaklaşan randevularınızı ve mesajlarınızı buradan takip edin.</p>
+              <div class="welcome-cta">
+                <button class="btn-primary sm" data-jump="doctors">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                  Randevu Al</button>
+                <button class="btn-ghost sm" data-jump="records">Tıbbi Kayıtlarım</button>
+              </div>
+            </div>
+            <div class="welcome-art" aria-hidden="true">
+              <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/><path d="M60 38v44M38 60h44" stroke="#fff" stroke-width="7" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card">
+              <div class="stat-ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
+              <div class="stat-meta"><strong>2</strong><span>Yaklaşan Randevu</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div class="stat-meta"><strong>3</strong><span>Okunmamış Mesaj</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+              <div class="stat-meta"><strong>8</strong><span>Tıbbi Kayıt</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></div>
+              <div class="stat-meta"><strong>5</strong><span>Favori Doktor</span></div>
+            </article>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-head"><h3>Yaklaşan Randevular</h3><button class="link-btn" data-jump="appointments">Tümünü gör</button></div>
+              <ul class="appt-list">
+                <li>
+                  <span class="appt-avatar">EY</span>
+                  <div class="appt-info"><strong>Dr. Elif Yılmaz</strong><span>Kardiyoloji · Çevrimiçi görüşme</span></div>
+                  <div class="appt-when"><strong>28 Haz</strong><span>14:30</span></div>
+                  <span class="badge badge-blue">Onaylandı</span>
+                </li>
+                <li>
+                  <span class="appt-avatar">MK</span>
+                  <div class="appt-info"><strong>Dr. Murat Kaya</strong><span>Dermatoloji · Acıbadem Kliniği</span></div>
+                  <div class="appt-when"><strong>03 Tem</strong><span>10:00</span></div>
+                  <span class="badge badge-amber">Bekliyor</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><h3>Sağlık İpuçları</h3></div>
+              <ul class="tip-list">
+                <li><span class="tip-dot"></span> Günde en az 2 litre su içmeyi unutmayın.</li>
+                <li><span class="tip-dot"></span> Yıllık genel sağlık kontrolünüzü ihmal etmeyin.</li>
+                <li><span class="tip-dot"></span> İlaçlarınızı düzenli saatlerde almaya özen gösterin.</li>
+                <li><span class="tip-dot"></span> Haftada 150 dakika orta tempolu egzersiz hedefleyin.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== APPOINTMENTS ===== -->
+        <section class="panel" data-panel="appointments">
+          <div class="card">
+            <div class="card-head"><h3>Randevularım</h3>
+              <button class="btn-primary sm" data-jump="doctors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Yeni Randevu</button>
+            </div>
+            <div class="tabs-line" id="apptTabs">
+              <button class="is-active" data-filter="upcoming">Yaklaşan</button>
+              <button data-filter="past">Geçmiş</button>
+              <button data-filter="cancelled">İptal</button>
+            </div>
+            <ul class="appt-list big">
+              <li data-status="upcoming">
+                <span class="appt-avatar">EY</span>
+                <div class="appt-info"><strong>Dr. Elif Yılmaz</strong><span>Kardiyoloji · Çevrimiçi görüşme</span></div>
+                <div class="appt-when"><strong>28 Haz 2026</strong><span>14:30</span></div>
+                <span class="badge badge-blue">Onaylandı</span>
+                <button class="link-btn danger">İptal</button>
+              </li>
+              <li data-status="upcoming">
+                <span class="appt-avatar">MK</span>
+                <div class="appt-info"><strong>Dr. Murat Kaya</strong><span>Dermatoloji · Acıbadem Kliniği</span></div>
+                <div class="appt-when"><strong>03 Tem 2026</strong><span>10:00</span></div>
+                <span class="badge badge-amber">Bekliyor</span>
+                <button class="link-btn danger">İptal</button>
+              </li>
+              <li data-status="past">
+                <span class="appt-avatar">SA</span>
+                <div class="appt-info"><strong>Dr. Selin Aydın</strong><span>Dahiliye · Memorial Hastanesi</span></div>
+                <div class="appt-when"><strong>12 May 2026</strong><span>09:15</span></div>
+                <span class="badge badge-green">Tamamlandı</span>
+                <button class="link-btn">Detay</button>
+              </li>
+              <li data-status="cancelled">
+                <span class="appt-avatar">RT</span>
+                <div class="appt-info"><strong>Dr. Rıza Tan</strong><span>Ortopedi · Liv Hospital</span></div>
+                <div class="appt-when"><strong>02 May 2026</strong><span>16:45</span></div>
+                <span class="badge badge-red">İptal Edildi</span>
+                <button class="link-btn">Tekrar Al</button>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ===== MESSAGES ===== -->
+        <section class="panel" data-panel="messages">
+          <div class="card">
+            <div class="card-head"><h3>Mesajlar</h3></div>
+            <ul class="msg-list">
+              <li class="unread"><span class="appt-avatar">EY</span><div class="msg-info"><strong>Dr. Elif Yılmaz</strong><span>Tahlil sonuçlarınız hazır, görüşmede değerlendireceğiz.</span></div><time>2 sa</time></li>
+              <li class="unread"><span class="appt-avatar">DK</span><div class="msg-info"><strong>Healthperia Destek</strong><span>Randevu hatırlatması: 28 Haziran 14:30.</span></div><time>5 sa</time></li>
+              <li class="unread"><span class="appt-avatar">MK</span><div class="msg-info"><strong>Dr. Murat Kaya</strong><span>Krem reçetenizi profilinize ekledim.</span></div><time>1 gün</time></li>
+              <li><span class="appt-avatar">SA</span><div class="msg-info"><strong>Dr. Selin Aydın</strong><span>Geçmiş olsun, kontrol için bekleriz.</span></div><time>3 gün</time></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ===== RECORDS ===== -->
+        <section class="panel" data-panel="records">
+          <div class="card">
+            <div class="card-head"><h3>Tıbbi Kayıtlar</h3><button class="btn-ghost sm">Belge Yükle</button></div>
+            <div class="rec-grid">
+              <article class="rec-card"><span class="rec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span><strong>Kan Tahlili</strong><span>12 May 2026 · PDF</span></article>
+              <article class="rec-card"><span class="rec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span><strong>EKG Raporu</strong><span>12 May 2026 · PDF</span></article>
+              <article class="rec-card"><span class="rec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span><strong>Reçete — Krem</strong><span>20 May 2026 · PDF</span></article>
+              <article class="rec-card"><span class="rec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span><strong>Röntgen</strong><span>02 May 2026 · JPG</span></article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== DOCTORS (find) ===== -->
+        <section class="panel" data-panel="doctors">
+          <div class="card">
+            <div class="card-head"><h3>Doktor Bul</h3></div>
+            <div class="topbar-search inline">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="search" placeholder="Branş veya isim ara…" />
+            </div>
+            <div class="doc-grid">
+              <article class="doc-card"><span class="appt-avatar lg">EY</span><strong>Dr. Elif Yılmaz</strong><span>Kardiyoloji</span><button class="btn-primary sm">Randevu Al</button></article>
+              <article class="doc-card"><span class="appt-avatar lg">MK</span><strong>Dr. Murat Kaya</strong><span>Dermatoloji</span><button class="btn-primary sm">Randevu Al</button></article>
+              <article class="doc-card"><span class="appt-avatar lg">SA</span><strong>Dr. Selin Aydın</strong><span>Dahiliye</span><button class="btn-primary sm">Randevu Al</button></article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PROFILE ===== -->
+        <section class="panel" data-panel="profile">
+          <div class="card profile-card">
+            <div class="profile-hero">
+              <span class="avatar xl" id="profAvatar">AD</span>
+              <div><h3 id="profName">—</h3><p id="profEmail">—</p><span class="badge badge-blue">Hasta</span></div>
+            </div>
+            <form id="profileForm" class="form-grid">
+              <label class="field"><span class="field-label">Ad Soyad</span><span class="field-box"><input name="name" type="text" required /></span></label>
+              <label class="field"><span class="field-label">E-posta</span><span class="field-box"><input name="email" type="email" disabled /></span></label>
+              <label class="field"><span class="field-label">Telefon</span><span class="field-box"><input name="phone" type="tel" placeholder="+90 5xx xxx xx xx" /></span></label>
+              <label class="field"><span class="field-label">Ülke</span><span class="field-box"><input name="country" type="text" placeholder="Türkiye" /></span></label>
+              <label class="field span-2"><span class="field-label">Şehir</span><span class="field-box"><input name="city" type="text" placeholder="İstanbul" /></span></label>
+              <div class="form-actions span-2"><button class="btn-primary sm" type="submit">Değişiklikleri Kaydet</button><span class="save-ok" id="profSaved" hidden>Kaydedildi ✓</span></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ===== SETTINGS ===== -->
+        <section class="panel" data-panel="settings">
+          <div class="card">
+            <div class="card-head"><h3>Şifre Değiştir</h3></div>
+            <form id="pwForm" class="form-grid">
+              <label class="field span-2"><span class="field-label">Mevcut Şifre</span><span class="field-box"><input name="old" type="password" required /></span></label>
+              <label class="field"><span class="field-label">Yeni Şifre</span><span class="field-box"><input name="new" type="password" required /></span></label>
+              <label class="field"><span class="field-label">Yeni Şifre (tekrar)</span><span class="field-box"><input name="confirm" type="password" required /></span></label>
+              <div class="form-actions span-2"><button class="btn-primary sm" type="submit">Şifreyi Güncelle</button><span class="save-ok" id="pwSaved" hidden>Güncellendi ✓</span><span class="save-err" id="pwErr" hidden></span></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Bildirim Tercihleri</h3></div>
+            <ul class="toggle-list">
+              <li><span>E-posta bildirimleri</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
+              <li><span>Randevu hatırlatmaları</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
+              <li><span>Kampanya ve duyurular</span><label class="switch"><input type="checkbox"><span></span></label></li>
+            </ul>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+  (function () {
+    var H = window.Healthperia;
+    var user = H.guard('patient');
+    if (!user) return;
+    Dashboard.init(user, { role: 'Hasta' });
+
+    /* profile prefill */
+    var pf = document.getElementById('profileForm');
+    pf.name.value = user.name || '';
+    pf.email.value = user.email || '';
+    pf.phone.value = user.phone || '';
+    pf.country.value = user.country || '';
+    pf.city.value = user.city || '';
+    document.getElementById('profName').textContent = user.name || '';
+    document.getElementById('profEmail').textContent = user.email || '';
+    document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+
+    pf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      H.updateProfile({ name: pf.name.value, phone: pf.phone.value, country: pf.country.value, city: pf.city.value });
+      Dashboard.refreshIdentity();
+      document.getElementById('profName').textContent = pf.name.value;
+      var ok = document.getElementById('profSaved'); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
+    });
+
+    /* change password */
+    var pw = document.getElementById('pwForm');
+    pw.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
+      err.hidden = true; ok.hidden = true;
+      if (pw.new.value !== pw.confirm.value) { err.textContent = 'Yeni şifreler eşleşmiyor.'; err.hidden = false; return; }
+      var r = H.changePassword(pw.old.value, pw.new.value);
+      if (!r.ok) { err.textContent = r.error; err.hidden = false; return; }
+      pw.reset(); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
+    });
+
+    /* appointment filter tabs */
+    var tabs = document.getElementById('apptTabs');
+    if (tabs) {
+      tabs.addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        tabs.querySelectorAll('button').forEach(function (x){ x.classList.remove('is-active'); });
+        b.classList.add('is-active');
+        var f = b.dataset.filter;
+        document.querySelectorAll('.appt-list.big li').forEach(function (li){
+          li.style.display = (li.dataset.status === f) ? '' : 'none';
+        });
+      });
+      tabs.querySelector('button').click();
+    }
+  })();
+  </script>
+</body>
+</html>

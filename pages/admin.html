@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yönetim Paneli — Healthperia</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="app-body app-admin">
+
+  <div class="app-shell">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-head">
+        <a href="../index.html" class="sidebar-logo" aria-label="Healthperia"><img src="../assets/images/LOGO__SLOGANLI_PNG.png" alt="Healthperia" /></a>
+        <button class="sidebar-close" id="sidebarClose" aria-label="Menüyü kapat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <span class="admin-tag">YÖNETİM</span>
+
+      <nav class="sidebar-nav" aria-label="Panel menüsü">
+        <span class="sidebar-group">Yönetim</span>
+        <a class="side-link is-active" data-section="overview" href="#overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          Genel Bakış</a>
+        <a class="side-link" data-section="pending" href="#pending">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          Onay Bekleyenler<span class="side-badge" id="pendingBadge">0</span></a>
+        <a class="side-link" data-section="users" href="#users">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M17 8a3.5 3.5 0 0 1 0 7"/></svg>
+          Tüm Kullanıcılar</a>
+        <a class="side-link" data-section="doctors" href="#doctors">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M12 8v6M9 11h6"/></svg>
+          Doktorlar</a>
+        <a class="side-link" data-section="patients" href="#patients">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          Hastalar</a>
+
+        <span class="sidebar-group">Sistem</span>
+        <a class="side-link" data-section="content" href="#content">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          İçerik & Blog</a>
+        <a class="side-link" data-section="settings" href="#settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 0 1-4 0v-.1A1.7 1.7 0 0 0 7 19.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.7 1.7 0 0 0 4.7 8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          Ayarlar</a>
+      </nav>
+
+      <button class="sidebar-logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> Çıkış Yap</button>
+    </aside>
+    <div class="app-overlay" id="appOverlay"></div>
+
+    <!-- ============ MAIN ============ -->
+    <div class="app-main">
+      <header class="app-topbar">
+        <button class="topbar-burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
+        <div class="topbar-title"><h1 id="pageTitle">Genel Bakış</h1><p id="pageCrumb">Yönetim Paneli</p></div>
+        <div class="topbar-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="search" id="userSearch" placeholder="Kullanıcı ara…" />
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" aria-label="Bildirimler"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+          <div class="user-menu" id="userMenu">
+            <button class="user-trigger" id="userTrigger">
+              <span class="avatar admin" id="navAvatar">HY</span>
+              <span class="user-meta"><strong id="navName">—</strong><small>Yönetici</small></span>
+              <svg class="user-caret" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="user-dropdown"><a href="#settings" data-section="settings">Ayarlar</a><hr/><button id="logoutBtn2">Çıkış Yap</button></div>
+          </div>
+        </div>
+      </header>
+
+      <div class="app-content">
+
+        <!-- OVERVIEW -->
+        <section class="panel is-active" data-panel="overview">
+          <div class="welcome-banner admin">
+            <div class="welcome-text">
+              <span class="welcome-eyebrow">Yönetim Merkezi 🛡️</span>
+              <h2 id="welcomeName">—</h2>
+              <p>Platformun nabzı burada. Kullanıcıları yönetin, doktor başvurularını onaylayın ve sistemi izleyin.</p>
+              <div class="welcome-cta"><button class="btn-primary sm" data-jump="pending">Onay Bekleyenler</button><button class="btn-ghost sm" data-jump="users">Kullanıcıları Yönet</button></div>
+            </div>
+            <div class="welcome-art" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M60 16l36 16v24c0 24-16 38-36 44-20-6-36-20-36-44V32z" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/><path d="M44 60l11 11 22-22" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card"><div class="stat-ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/></svg></div><div class="stat-meta"><strong id="stTotal">0</strong><span>Toplam Kullanıcı</span></div></article>
+            <article class="stat-card"><div class="stat-ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg></div><div class="stat-meta"><strong id="stDocs">0</strong><span>Doktorlar</span></div></article>
+            <article class="stat-card"><div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><div class="stat-meta"><strong id="stPatients">0</strong><span>Hastalar</span></div></article>
+            <article class="stat-card"><div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div class="stat-meta"><strong id="stPending">0</strong><span>Onay Bekliyor</span></div></article>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-head"><h3>Son Kayıtlar</h3><button class="link-btn" data-jump="users">Tümü</button></div>
+              <div class="table-wrap"><table class="data-table" id="recentTable"><thead><tr><th>Kullanıcı</th><th>Rol</th><th>Durum</th></tr></thead><tbody></tbody></table></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>Platform Etkinliği</h3></div>
+              <div class="bars" aria-hidden="true">
+                <div class="bar" style="--h:45%"><span></span><small>Oca</small></div>
+                <div class="bar" style="--h:60%"><span></span><small>Şub</small></div>
+                <div class="bar" style="--h:52%"><span></span><small>Mar</small></div>
+                <div class="bar" style="--h:78%"><span></span><small>Nis</small></div>
+                <div class="bar" style="--h:90%"><span></span><small>May</small></div>
+                <div class="bar" style="--h:70%"><span></span><small>Haz</small></div>
+              </div>
+              <p class="muted-line">Aylık aktif kullanıcı <span class="up">+18%</span></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PENDING -->
+        <section class="panel" data-panel="pending">
+          <div class="card">
+            <div class="card-head"><h3>Onay Bekleyen Doktorlar</h3></div>
+            <div id="pendingList" class="req-list-wrap"></div>
+          </div>
+        </section>
+
+        <!-- USERS -->
+        <section class="panel" data-panel="users">
+          <div class="card">
+            <div class="card-head"><h3>Tüm Kullanıcılar</h3>
+              <div class="filter-chips" id="roleFilter">
+                <button class="is-active" data-role="all">Tümü</button>
+                <button data-role="patient">Hasta</button>
+                <button data-role="doctor">Doktor</button>
+                <button data-role="admin">Yönetici</button>
+              </div>
+            </div>
+            <div class="table-wrap"><table class="data-table" id="usersTable">
+              <thead><tr><th>Kullanıcı</th><th>E-posta</th><th>Rol</th><th>Durum</th><th>Kayıt</th><th>İşlemler</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- DOCTORS -->
+        <section class="panel" data-panel="doctors">
+          <div class="card">
+            <div class="card-head"><h3>Doktorlar</h3></div>
+            <div class="table-wrap"><table class="data-table" id="doctorsTable">
+              <thead><tr><th>Doktor</th><th>Uzmanlık</th><th>Lisans</th><th>Durum</th><th>İşlemler</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- PATIENTS -->
+        <section class="panel" data-panel="patients">
+          <div class="card">
+            <div class="card-head"><h3>Hastalar</h3></div>
+            <div class="table-wrap"><table class="data-table" id="patientsTable">
+              <thead><tr><th>Hasta</th><th>E-posta</th><th>Ülke</th><th>Durum</th><th>İşlemler</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- CONTENT -->
+        <section class="panel" data-panel="content">
+          <div class="card">
+            <div class="card-head"><h3>İçerik & Blog Yönetimi</h3><button class="btn-primary sm">Yeni Yazı</button></div>
+            <div class="table-wrap"><table class="data-table">
+              <thead><tr><th>Başlık</th><th>Bölüm</th><th>Durum</th><th>İşlem</th></tr></thead>
+              <tbody>
+                <tr><td>Yurt dışında tedavi rehberi</td><td>Blog</td><td><span class="badge badge-green">Yayında</span></td><td><button class="link-btn">Düzenle</button></td></tr>
+                <tr><td>Doktor seçerken dikkat edilmesi gerekenler</td><td>Blog</td><td><span class="badge badge-green">Yayında</span></td><td><button class="link-btn">Düzenle</button></td></tr>
+                <tr><td>Sağlık turizmi maliyetleri 2026</td><td>Blog</td><td><span class="badge badge-amber">Taslak</span></td><td><button class="link-btn">Düzenle</button></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="panel" data-panel="settings">
+          <div class="card">
+            <div class="card-head"><h3>Şifre Değiştir</h3></div>
+            <form id="pwForm" class="form-grid">
+              <label class="field span-2"><span class="field-label">Mevcut Şifre</span><span class="field-box"><input name="old" type="password" required /></span></label>
+              <label class="field"><span class="field-label">Yeni Şifre</span><span class="field-box"><input name="new" type="password" required /></span></label>
+              <label class="field"><span class="field-label">Yeni Şifre (tekrar)</span><span class="field-box"><input name="confirm" type="password" required /></span></label>
+              <div class="form-actions span-2"><button class="btn-primary sm" type="submit">Şifreyi Güncelle</button><span class="save-ok" id="pwSaved" hidden>Güncellendi ✓</span><span class="save-err" id="pwErr" hidden></span></div>
+            </form>
+          </div>
+          <div class="card danger-card">
+            <div class="card-head"><h3>Tehlikeli Bölge</h3></div>
+            <p class="muted-line">Tüm yerel demo verilerini (kullanıcılar, oturum) sıfırlar. Bu işlem geri alınamaz.</p>
+            <button class="btn-danger sm" id="resetData">Demo Verilerini Sıfırla</button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+  (function () {
+    var H = window.Healthperia;
+    var user = H.guard('admin');
+    if (!user) return;
+    Dashboard.init(user, { role: 'Yönetim' });
+
+    var roleLabel = H.roleLabel, statusLabel = H.statusLabel;
+    var ini = Dashboard.initials;
+    var currentRoleFilter = 'all';
+    var search = '';
+
+    function fmtDate(ts) {
+      try { return new Date(ts).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' }); }
+      catch (_) { return '—'; }
+    }
+    function statusBadge(s) {
+      var cls = { active: 'badge-green', pending: 'badge-amber', suspended: 'badge-red' }[s] || 'badge-blue';
+      return '<span class="badge ' + cls + '">' + statusLabel(s) + '</span>';
+    }
+    function avatar(name, role) {
+      return '<span class="appt-avatar sm' + (role === 'admin' ? ' admin' : '') + '">' + ini(name) + '</span>';
+    }
+
+    function render() {
+      var users = H.listUsers();
+      var docs = users.filter(function (u){ return u.role === 'doctor'; });
+      var pats = users.filter(function (u){ return u.role === 'patient'; });
+      var pending = docs.filter(function (u){ return u.status === 'pending'; });
+
+      /* stats */
+      document.getElementById('stTotal').textContent = users.length;
+      document.getElementById('stDocs').textContent = docs.length;
+      document.getElementById('stPatients').textContent = pats.length;
+      document.getElementById('stPending').textContent = pending.length;
+      var pb = document.getElementById('pendingBadge');
+      pb.textContent = pending.length; pb.style.display = pending.length ? '' : 'none';
+
+      /* recent */
+      var recent = users.slice().sort(function (a,b){ return b.createdAt - a.createdAt; }).slice(0, 5);
+      document.querySelector('#recentTable tbody').innerHTML = recent.map(function (u) {
+        return '<tr><td><span class="cell-user">' + avatar(u.name, u.role) + ' ' + u.name + '</span></td><td>' + roleLabel(u.role) + '</td><td>' + statusBadge(u.status) + '</td></tr>';
+      }).join('');
+
+      /* pending approvals */
+      var pl = document.getElementById('pendingList');
+      if (!pending.length) {
+        pl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><p>Onay bekleyen başvuru yok.</p></div>';
+      } else {
+        pl.innerHTML = '<ul class="req-list">' + pending.map(function (u) {
+          return '<li data-id="' + u.id + '">' + avatar(u.name, u.role) +
+            '<div class="appt-info"><strong>' + u.name + '</strong><span>' + (u.specialty || 'Uzmanlık belirtilmedi') + ' · Lisans: ' + (u.license || '—') + ' · ' + u.email + '</span></div>' +
+            '<div class="req-actions"><button class="btn-mini ok" data-approve="' + u.id + '">Onayla</button><button class="btn-mini no" data-reject="' + u.id + '">Reddet</button></div></li>';
+        }).join('') + '</ul>';
+      }
+
+      /* users table */
+      var filtered = users.filter(function (u) {
+        if (currentRoleFilter !== 'all' && u.role !== currentRoleFilter) return false;
+        if (search && (u.name + ' ' + u.email).toLowerCase().indexOf(search) === -1) return false;
+        return true;
+      });
+      document.querySelector('#usersTable tbody').innerHTML = filtered.map(function (u) {
+        var isSelf = u.id === user.id;
+        var actions = '';
+        if (u.status === 'pending') actions += '<button class="btn-mini ok" data-approve="' + u.id + '">Onayla</button>';
+        if (u.status === 'suspended') actions += '<button class="btn-mini ok" data-activate="' + u.id + '">Aktifleştir</button>';
+        else if (u.status === 'active' && !isSelf) actions += '<button class="btn-mini warn" data-suspend="' + u.id + '">Askıya Al</button>';
+        if (!isSelf) actions += '<button class="btn-mini no" data-delete="' + u.id + '">Sil</button>';
+        if (isSelf) actions = '<span class="muted-line sm">Bu sizsiniz</span>';
+        return '<tr><td><span class="cell-user">' + avatar(u.name, u.role) + ' ' + u.name + '</span></td><td>' + u.email + '</td><td>' + roleLabel(u.role) + '</td><td>' + statusBadge(u.status) + '</td><td>' + fmtDate(u.createdAt) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
+      }).join('') || '<tr><td colspan="6"><div class="empty-state sm"><p>Kayıt bulunamadı.</p></div></td></tr>';
+
+      /* doctors table */
+      document.querySelector('#doctorsTable tbody').innerHTML = docs.map(function (u) {
+        var actions = u.status === 'pending'
+          ? '<button class="btn-mini ok" data-approve="' + u.id + '">Onayla</button><button class="btn-mini no" data-reject="' + u.id + '">Reddet</button>'
+          : (u.status === 'suspended' ? '<button class="btn-mini ok" data-activate="' + u.id + '">Aktifleştir</button>' : '<button class="btn-mini warn" data-suspend="' + u.id + '">Askıya Al</button>');
+        return '<tr><td><span class="cell-user">' + avatar(u.name) + ' ' + u.name + '</span></td><td>' + (u.specialty || '—') + '</td><td>' + (u.license || '—') + '</td><td>' + statusBadge(u.status) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
+      }).join('') || '<tr><td colspan="5"><div class="empty-state sm"><p>Doktor kaydı yok.</p></div></td></tr>';
+
+      /* patients table */
+      document.querySelector('#patientsTable tbody').innerHTML = pats.map(function (u) {
+        var actions = u.status === 'suspended'
+          ? '<button class="btn-mini ok" data-activate="' + u.id + '">Aktifleştir</button>'
+          : '<button class="btn-mini warn" data-suspend="' + u.id + '">Askıya Al</button>';
+        actions += '<button class="btn-mini no" data-delete="' + u.id + '">Sil</button>';
+        return '<tr><td><span class="cell-user">' + avatar(u.name) + ' ' + u.name + '</span></td><td>' + u.email + '</td><td>' + (u.country || '—') + '</td><td>' + statusBadge(u.status) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
+      }).join('') || '<tr><td colspan="5"><div class="empty-state sm"><p>Hasta kaydı yok.</p></div></td></tr>';
+    }
+
+    /* delegated actions */
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-approve],[data-reject],[data-suspend],[data-activate],[data-delete]');
+      if (!t) return;
+      if (t.dataset.approve)  H.approveDoctor(t.dataset.approve);
+      else if (t.dataset.reject)   H.rejectDoctor(t.dataset.reject);
+      else if (t.dataset.suspend)  { if (confirm('Bu kullanıcıyı askıya almak istiyor musunuz?')) H.setStatus(t.dataset.suspend, 'suspended'); else return; }
+      else if (t.dataset.activate) H.setStatus(t.dataset.activate, 'active');
+      else if (t.dataset.delete)   { if (confirm('Bu kullanıcıyı silmek istiyor musunuz? Bu işlem geri alınamaz.')) H.removeUser(t.dataset.delete); else return; }
+      render();
+    });
+
+    /* role filter */
+    var rf = document.getElementById('roleFilter');
+    rf.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      rf.querySelectorAll('button').forEach(function (x){ x.classList.remove('is-active'); });
+      b.classList.add('is-active'); currentRoleFilter = b.dataset.role; render();
+    });
+
+    /* search */
+    document.getElementById('userSearch').addEventListener('input', function (e) {
+      search = e.target.value.trim().toLowerCase(); render();
+    });
+
+    /* change password */
+    var pw = document.getElementById('pwForm');
+    pw.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
+      err.hidden = true; ok.hidden = true;
+      if (pw.new.value !== pw.confirm.value) { err.textContent = 'Yeni şifreler eşleşmiyor.'; err.hidden = false; return; }
+      var r = H.changePassword(pw.old.value, pw.new.value);
+      if (!r.ok) { err.textContent = r.error; err.hidden = false; return; }
+      pw.reset(); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
+    });
+
+    /* reset demo data */
+    document.getElementById('resetData').addEventListener('click', function () {
+      if (!confirm('Tüm demo verileri silinecek ve çıkış yapılacak. Emin misiniz?')) return;
+      try { localStorage.removeItem('healthperia.users'); localStorage.removeItem('healthperia.session'); localStorage.removeItem('healthperia.reset'); } catch (_) {}
+      location.href = 'auth.html';
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>
