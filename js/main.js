@@ -505,15 +505,84 @@
 
   const rtlLangs = ['ar', 'fa'];
 
+  /* ================================================================
+     AUTO-FIT — keep layouts identical across languages.
+     When a translation needs more lines than another (e.g. 3 in
+     German vs 2 in Turkish) we DON'T grow the component; we shrink
+     its text just enough to fit, so the design/proportions stay put.
+
+     Two modes:
+       fixed → the box has a fixed height in CSS (e.g. .card-body);
+               we only shrink the text to fit it.
+       lock  → the box has no fixed height; we capture its natural
+               "design" height (per width) and lock it, then shrink
+               longer translations to fit that locked height.
+     Add a component to FIT_GROUPS to cover it — no HTML changes.
+     ================================================================ */
+  const FIT_GROUPS = [
+    { box: '.card-body',  texts: ['.card-desc', '.card-title'], min: 10.5, mode: 'fixed' },
+    { box: '.trust-card', texts: ['p', 'h3'],                   min: 11,   mode: 'lock'  }
+  ];
+
+  const shrinkToFit = (box, texts, min) => {
+    texts.forEach((sel) => { const e = box.querySelector(sel); if (e) e.style.fontSize = ''; });
+    const overflowing = () => box.scrollHeight > box.clientHeight + 1;
+    texts.forEach((sel) => {
+      const el = box.querySelector(sel);
+      if (!el) return;
+      let s = parseFloat(getComputedStyle(el).fontSize);
+      let guard = 0;
+      while (overflowing() && s > min && guard++ < 60) { s -= 0.5; el.style.fontSize = s + 'px'; }
+    });
+  };
+
+  const fitGroup = (g, force) => {
+    const boxes = Array.prototype.slice.call(document.querySelectorAll(g.box));
+    if (!boxes.length) return;
+    if (g.mode === 'lock') {
+      /* (re)capture the natural design height on width change or when forced */
+      const needCapture = force || boxes.some((b) => b.dataset.fitW !== String(b.clientWidth));
+      if (needCapture) {
+        boxes.forEach((b) => {
+          b.style.height = ''; b.style.overflow = '';
+          g.texts.forEach((sel) => { const e = b.querySelector(sel); if (e) e.style.fontSize = ''; });
+        });
+        boxes.forEach((b) => { b.dataset.fitH = b.offsetHeight; b.dataset.fitW = String(b.clientWidth); });
+      }
+      boxes.forEach((b) => { b.style.height = b.dataset.fitH + 'px'; b.style.overflow = 'hidden'; });
+    }
+    boxes.forEach((b) => shrinkToFit(b, g.texts, g.min));
+  };
+
+  const fitAll = (force) => { FIT_GROUPS.forEach((g) => fitGroup(g, force)); };
+
   const applyTranslations = (lang) => {
-    const dict = t[lang] || t.tr;
+    /* base (shared) strings + any page-specific dictionary a page registered
+       on window.HP_I18N — so each page ships only its own content translations */
+    const page = (window.HP_I18N && (window.HP_I18N[lang] || window.HP_I18N.tr)) || {};
+    const dict = Object.assign({}, t[lang] || t.tr, page);
     document.querySelectorAll('[data-i18n]').forEach((el) => {
       const key = el.getAttribute('data-i18n');
       if (dict[key] !== undefined) el.textContent = dict[key];
     });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+    });
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', rtlLangs.indexOf(lang) !== -1 ? 'rtl' : 'ltr');
+    /* refit after the new text lands — setTimeout (not rAF) so we never pass a
+       timestamp arg (which would read as "force recapture") and so layout has
+       settled before we measure */
+    setTimeout(function () { fitAll(); }, 70);
   };
+
+  /* refit on resize (debounced) and once web fonts are ready (force a fresh
+     design-height capture after fonts load so the lock uses real metrics) */
+  let fitTimer;
+  window.addEventListener('resize', () => { clearTimeout(fitTimer); fitTimer = setTimeout(fitAll, 150); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitAll(true));
+  window.addEventListener('load', () => fitAll(true));
 
   /* ============================================================
      Language switcher
@@ -526,7 +595,8 @@
     const nameEl  = langWrap.querySelector('[data-lang-name]');
 
     const setLanguage = (code) => {
-      const opt = menu.querySelector(`li[data-lang="${code}"]`);
+      let opt = menu.querySelector(`li[data-lang="${code}"]`);
+      if (!opt) { code = 'tr'; opt = menu.querySelector('li[data-lang="tr"]'); }   /* fall back if the saved language is no longer offered */
       if (!opt) return;
       menu.querySelectorAll('li.selected').forEach((el) => el.classList.remove('selected'));
       opt.classList.add('selected');

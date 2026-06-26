@@ -36,20 +36,9 @@
           <li role="option" data-lang="ru" data-short="RU"><span class="flag flag-ru"></span> Русский</li>
           <li role="option" data-lang="fr" data-short="FR"><span class="flag flag-fr"></span> Français</li>
           <li role="option" data-lang="es" data-short="ES"><span class="flag flag-es"></span> Español</li>
-          <li role="option" data-lang="it" data-short="IT"><span class="flag flag-it"></span> Italiano</li>
           <li role="option" data-lang="ar" data-short="AR"><span class="flag flag-ar"></span> العربية</li>
-          <li role="option" data-lang="zh" data-short="ZH"><span class="flag flag-zh"></span> 中文</li>
-          <li role="option" data-lang="hi" data-short="HI"><span class="flag flag-hi"></span> हिन्दी</li>
-          <li role="option" data-lang="ko" data-short="KO"><span class="flag flag-ko"></span> 한국어</li>
-          <li role="option" data-lang="ja" data-short="JA"><span class="flag flag-ja"></span> 日本語</li>
           <li role="option" data-lang="pt" data-short="PT"><span class="flag flag-pt"></span> Português</li>
           <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
-          <li role="option" data-lang="pl" data-short="PL"><span class="flag flag-pl"></span> Polski</li>
-          <li role="option" data-lang="uk" data-short="UK"><span class="flag flag-uk"></span> Українська</li>
-          <li role="option" data-lang="ro" data-short="RO"><span class="flag flag-ro"></span> Română</li>
-          <li role="option" data-lang="bg" data-short="BG"><span class="flag flag-bg"></span> Български</li>
-          <li role="option" data-lang="az" data-short="AZ"><span class="flag flag-az"></span> Azərbaycan</li>
-          <li role="option" data-lang="fa" data-short="FA"><span class="flag flag-fa"></span> فارسی</li>
         </ul>
       </div>
       <button class="nav-toggle" id="navToggle" aria-label="Navigasyonu aç/kapat" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -59,12 +48,12 @@
   <!-- ============ BLOG HERO ============ -->
   <section class="blog-hero">
     <div class="container">
-      <h1 class="blog-hero-title">Blog</h1>
-      <p class="blog-hero-sub">Sağlık dünyasından güncel yazılar, rehberler ve uzman görüşleri.</p>
+      <h1 class="blog-hero-title" data-i18n="nav.blog">Blog</h1>
+      <p class="blog-hero-sub" data-i18n="blog.sub">Sağlık dünyasından güncel yazılar, rehberler ve uzman görüşleri.</p>
       <form class="blog-search" role="search" onsubmit="return false;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="search" placeholder="Konu ara…" aria-label="Blog içinde ara" />
-        <button type="submit">Ara</button>
+        <input type="search" placeholder="Konu ara…" data-i18n-placeholder="blog.searchPh" aria-label="Blog içinde ara" />
+        <button type="submit" data-i18n="blog.searchBtn">Ara</button>
       </form>
     </div>
   </section>
@@ -76,7 +65,7 @@
 
         <a href="blog-post.html" class="blog-card blog-card-lg">
           <div class="blog-cover cover-a">
-            <span class="blog-cat">Öne Çıkan</span>
+            <span class="blog-cat" data-i18n="blog.cat.featured">Öne Çıkan</span>
             <svg class="cover-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
           </div>
           <div class="blog-card-body">
@@ -85,15 +74,15 @@
               <span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span>
               <span class="blog-date">14.06.2026</span>
             </div>
-            <h3 class="blog-card-title">Doktor–Hasta ilişkisinde yeni tasarı mecliste</h3>
-            <p class="blog-card-excerpt">Hasta mahremiyetini önceleyen yeni düzenleme, doktor–hasta iletişiminde dijital güvenlik standartlarını yeniden tanımlıyor. Tasarının ayrıntılarını ele aldık.</p>
-            <span class="blog-readmore">Yazıyı oku →</span>
+            <h3 class="blog-card-title" data-i18n="blog.p1.t">Doktor–Hasta ilişkisinde yeni tasarı mecliste</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p1.e">Hasta mahremiyetini önceleyen yeni düzenleme, doktor–hasta iletişiminde dijital güvenlik standartlarını yeniden tanımlıyor. Tasarının ayrıntılarını ele aldık.</p>
+            <span class="blog-readmore" data-i18n="blog.readmore">Yazıyı oku →</span>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card blog-card-lg">
           <div class="blog-cover cover-b">
-            <span class="blog-cat">Sağlık Turizmi</span>
+            <span class="blog-cat" data-i18n="blog.cat.tourism">Sağlık Turizmi</span>
             <svg class="cover-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
           </div>
           <div class="blog-card-body">
@@ -102,9 +91,9 @@
               <span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span>
               <span class="blog-date">12.06.2026</span>
             </div>
-            <h3 class="blog-card-title">Sağlık vizesine yeşil ışık</h3>
-            <p class="blog-card-excerpt">Uluslararası hasta hareketliliğini kolaylaştıran yeni uyum çerçevesi yürürlüğe giriyor. Sınır ötesi tedavi süreçleri için ne anlama geliyor?</p>
-            <span class="blog-readmore">Yazıyı oku →</span>
+            <h3 class="blog-card-title" data-i18n="blog.p2.t">Sağlık vizesine yeşil ışık</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p2.e">Uluslararası hasta hareketliliğini kolaylaştıran yeni uyum çerçevesi yürürlüğe giriyor. Sınır ötesi tedavi süreçleri için ne anlama geliyor?</p>
+            <span class="blog-readmore" data-i18n="blog.readmore">Yazıyı oku →</span>
           </div>
         </a>
 
@@ -118,74 +107,74 @@
       <div class="blog-grid">
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-c"><span class="blog-cat">Radyoloji</span></div>
+          <div class="blog-cover cover-c"><span class="blog-cat" data-i18n="blog.cat.radiology">Radyoloji</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Tomografi 500 kat fazla radyasyon yayıyor!</h3>
-            <p class="blog-card-excerpt">Sık tomografi çektirenlerdeki birikmiş radyasyon seviyesi gündemde. Uzmanlar neyi öneriyor?</p>
+            <h3 class="blog-card-title" data-i18n="blog.p3.t">Tomografi 500 kat fazla radyasyon yayıyor!</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p3.e">Sık tomografi çektirenlerdeki birikmiş radyasyon seviyesi gündemde. Uzmanlar neyi öneriyor?</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-d"><span class="blog-cat">Diş Sağlığı</span></div>
+          <div class="blog-cover cover-d"><span class="blog-cat" data-i18n="blog.cat.dental">Diş Sağlığı</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Soğuk havalarda dişlerde neden ağrı oluşur?</h3>
-            <p class="blog-card-excerpt">Diş hassasiyeti, soğuk hava ve günlük alışkanlıklar arasındaki ilişkiyi inceledik.</p>
+            <h3 class="blog-card-title" data-i18n="blog.p4.t">Soğuk havalarda dişlerde neden ağrı oluşur?</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p4.e">Diş hassasiyeti, soğuk hava ve günlük alışkanlıklar arasındaki ilişkiyi inceledik.</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-e"><span class="blog-cat">Salgın</span></div>
+          <div class="blog-cover cover-e"><span class="blog-cat" data-i18n="blog.cat.epidemic">Salgın</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Covid-19 yeniden gündemde!</h3>
-            <p class="blog-card-excerpt">Dünya genelinde yeni varyant tartışmaları sürüyor. Korunma için güncel öneriler.</p>
+            <h3 class="blog-card-title" data-i18n="blog.p5.t">Covid-19 yeniden gündemde!</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p5.e">Dünya genelinde yeni varyant tartışmaları sürüyor. Korunma için güncel öneriler.</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-f"><span class="blog-cat">Tedavi</span></div>
+          <div class="blog-cover cover-f"><span class="blog-cat" data-i18n="blog.cat.treatment">Tedavi</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Kullanılan tedaviler ne kadar doğru?</h3>
-            <p class="blog-card-excerpt">Kanıta dayalı tıp perspektifinden popüler tedavi yöntemlerini değerlendirdik.</p>
+            <h3 class="blog-card-title" data-i18n="blog.p6.t">Kullanılan tedaviler ne kadar doğru?</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p6.e">Kanıta dayalı tıp perspektifinden popüler tedavi yöntemlerini değerlendirdik.</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-g"><span class="blog-cat">Seyahat</span></div>
+          <div class="blog-cover cover-g"><span class="blog-cat" data-i18n="blog.cat.travel">Seyahat</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Sağlık vizesi kolaylaşıyor…</h3>
-            <p class="blog-card-excerpt">Tedavi amaçlı seyahatte vize süreçleri için bilinmesi gereken yeni adımlar.</p>
+            <h3 class="blog-card-title" data-i18n="blog.p7.t">Sağlık vizesi kolaylaşıyor…</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p7.e">Tedavi amaçlı seyahatte vize süreçleri için bilinmesi gereken yeni adımlar.</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-h"><span class="blog-cat">Kadın Sağlığı</span></div>
+          <div class="blog-cover cover-h"><span class="blog-cat" data-i18n="blog.cat.women">Kadın Sağlığı</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Çocuk doğumlarında düşüş var!</h3>
-            <p class="blog-card-excerpt">Demografik veriler ve sağlık politikaları ışığında doğum oranlarındaki değişim.</p>
+            <h3 class="blog-card-title" data-i18n="blog.p8.t">Çocuk doğumlarında düşüş var!</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p8.e">Demografik veriler ve sağlık politikaları ışığında doğum oranlarındaki değişim.</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-a"><span class="blog-cat">Beslenme</span></div>
+          <div class="blog-cover cover-a"><span class="blog-cat" data-i18n="blog.cat.nutrition">Beslenme</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Mevsim geçişlerinde bağışıklık</h3>
-            <p class="blog-card-excerpt">Bağışıklık sistemini destekleyen basit ve kanıtlanmış günlük alışkanlıklar.</p>
+            <h3 class="blog-card-title" data-i18n="blog.p9.t">Mevsim geçişlerinde bağışıklık</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p9.e">Bağışıklık sistemini destekleyen basit ve kanıtlanmış günlük alışkanlıklar.</p>
           </div>
         </a>
 
         <a href="blog-post.html" class="blog-card">
-          <div class="blog-cover cover-b"><span class="blog-cat">Kardiyoloji</span></div>
+          <div class="blog-cover cover-b"><span class="blog-cat" data-i18n="blog.cat.cardiology">Kardiyoloji</span></div>
           <div class="blog-card-body">
             <div class="blog-meta"><span class="bm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>15</span><span class="bm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>32</span></div>
-            <h3 class="blog-card-title">Kalp sağlığında erken teşhisin önemi</h3>
-            <p class="blog-card-excerpt">Düzenli kontrol ve yaşam tarzı değişiklikleriyle riskleri nasıl azaltırsınız?</p>
+            <h3 class="blog-card-title" data-i18n="blog.p10.t">Kalp sağlığında erken teşhisin önemi</h3>
+            <p class="blog-card-excerpt" data-i18n="blog.p10.e">Düzenli kontrol ve yaşam tarzı değişiklikleriyle riskleri nasıl azaltırsınız?</p>
           </div>
         </a>
 
@@ -230,6 +219,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg>
   </button>
 
+  <script src="../js/i18n-blog.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>

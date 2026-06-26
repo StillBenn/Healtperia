@@ -2947,3 +2947,18 @@ body.help-body { overflow: hidden; height: 100vh; }
    so a larger negative top margin lifts it without clipping; bottom margin
    compensates to keep the nav position fixed) */
 .sidebar-logo img{ margin:-70px -12px -12px -12px; }
+
+/* ===== Index cards: centered text + FIXED size across languages =====
+   Card height stays constant; main.js shrinks the text to fit when a
+   translation is longer (e.g. 3 lines in German vs 2 in Turkish). */
+.card-body{
+  padding:14px clamp(10px,1vw,16px) 16px;
+  height:116px;
+  overflow:hidden;
+  gap:6px;
+  text-align:center;
+  align-items:center;
+  justify-content:center;
+}
+.card-title{ text-align:center; width:100%; }
+.card-desc{ text-align:center; width:100%; max-width:94%; margin-left:auto; margin-right:auto; }

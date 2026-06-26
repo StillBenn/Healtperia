@@ -40,20 +40,9 @@
           <li role="option" data-lang="ru" data-short="RU"><span class="flag flag-ru"></span> Русский</li>
           <li role="option" data-lang="fr" data-short="FR"><span class="flag flag-fr"></span> Français</li>
           <li role="option" data-lang="es" data-short="ES"><span class="flag flag-es"></span> Español</li>
-          <li role="option" data-lang="it" data-short="IT"><span class="flag flag-it"></span> Italiano</li>
           <li role="option" data-lang="ar" data-short="AR"><span class="flag flag-ar"></span> العربية</li>
-          <li role="option" data-lang="zh" data-short="ZH"><span class="flag flag-zh"></span> 中文</li>
-          <li role="option" data-lang="hi" data-short="HI"><span class="flag flag-hi"></span> हिन्दी</li>
-          <li role="option" data-lang="ko" data-short="KO"><span class="flag flag-ko"></span> 한국어</li>
-          <li role="option" data-lang="ja" data-short="JA"><span class="flag flag-ja"></span> 日本語</li>
           <li role="option" data-lang="pt" data-short="PT"><span class="flag flag-pt"></span> Português</li>
           <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
-          <li role="option" data-lang="pl" data-short="PL"><span class="flag flag-pl"></span> Polski</li>
-          <li role="option" data-lang="uk" data-short="UK"><span class="flag flag-uk"></span> Українська</li>
-          <li role="option" data-lang="ro" data-short="RO"><span class="flag flag-ro"></span> Română</li>
-          <li role="option" data-lang="bg" data-short="BG"><span class="flag flag-bg"></span> Български</li>
-          <li role="option" data-lang="az" data-short="AZ"><span class="flag flag-az"></span> Azərbaycan</li>
-          <li role="option" data-lang="fa" data-short="FA"><span class="flag flag-fa"></span> فارسی</li>
         </ul>
       </div>
 
@@ -67,17 +56,17 @@
   <section class="page-hero">
     <div class="page-hero-inner">
       <div class="page-breadcrumb">
-        <a href="../index.html">Anasayfa</a> <span>/</span> <span>Tedavi İndeksi</span>
+        <a href="../index.html" data-i18n="nav.home">Anasayfa</a> <span>/</span> <span data-i18n="card.treatment.title">Tedavi İndeksi</span>
       </div>
-      <h1 class="page-title">Tedavi İndeksi</h1>
-      <p class="page-lead">Tedavi ve prosedürlere göz atın — kategoriye, ülkeye ve uzmanlık alanına göre filtreleyin.</p>
+      <h1 class="page-title" data-i18n="card.treatment.title">Tedavi İndeksi</h1>
+      <p class="page-lead" data-i18n="ti.lead">Tedavi ve prosedürlere göz atın — kategoriye, ülkeye ve uzmanlık alanına göre filtreleyin.</p>
 
       <form class="filter-bar" onsubmit="return false;" aria-label="Tedavileri filtrele">
         <label class="filter-field">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
           </svg>
-          <input type="search" placeholder="Tedavi ara" />
+          <input type="search" placeholder="Tedavi ara" data-i18n-placeholder="ti.searchPh" />
         </label>
         <label class="filter-field">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -85,13 +74,13 @@
             <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
           </svg>
           <select aria-label="Kategori">
-            <option>Tüm Kategoriler</option>
-            <option>Diş Tedavisi</option>
-            <option>Estetik</option>
-            <option>Saç Ekimi</option>
-            <option>Göz Tedavisi</option>
-            <option>Ortopedi</option>
-            <option>Kardiyoloji</option>
+            <option data-i18n="ti.cat.all">Tüm Kategoriler</option>
+            <option data-i18n="ti.cat.dental">Diş Tedavisi</option>
+            <option data-i18n="ti.cat.aesthetic">Estetik</option>
+            <option data-i18n="ti.cat.hair">Saç Ekimi</option>
+            <option data-i18n="ti.cat.eye">Göz Tedavisi</option>
+            <option data-i18n="ti.cat.ortho">Ortopedi</option>
+            <option data-i18n="ti.cat.cardio">Kardiyoloji</option>
           </select>
         </label>
         <label class="filter-field">
@@ -99,15 +88,15 @@
             <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
           </svg>
           <select aria-label="Ülke">
-            <option>Tüm Ülkeler</option>
-            <option>Türkiye</option>
-            <option>Almanya</option>
-            <option>İspanya</option>
-            <option>Güney Kore</option>
-            <option>BAE</option>
+            <option data-i18n="ti.co.all">Tüm Ülkeler</option>
+            <option data-i18n="ti.co.tr">Türkiye</option>
+            <option data-i18n="ti.co.de">Almanya</option>
+            <option data-i18n="ti.co.es">İspanya</option>
+            <option data-i18n="ti.co.kr">Güney Kore</option>
+            <option data-i18n="ti.co.ae">BAE</option>
           </select>
         </label>
-        <button type="submit" class="filter-submit">Ara</button>
+        <button type="submit" class="filter-submit" data-i18n="ti.searchBtn">Ara</button>
       </form>
     </div>
   </section>
@@ -116,68 +105,68 @@
   <section class="results-section">
     <div class="container">
       <div class="results-head">
-        <h2>Öne Çıkan Tedaviler</h2>
-        <span class="results-meta">6 / 0 sonuç gösteriliyor · yer tutucu</span>
+        <h2 data-i18n="ti.resultsHead">Öne Çıkan Tedaviler</h2>
+        <span class="results-meta" data-i18n="ti.resultsMeta">6 / 0 sonuç gösteriliyor · yer tutucu</span>
       </div>
 
       <div class="results-grid">
         <article class="result-card">
           <div class="result-media"></div>
           <div class="result-body">
-            <span class="result-badge">Popüler</span>
-            <h3 class="result-name">Tedavi Yer Tutucu Bir</h3>
-            <p class="result-meta"><span>Saç Ekimi</span><span>·</span><span>İstanbul, TR</span></p>
-            <a href="#" class="result-cta">Detayları gör →</a>
+            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
+            <h3 class="result-name" data-i18n="ti.p1">Tedavi Yer Tutucu Bir</h3>
+            <p class="result-meta"><span data-i18n="ti.cat.hair">Saç Ekimi</span><span>·</span><span data-i18n="ti.city1">İstanbul, TR</span></p>
+            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
           </div>
         </article>
 
         <article class="result-card">
           <div class="result-media"></div>
           <div class="result-body">
-            <span class="result-badge">Popüler</span>
-            <h3 class="result-name">Tedavi Yer Tutucu İki</h3>
-            <p class="result-meta"><span>Diş İmplantı</span><span>·</span><span>Berlin, DE</span></p>
-            <a href="#" class="result-cta">Detayları gör →</a>
+            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
+            <h3 class="result-name" data-i18n="ti.p2">Tedavi Yer Tutucu İki</h3>
+            <p class="result-meta"><span data-i18n="ti.m.implant">Diş İmplantı</span><span>·</span><span data-i18n="ti.city2">Berlin, DE</span></p>
+            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
           </div>
         </article>
 
         <article class="result-card">
           <div class="result-media"></div>
           <div class="result-body">
-            <span class="result-badge">Popüler</span>
-            <h3 class="result-name">Tedavi Yer Tutucu Üç</h3>
-            <p class="result-meta"><span>Estetik Cerrahi</span><span>·</span><span>Madrid, ES</span></p>
-            <a href="#" class="result-cta">Detayları gör →</a>
+            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
+            <h3 class="result-name" data-i18n="ti.p3">Tedavi Yer Tutucu Üç</h3>
+            <p class="result-meta"><span data-i18n="ti.m.plastic">Estetik Cerrahi</span><span>·</span><span data-i18n="ti.city3">Madrid, ES</span></p>
+            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
           </div>
         </article>
 
         <article class="result-card">
           <div class="result-media"></div>
           <div class="result-body">
-            <span class="result-badge">Popüler</span>
-            <h3 class="result-name">Tedavi Yer Tutucu Dört</h3>
-            <p class="result-meta"><span>Göz Tedavisi</span><span>·</span><span>Seul, KR</span></p>
-            <a href="#" class="result-cta">Detayları gör →</a>
+            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
+            <h3 class="result-name" data-i18n="ti.p4">Tedavi Yer Tutucu Dört</h3>
+            <p class="result-meta"><span data-i18n="ti.cat.eye">Göz Tedavisi</span><span>·</span><span data-i18n="ti.city4">Seul, KR</span></p>
+            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
           </div>
         </article>
 
         <article class="result-card">
           <div class="result-media"></div>
           <div class="result-body">
-            <span class="result-badge">Popüler</span>
-            <h3 class="result-name">Tedavi Yer Tutucu Beş</h3>
-            <p class="result-meta"><span>Ortopedi</span><span>·</span><span>Dubai, AE</span></p>
-            <a href="#" class="result-cta">Detayları gör →</a>
+            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
+            <h3 class="result-name" data-i18n="ti.p5">Tedavi Yer Tutucu Beş</h3>
+            <p class="result-meta"><span data-i18n="ti.cat.ortho">Ortopedi</span><span>·</span><span data-i18n="ti.city5">Dubai, AE</span></p>
+            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
           </div>
         </article>
 
         <article class="result-card">
           <div class="result-media"></div>
           <div class="result-body">
-            <span class="result-badge">Popüler</span>
-            <h3 class="result-name">Tedavi Yer Tutucu Altı</h3>
-            <p class="result-meta"><span>Kardiyoloji</span><span>·</span><span>Ankara, TR</span></p>
-            <a href="#" class="result-cta">Detayları gör →</a>
+            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
+            <h3 class="result-name" data-i18n="ti.p6">Tedavi Yer Tutucu Altı</h3>
+            <p class="result-meta"><span data-i18n="ti.cat.cardio">Kardiyoloji</span><span>·</span><span data-i18n="ti.city6">Ankara, TR</span></p>
+            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
           </div>
         </article>
       </div>
@@ -196,11 +185,11 @@
               <circle cx="12" cy="17" r="1" fill="currentColor"/>
             </svg>
           </span>
-          <span class="foot-text">Bir sorunuz mu var?</span>
+          <span class="foot-text" data-i18n="footer.question">Bir sorunuz mu var?</span>
         </div>
 
         <div class="foot-block follow">
-          <span class="foot-text">Bizi takip edin</span>
+          <span class="foot-text" data-i18n="footer.follow">Bizi takip edin</span>
           <ul class="foot-socials">
             <li><a href="#" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21H18.6v-5.6c0-1.34-.02-3.07-1.87-3.07-1.88 0-2.17 1.47-2.17 2.98V21H10z"/></svg>
@@ -223,17 +212,18 @@
       <hr class="foot-divider" />
 
       <div class="footer-bottom-mini">
-        <span class="foot-copy">&copy; <span id="year"></span> Tüm Hakları Saklıdır.</span>
+        <span class="foot-copy">&copy; <span id="year"></span> <span data-i18n="footer.copy">Tüm Hakları Saklıdır.</span></span>
         <span class="foot-entity">Healthperia Sağlık Hizmetleri GmbH</span>
         <ul class="foot-legal">
-          <li><a href="#">Şartlar</a></li>
-          <li><a href="#">Gizlilik</a></li>
-          <li><a href="#">Uyumluluklar</a></li>
+          <li><a href="#" data-i18n="footer.terms">Şartlar</a></li>
+          <li><a href="#" data-i18n="footer.privacy">Gizlilik</a></li>
+          <li><a href="#" data-i18n="footer.compliance">Uyumluluklar</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
+  <script src="../js/i18n-treatment.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>
