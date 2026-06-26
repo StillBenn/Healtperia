@@ -84,9 +84,9 @@ button {
 
 .header-inner {
   width: 100%;
-  max-width: 1640px;        /* wider so logo can sit further left, lang further right */
-  margin: 0 auto;
-  padding: 0 28px 0 4px;    /* tiny left padding pushes logo nearly to the edge */
+  max-width: none;          /* full width on every resolution → logo/nav stay edge-anchored */
+  margin: 0;
+  padding: 0 44px 0 28px;   /* fixed edge padding: identical logo position on 4K / 2K / HD */
   display: flex;
   align-items: center;
   gap: 18px;
@@ -425,10 +425,10 @@ button {
 /* ===== Index Cards — vertical premium image-style ===== */
 .index-cards {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));  /* allows proportional shrink, never wraps */
-  gap: clamp(10px, 1.2vw, 20px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));  /* four cards, never wraps on desktop */
+  gap: clamp(12px, 1.4vw, 24px);
   width: 100%;
-  max-width: 1120px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 clamp(8px, 1vw, 16px);
 }
@@ -1092,10 +1092,14 @@ button {
   .foot-legal { justify-self: center; }
 }
 
-/* Tablet: still 5 cards in one row, just tighter */
+/* Tablet: keep four cards, just tighter */
 @media (max-width: 1024px) {
-  .index-cards { gap: 10px; }
+  .index-cards { gap: 12px; max-width: 820px; }
   .card-media { aspect-ratio: 3 / 4; }
+}
+/* Smaller tablet: 2 × 2 grid */
+@media (max-width: 880px) {
+  .index-cards { grid-template-columns: repeat(2, 1fr); max-width: 520px; gap: 16px; }
 }
 
 /* Mobile breakpoint — hamburger appears, cards stack 1-up */
@@ -1777,7 +1781,7 @@ body.help-body { overflow: hidden; height: 100vh; }
 .hc-globe {
   position: absolute;
   top: calc(50% + 55px);     /* centered within the right content area (below header) */
-  left: calc(50% + 320px);   /* nudged right to sit in the open space */
+  left: calc(50% + 175px);   /* centered in the right content region */
   width: min(72vw, 760px);
   height: auto;
   transform: translate(-50%, -50%);
@@ -1813,9 +1817,9 @@ body.help-body { overflow: hidden; height: 100vh; }
   z-index: 1;
   box-sizing: border-box;
   height: 100vh;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 150px 32px 40px;
+  max-width: none;                /* full width — menu aligns with the logo */
+  margin: 0;
+  padding: 150px 44px 40px 40px;  /* left padding lines the menu up with the logo */
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 50px;
@@ -1907,7 +1911,6 @@ body.help-body { overflow: hidden; height: 100vh; }
   justify-content: center;
   gap: 16px;
   margin: auto 0;            /* centers in the right pane → on the globe's centre */
-  transform: translateX(140px);  /* shift right to match the globe's new position */
   min-height: 0;
   text-align: center;
   color: var(--text-dim);
