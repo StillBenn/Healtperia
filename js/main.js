@@ -556,6 +556,17 @@
 
   const fitAll = (force) => { FIT_GROUPS.forEach((g) => fitGroup(g, force)); };
 
+  /* small public hook for JS-built/dynamic strings on public pages
+     (mirrors i18n-core's window.HPI used by the account pages — only one of
+     the two ever loads per page, so they never clash) */
+  const langSubs = [];
+  window.HPI = window.HPI || {
+    lang: 'tr',
+    _dict: {},
+    t: function (key, fb) { return this._dict[key] !== undefined ? this._dict[key] : (fb !== undefined ? fb : key); },
+    onChange: function (cb) { if (typeof cb === 'function') langSubs.push(cb); }
+  };
+
   const applyTranslations = (lang) => {
     /* base (shared) strings + any page-specific dictionary a page registered
        on window.HP_I18N — so each page ships only its own content translations */
@@ -571,6 +582,10 @@
     });
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', rtlLangs.indexOf(lang) !== -1 ? 'rtl' : 'ltr');
+    /* expose current language + dict, then notify dynamic-content subscribers */
+    window.HPI.lang = lang;
+    window.HPI._dict = dict;
+    langSubs.forEach(function (cb) { try { cb(lang); } catch (_) {} });
     /* refit after the new text lands — setTimeout (not rAF) so we never pass a
        timestamp arg (which would read as "force recapture") and so layout has
        settled before we measure */
@@ -673,7 +688,7 @@
     window.addEventListener('wheel', (e) => {
       if (e.ctrlKey) return;                                   // pinch-zoom
       // let inner scroll areas use the wheel natively
-      if (e.target.closest && e.target.closest('.lang-menu, .hc-right, .hc-left')) return;
+      if (e.target.closest && e.target.closest('.lang-menu, .hc-right, .hc-left, .ti-pop-list')) return;
       e.preventDefault();
       if (!animating) { currentY = window.scrollY; targetY = currentY; }
       let delta = e.deltaY;

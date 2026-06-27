@@ -62,115 +62,95 @@
       <h1 class="page-title" data-i18n="card.treatment.title">Tedavi İndeksi</h1>
       <p class="page-lead" data-i18n="ti.lead">Tedavi ve prosedürlere göz atın — kategoriye, ülkeye ve uzmanlık alanına göre filtreleyin.</p>
 
-      <form class="filter-bar" onsubmit="return false;" aria-label="Tedavileri filtrele">
-        <label class="filter-field">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
-          </svg>
-          <input type="search" placeholder="Tedavi ara" data-i18n-placeholder="ti.searchPh" />
-        </label>
-        <label class="filter-field">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-          <select aria-label="Kategori">
-            <option data-i18n="ti.cat.all">Tüm Kategoriler</option>
-            <option data-i18n="ti.cat.dental">Diş Tedavisi</option>
-            <option data-i18n="ti.cat.aesthetic">Estetik</option>
-            <option data-i18n="ti.cat.hair">Saç Ekimi</option>
-            <option data-i18n="ti.cat.eye">Göz Tedavisi</option>
-            <option data-i18n="ti.cat.ortho">Ortopedi</option>
-            <option data-i18n="ti.cat.cardio">Kardiyoloji</option>
-          </select>
-        </label>
-        <label class="filter-field">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
-          </svg>
-          <select aria-label="Ülke">
-            <option data-i18n="ti.co.all">Tüm Ülkeler</option>
-            <option data-i18n="ti.co.tr">Türkiye</option>
-            <option data-i18n="ti.co.de">Almanya</option>
-            <option data-i18n="ti.co.es">İspanya</option>
-            <option data-i18n="ti.co.kr">Güney Kore</option>
-            <option data-i18n="ti.co.ae">BAE</option>
-          </select>
-        </label>
-        <button type="submit" class="filter-submit" data-i18n="ti.searchBtn">Ara</button>
-      </form>
+    </div>
+  </section>
+
+  <!-- ============ TREATMENT FINDER ============ -->
+  <section class="ti-finder">
+    <div class="container ti-finder-inner">
+      <!-- ===== CASCADING FINDER ===== -->
+      <div class="ti-cascade" id="tiCascade" aria-label="Tedavi bulucu">
+
+        <div class="ti-step" data-step="country">
+          <button class="ti-step-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="ti-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+            <span class="ti-step-text"><span class="ti-step-label" data-i18n="ti.step.country">Ülke</span><span class="ti-step-value">Seçiniz</span></span>
+            <svg class="ti-step-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="ti-pop">
+            <label class="ti-pop-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" data-i18n-placeholder="ti.searchIn" placeholder="Ara…" /></label>
+            <ul class="ti-pop-list" role="listbox"></ul>
+          </div>
+        </div>
+
+        <div class="ti-step is-locked" data-step="city">
+          <button class="ti-step-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled>
+            <span class="ti-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-5h6v5"/></svg></span>
+            <span class="ti-step-text"><span class="ti-step-label" data-i18n="ti.step.city">Şehir</span><span class="ti-step-value">Seçiniz</span></span>
+            <svg class="ti-step-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="ti-pop">
+            <label class="ti-pop-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" data-i18n-placeholder="ti.searchIn" placeholder="Ara…" /></label>
+            <ul class="ti-pop-list" role="listbox"></ul>
+          </div>
+        </div>
+
+        <div class="ti-step is-locked" data-step="unit">
+          <button class="ti-step-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled>
+            <span class="ti-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg></span>
+            <span class="ti-step-text"><span class="ti-step-label" data-i18n="ti.step.unit">Tıbbi Birim</span><span class="ti-step-value">Seçiniz</span></span>
+            <svg class="ti-step-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="ti-pop">
+            <label class="ti-pop-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" data-i18n-placeholder="ti.searchIn" placeholder="Ara…" /></label>
+            <ul class="ti-pop-list" role="listbox"></ul>
+          </div>
+        </div>
+
+        <div class="ti-step is-locked" data-step="treatment">
+          <button class="ti-step-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled>
+            <span class="ti-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3h6v3H9zM8 11h8M8 15h6"/></svg></span>
+            <span class="ti-step-text"><span class="ti-step-label" data-i18n="ti.step.treatment">Tedavi</span><span class="ti-step-value">Seçiniz</span></span>
+            <svg class="ti-step-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="ti-pop">
+            <label class="ti-pop-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" data-i18n-placeholder="ti.searchIn" placeholder="Ara…" /></label>
+            <ul class="ti-pop-list" role="listbox"></ul>
+          </div>
+        </div>
+
+        <div class="ti-step is-locked" data-step="method">
+          <button class="ti-step-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled>
+            <span class="ti-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg></span>
+            <span class="ti-step-text"><span class="ti-step-label" data-i18n="ti.step.method">Yöntem</span><span class="ti-step-value">Seçiniz</span></span>
+            <svg class="ti-step-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="ti-pop">
+            <label class="ti-pop-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" data-i18n-placeholder="ti.searchIn" placeholder="Ara…" /></label>
+            <ul class="ti-pop-list" role="listbox"></ul>
+          </div>
+        </div>
+
+        <button type="button" class="ti-reset" id="tiReset" data-i18n="ti.reset" aria-label="Sıfırla">Sıfırla</button>
+      </div>
     </div>
   </section>
 
   <!-- ============ RESULTS ============ -->
   <section class="results-section">
     <div class="container">
-      <div class="results-head">
-        <h2 data-i18n="ti.resultsHead">Öne Çıkan Tedaviler</h2>
-        <span class="results-meta" data-i18n="ti.resultsMeta">6 / 0 sonuç gösteriliyor · yer tutucu</span>
+      <div class="results-head results-head--count">
+        <span class="results-meta" id="tiCount"></span>
       </div>
 
-      <div class="results-grid">
-        <article class="result-card">
-          <div class="result-media"></div>
-          <div class="result-body">
-            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
-            <h3 class="result-name" data-i18n="ti.p1">Tedavi Yer Tutucu Bir</h3>
-            <p class="result-meta"><span data-i18n="ti.cat.hair">Saç Ekimi</span><span>·</span><span data-i18n="ti.city1">İstanbul, TR</span></p>
-            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
-          </div>
-        </article>
-
-        <article class="result-card">
-          <div class="result-media"></div>
-          <div class="result-body">
-            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
-            <h3 class="result-name" data-i18n="ti.p2">Tedavi Yer Tutucu İki</h3>
-            <p class="result-meta"><span data-i18n="ti.m.implant">Diş İmplantı</span><span>·</span><span data-i18n="ti.city2">Berlin, DE</span></p>
-            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
-          </div>
-        </article>
-
-        <article class="result-card">
-          <div class="result-media"></div>
-          <div class="result-body">
-            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
-            <h3 class="result-name" data-i18n="ti.p3">Tedavi Yer Tutucu Üç</h3>
-            <p class="result-meta"><span data-i18n="ti.m.plastic">Estetik Cerrahi</span><span>·</span><span data-i18n="ti.city3">Madrid, ES</span></p>
-            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
-          </div>
-        </article>
-
-        <article class="result-card">
-          <div class="result-media"></div>
-          <div class="result-body">
-            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
-            <h3 class="result-name" data-i18n="ti.p4">Tedavi Yer Tutucu Dört</h3>
-            <p class="result-meta"><span data-i18n="ti.cat.eye">Göz Tedavisi</span><span>·</span><span data-i18n="ti.city4">Seul, KR</span></p>
-            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
-          </div>
-        </article>
-
-        <article class="result-card">
-          <div class="result-media"></div>
-          <div class="result-body">
-            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
-            <h3 class="result-name" data-i18n="ti.p5">Tedavi Yer Tutucu Beş</h3>
-            <p class="result-meta"><span data-i18n="ti.cat.ortho">Ortopedi</span><span>·</span><span data-i18n="ti.city5">Dubai, AE</span></p>
-            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
-          </div>
-        </article>
-
-        <article class="result-card">
-          <div class="result-media"></div>
-          <div class="result-body">
-            <span class="result-badge" data-i18n="ti.badge">Popüler</span>
-            <h3 class="result-name" data-i18n="ti.p6">Tedavi Yer Tutucu Altı</h3>
-            <p class="result-meta"><span data-i18n="ti.cat.cardio">Kardiyoloji</span><span>·</span><span data-i18n="ti.city6">Ankara, TR</span></p>
-            <a href="#" class="result-cta" data-i18n="ti.cta">Detayları gör →</a>
-          </div>
-        </article>
+      <div class="ti-empty" id="tiEmpty">
+        <span class="ti-empty-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </span>
+        <p data-i18n="ti.hintCountry">Başlamak için bir ülke seçin.</p>
       </div>
+
+      <div class="results-grid ti-results" id="tiResults" hidden></div>
     </div>
   </section>
 
@@ -224,7 +204,17 @@
     </div>
   </footer>
 
+  <!-- back-to-top button -->
+  <button class="scroll-top" id="scrollTop" type="button" aria-label="Sayfanın başına dön">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V6"/>
+      <path d="M6 12l6-6 6 6"/>
+    </svg>
+  </button>
+
+  <script src="../js/treatment-data.js"></script>
   <script src="../js/i18n-treatment.js"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/treatment-index.js"></script>
 </body>
 </html>
