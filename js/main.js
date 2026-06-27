@@ -622,11 +622,11 @@
     document.addEventListener('click', (e) => { if (!langWrap.contains(e.target)) closeMenu(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
-    /* restore saved language, default Turkish */
-    let saved = 'tr';
-    try { saved = localStorage.getItem('treatperia.lang') || 'tr'; } catch (_) {}
-    if (!t[saved]) saved = 'tr';
-    setLanguage(saved);
+    /* ALWAYS open in Turkish — ignore any previously saved/remembered language
+       and the browser language, so the site is pinned to Turkish on every load
+       in every browser. The switcher still changes language for the session. */
+    try { localStorage.removeItem('treatperia.lang'); } catch (_) {}
+    setLanguage('tr');
   }
 
   /* ============================================================
