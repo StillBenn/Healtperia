@@ -622,11 +622,13 @@
     document.addEventListener('click', (e) => { if (!langWrap.contains(e.target)) closeMenu(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
-    /* ALWAYS open in Turkish — ignore any previously saved/remembered language
-       and the browser language, so the site is pinned to Turkish on every load
-       in every browser. The switcher still changes language for the session. */
-    try { localStorage.removeItem('treatperia.lang'); } catch (_) {}
-    setLanguage('tr');
+    /* First visit (no saved language) → Turkish; otherwise keep the user's
+       chosen language across page reloads. (Browser auto-translate is disabled
+       via translate="no", so this never starts in a browser-influenced lang.) */
+    let saved = 'tr';
+    try { saved = localStorage.getItem('treatperia.lang') || 'tr'; } catch (_) {}
+    if (!t[saved]) saved = 'tr';
+    setLanguage(saved);
   }
 
   /* ============================================================
