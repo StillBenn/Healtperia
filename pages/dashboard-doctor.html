@@ -15,51 +15,69 @@
     <aside class="app-sidebar" id="appSidebar">
       <div class="sidebar-head">
         <a href="../index.html" class="sidebar-logo" aria-label="Healthperia"><img src="../assets/images/LOGO__SLOGANLI_PNG.png" alt="Healthperia" /></a>
-        <button class="sidebar-close" id="sidebarClose" aria-label="Menüyü kapat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <button class="sidebar-close" id="sidebarClose" data-i18n-aria="acc.aria.closeMenu" aria-label="Menüyü kapat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
 
       <nav class="sidebar-nav" aria-label="Panel menüsü">
-        <span class="sidebar-group">Klinik</span>
+        <span class="sidebar-group" data-i18n="dd.group.clinic">Klinik</span>
         <a class="side-link is-active" data-section="overview" href="#overview">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
-          Genel Bakış</a>
+          <span class="side-label" data-i18n="acc.nav.overview">Genel Bakış</span></a>
         <a class="side-link" data-section="requests" href="#requests">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          Randevu Talepleri<span class="side-badge" id="reqBadge">3</span></a>
+          <span class="side-label" data-i18n="dd.nav.requests">Randevu Talepleri</span><span class="side-badge" id="reqBadge">3</span></a>
         <a class="side-link" data-section="schedule" href="#schedule">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
-          Takvimim</a>
+          <span class="side-label" data-i18n="dd.nav.schedule">Takvimim</span></a>
         <a class="side-link" data-section="patients" href="#patients">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M17 8a3.5 3.5 0 0 1 0 7"/><path d="M21.5 21c0-2.5-1.4-4.2-3.5-5"/></svg>
-          Hastalarım</a>
+          <span class="side-label" data-i18n="dd.nav.patients">Hastalarım</span></a>
         <a class="side-link" data-section="messages" href="#messages">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Mesajlar<span class="side-badge alt" id="msgBadge">2</span></a>
+          <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge">2</span></a>
 
-        <span class="sidebar-group">Hesap</span>
+        <span class="sidebar-group" data-i18n="acc.group.account">Hesap</span>
         <a class="side-link" data-section="profile" href="#profile">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-          Profilim</a>
+          <span class="side-label" data-i18n="acc.nav.profile">Profilim</span></a>
         <a class="side-link" data-section="settings" href="#settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 0 1-4 0v-.1A1.7 1.7 0 0 0 7 19.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.7 1.7 0 0 0 4.7 8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-          Ayarlar</a>
+          <span class="side-label" data-i18n="acc.nav.settings">Ayarlar</span></a>
       </nav>
 
-      <button class="sidebar-logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> Çıkış Yap</button>
+      <button class="sidebar-logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> <span data-i18n="acc.logout">Çıkış Yap</span></button>
     </aside>
     <div class="app-overlay" id="appOverlay"></div>
 
     <!-- ============ MAIN ============ -->
     <div class="app-main">
       <header class="app-topbar">
-        <button class="topbar-burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
-        <div class="topbar-title"><h1 id="pageTitle">Genel Bakış</h1><p id="pageCrumb">Doktor Paneli</p></div>
+        <button class="topbar-burger" id="burger" data-i18n-aria="acc.aria.menu" aria-label="Menü"><span></span><span></span><span></span></button>
+        <div class="topbar-title"><h1 id="pageTitle">Genel Bakış</h1><p id="pageCrumb" data-i18n="acc.crumb.doctor">Doktor Paneli</p></div>
         <div class="topbar-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input type="search" placeholder="Hasta ara…" />
+          <input type="search" placeholder="Hasta ara…" data-i18n-placeholder="dd.searchPatient" />
         </div>
         <div class="topbar-actions">
-          <button class="icon-btn" aria-label="Bildirimler"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+          <div class="lang-switch app-lang" data-lang-switch>
+            <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="acc.aria.lang" aria-label="Dil seçimi">
+              <span class="flag flag-tr" data-lang-flag aria-hidden="true"></span>
+              <span class="lang-name" data-lang-name>TR</span>
+              <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <ul class="lang-menu" role="listbox">
+              <li role="option" data-lang="tr" data-short="TR" class="selected"><span class="flag flag-tr"></span> Türkçe</li>
+              <li role="option" data-lang="en" data-short="EN"><span class="flag flag-en"></span> English</li>
+              <li role="option" data-lang="de" data-short="DE"><span class="flag flag-de"></span> Deutsch</li>
+              <li role="option" data-lang="ru" data-short="RU"><span class="flag flag-ru"></span> Русский</li>
+              <li role="option" data-lang="fr" data-short="FR"><span class="flag flag-fr"></span> Français</li>
+              <li role="option" data-lang="es" data-short="ES"><span class="flag flag-es"></span> Español</li>
+              <li role="option" data-lang="pt" data-short="PT"><span class="flag flag-pt"></span> Português</li>
+              <li role="option" data-lang="ar" data-short="AR"><span class="flag flag-ar"></span> العربية</li>
+              <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
+            </ul>
+          </div>
+          <button class="icon-btn" data-i18n-aria="acc.aria.notifications" aria-label="Bildirimler"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
           <div class="user-menu" id="userMenu">
             <button class="user-trigger" id="userTrigger">
               <span class="avatar" id="navAvatar">EY</span>
@@ -67,9 +85,9 @@
               <svg class="user-caret" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
             <div class="user-dropdown">
-              <a href="#profile" data-section="profile">Profilim</a>
-              <a href="#settings" data-section="settings">Ayarlar</a>
-              <hr/><button id="logoutBtn2">Çıkış Yap</button>
+              <a href="#profile" data-section="profile" data-i18n="acc.nav.profile">Profilim</a>
+              <a href="#settings" data-section="settings" data-i18n="acc.nav.settings">Ayarlar</a>
+              <hr/><button id="logoutBtn2" data-i18n="acc.logout">Çıkış Yap</button>
             </div>
           </div>
         </div>
@@ -81,45 +99,45 @@
         <section class="panel is-active" data-panel="overview">
           <div class="welcome-banner doctor">
             <div class="welcome-text">
-              <span class="welcome-eyebrow">İyi çalışmalar 🩺</span>
+              <span class="welcome-eyebrow" data-i18n="dd.welcome">İyi çalışmalar 🩺</span>
               <h2 id="welcomeName">—</h2>
-              <p>Bugün <strong>6 randevunuz</strong> ve <strong>3 bekleyen talebiniz</strong> var. Hastalarınızı buradan yönetin.</p>
+              <p data-i18n-html="dd.welcomeText">Bugün <strong>6 randevunuz</strong> ve <strong>3 bekleyen talebiniz</strong> var. Hastalarınızı buradan yönetin.</p>
               <div class="welcome-cta">
-                <button class="btn-primary sm" data-jump="requests">Talepleri İncele</button>
-                <button class="btn-ghost sm" data-jump="schedule">Takvimi Aç</button>
+                <button class="btn-primary sm" data-jump="requests" data-i18n="dd.reviewReq">Talepleri İncele</button>
+                <button class="btn-ghost sm" data-jump="schedule" data-i18n="dd.openCal">Takvimi Aç</button>
               </div>
             </div>
             <div class="welcome-art" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M60 18l32 16v22c0 22-14 36-32 42-18-6-32-20-32-42V34z" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/><path d="M60 44v26M47 57h26" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg></div>
           </div>
 
           <div class="stat-grid">
-            <article class="stat-card"><div class="stat-ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><div class="stat-meta"><strong>6</strong><span>Bugünkü Randevu</span></div></article>
-            <article class="stat-card"><div class="stat-ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="stat-meta"><strong>3</strong><span>Bekleyen Talep</span></div></article>
-            <article class="stat-card"><div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/></svg></div><div class="stat-meta"><strong>148</strong><span>Toplam Hasta</span></div></article>
-            <article class="stat-card"><div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg></div><div class="stat-meta"><strong>4.9</strong><span>Değerlendirme</span></div></article>
+            <article class="stat-card"><div class="stat-ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><div class="stat-meta"><strong>6</strong><span data-i18n="dd.stat.today">Bugünkü Randevu</span></div></article>
+            <article class="stat-card"><div class="stat-ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="stat-meta"><strong>3</strong><span data-i18n="dd.stat.pending">Bekleyen Talep</span></div></article>
+            <article class="stat-card"><div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/></svg></div><div class="stat-meta"><strong>148</strong><span data-i18n="dd.stat.total">Toplam Hasta</span></div></article>
+            <article class="stat-card"><div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg></div><div class="stat-meta"><strong>4.9</strong><span data-i18n="dd.stat.rating">Değerlendirme</span></div></article>
           </div>
 
           <div class="grid-2">
             <div class="card">
-              <div class="card-head"><h3>Bugünün Programı</h3><button class="link-btn" data-jump="schedule">Takvim</button></div>
+              <div class="card-head"><h3 data-i18n="dd.todayTitle">Bugünün Programı</h3><button class="link-btn" data-jump="schedule" data-i18n="dd.calBtn">Takvim</button></div>
               <ul class="appt-list">
-                <li><span class="appt-time">09:00</span><div class="appt-info"><strong>Ahmet Demir</strong><span>Kontrol · Çevrimiçi</span></div><span class="badge badge-blue">Onaylı</span></li>
-                <li><span class="appt-time">10:30</span><div class="appt-info"><strong>Zeynep Acar</strong><span>İlk muayene · Klinik</span></div><span class="badge badge-blue">Onaylı</span></li>
-                <li><span class="appt-time">13:15</span><div class="appt-info"><strong>Can Öztürk</strong><span>Kontrol · Klinik</span></div><span class="badge badge-green">Geldi</span></li>
-                <li><span class="appt-time">15:45</span><div class="appt-info"><strong>Elif Şahin</strong><span>Tahlil değerlendirme · Çevrimiçi</span></div><span class="badge badge-blue">Onaylı</span></li>
+                <li><span class="appt-time">09:00</span><div class="appt-info"><strong>Ahmet Demir</strong><span><span data-i18n="dd.visit.control">Kontrol</span> · <span data-i18n="dd.mode.online">Çevrimiçi</span></span></div><span class="badge badge-blue" data-i18n="dd.badge.confirmed">Onaylı</span></li>
+                <li><span class="appt-time">10:30</span><div class="appt-info"><strong>Zeynep Acar</strong><span><span data-i18n="dd.visit.first">İlk muayene</span> · <span data-i18n="dd.mode.clinic">Klinik</span></span></div><span class="badge badge-blue" data-i18n="dd.badge.confirmed">Onaylı</span></li>
+                <li><span class="appt-time">13:15</span><div class="appt-info"><strong>Can Öztürk</strong><span><span data-i18n="dd.visit.control">Kontrol</span> · <span data-i18n="dd.mode.clinic">Klinik</span></span></div><span class="badge badge-green" data-i18n="dd.badge.arrived">Geldi</span></li>
+                <li><span class="appt-time">15:45</span><div class="appt-info"><strong>Elif Şahin</strong><span><span data-i18n="dd.visit.lab">Tahlil değerlendirme</span> · <span data-i18n="dd.mode.online">Çevrimiçi</span></span></div><span class="badge badge-blue" data-i18n="dd.badge.confirmed">Onaylı</span></li>
               </ul>
             </div>
             <div class="card">
-              <div class="card-head"><h3>Bu Hafta</h3></div>
+              <div class="card-head"><h3 data-i18n="dd.thisWeek">Bu Hafta</h3></div>
               <div class="bars" aria-hidden="true">
-                <div class="bar" style="--h:55%"><span></span><small>Pzt</small></div>
-                <div class="bar" style="--h:72%"><span></span><small>Sal</small></div>
-                <div class="bar" style="--h:40%"><span></span><small>Çar</small></div>
-                <div class="bar" style="--h:88%"><span></span><small>Per</small></div>
-                <div class="bar" style="--h:64%"><span></span><small>Cum</small></div>
-                <div class="bar" style="--h:30%"><span></span><small>Cmt</small></div>
+                <div class="bar" style="--h:55%"><span></span><small data-i18n="dd.dow.mon">Pzt</small></div>
+                <div class="bar" style="--h:72%"><span></span><small data-i18n="dd.dow.tue">Sal</small></div>
+                <div class="bar" style="--h:40%"><span></span><small data-i18n="dd.dow.wed">Çar</small></div>
+                <div class="bar" style="--h:88%"><span></span><small data-i18n="dd.dow.thu">Per</small></div>
+                <div class="bar" style="--h:64%"><span></span><small data-i18n="dd.dow.fri">Cum</small></div>
+                <div class="bar" style="--h:30%"><span></span><small data-i18n="dd.dow.sat">Cmt</small></div>
               </div>
-              <p class="muted-line">Toplam <strong>34 randevu</strong> · geçen haftaya göre <span class="up">+12%</span></p>
+              <p class="muted-line" data-i18n-html="dd.weekSummary">Toplam <strong>34 randevu</strong> · geçen haftaya göre <span class="up">+12%</span></p>
             </div>
           </div>
         </section>
@@ -127,14 +145,14 @@
         <!-- REQUESTS -->
         <section class="panel" data-panel="requests">
           <div class="card">
-            <div class="card-head"><h3>Randevu Talepleri</h3></div>
+            <div class="card-head"><h3 data-i18n="dd.nav.requests">Randevu Talepleri</h3></div>
             <ul class="req-list" id="reqList">
-              <li><span class="appt-avatar">AD</span><div class="appt-info"><strong>Ahmet Demir</strong><span>Kardiyoloji kontrolü · 28 Haz, 14:30 talep edildi</span></div>
-                <div class="req-actions"><button class="btn-mini ok" data-act="accept">Kabul</button><button class="btn-mini no" data-act="reject">Reddet</button></div></li>
-              <li><span class="appt-avatar">ZA</span><div class="appt-info"><strong>Zeynep Acar</strong><span>İlk muayene · 29 Haz, 11:00 talep edildi</span></div>
-                <div class="req-actions"><button class="btn-mini ok" data-act="accept">Kabul</button><button class="btn-mini no" data-act="reject">Reddet</button></div></li>
-              <li><span class="appt-avatar">CÖ</span><div class="appt-info"><strong>Can Öztürk</strong><span>Tahlil değerlendirme · 30 Haz, 16:00 talep edildi</span></div>
-                <div class="req-actions"><button class="btn-mini ok" data-act="accept">Kabul</button><button class="btn-mini no" data-act="reject">Reddet</button></div></li>
+              <li><span class="appt-avatar">AD</span><div class="appt-info"><strong>Ahmet Demir</strong><span data-i18n="dd.req1">Kardiyoloji kontrolü · 28 Haz, 14:30 talep edildi</span></div>
+                <div class="req-actions"><button class="btn-mini ok" data-act="accept" data-i18n="dd.accept">Kabul</button><button class="btn-mini no" data-act="reject" data-i18n="dd.reject">Reddet</button></div></li>
+              <li><span class="appt-avatar">ZA</span><div class="appt-info"><strong>Zeynep Acar</strong><span data-i18n="dd.req2">İlk muayene · 29 Haz, 11:00 talep edildi</span></div>
+                <div class="req-actions"><button class="btn-mini ok" data-act="accept" data-i18n="dd.accept">Kabul</button><button class="btn-mini no" data-act="reject" data-i18n="dd.reject">Reddet</button></div></li>
+              <li><span class="appt-avatar">CÖ</span><div class="appt-info"><strong>Can Öztürk</strong><span data-i18n="dd.req3">Tahlil değerlendirme · 30 Haz, 16:00 talep edildi</span></div>
+                <div class="req-actions"><button class="btn-mini ok" data-act="accept" data-i18n="dd.accept">Kabul</button><button class="btn-mini no" data-act="reject" data-i18n="dd.reject">Reddet</button></div></li>
             </ul>
           </div>
         </section>
@@ -142,9 +160,9 @@
         <!-- SCHEDULE -->
         <section class="panel" data-panel="schedule">
           <div class="card">
-            <div class="card-head"><h3>Takvimim — Haziran 2026</h3></div>
+            <div class="card-head"><h3 data-i18n="dd.calTitle">Takvimim — Haziran 2026</h3></div>
             <div class="cal">
-              <div class="cal-dow">Pzt</div><div class="cal-dow">Sal</div><div class="cal-dow">Çar</div><div class="cal-dow">Per</div><div class="cal-dow">Cum</div><div class="cal-dow">Cmt</div><div class="cal-dow">Paz</div>
+              <div class="cal-dow" data-i18n="dd.dow.mon">Pzt</div><div class="cal-dow" data-i18n="dd.dow.tue">Sal</div><div class="cal-dow" data-i18n="dd.dow.wed">Çar</div><div class="cal-dow" data-i18n="dd.dow.thu">Per</div><div class="cal-dow" data-i18n="dd.dow.fri">Cum</div><div class="cal-dow" data-i18n="dd.dow.sat">Cmt</div><div class="cal-dow" data-i18n="dd.dow.sun">Paz</div>
               <div class="cal-day muted">26</div><div class="cal-day muted">27</div><div class="cal-day muted">28</div><div class="cal-day muted">29</div><div class="cal-day muted">30</div><div class="cal-day muted">31</div><div class="cal-day">1</div>
               <div class="cal-day">2</div><div class="cal-day has">3</div><div class="cal-day">4</div><div class="cal-day has">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div>
               <div class="cal-day">9</div><div class="cal-day has">10</div><div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day has">13</div><div class="cal-day">14</div><div class="cal-day">15</div>
@@ -157,17 +175,17 @@
         <!-- PATIENTS -->
         <section class="panel" data-panel="patients">
           <div class="card">
-            <div class="card-head"><h3>Hastalarım</h3>
-              <div class="topbar-search inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" placeholder="Hasta ara…" /></div>
+            <div class="card-head"><h3 data-i18n="dd.nav.patients">Hastalarım</h3>
+              <div class="topbar-search inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" placeholder="Hasta ara…" data-i18n-placeholder="dd.searchPatient" /></div>
             </div>
             <div class="table-wrap">
               <table class="data-table">
-                <thead><tr><th>Hasta</th><th>Son Ziyaret</th><th>Durum</th><th>İşlem</th></tr></thead>
+                <thead><tr><th data-i18n="dd.th.patient">Hasta</th><th data-i18n="dd.th.lastVisit">Son Ziyaret</th><th data-i18n="dd.th.status">Durum</th><th data-i18n="dd.th.action">İşlem</th></tr></thead>
                 <tbody>
-                  <tr><td><span class="cell-user"><span class="appt-avatar sm">AD</span> Ahmet Demir</span></td><td>12 May 2026</td><td><span class="badge badge-green">Aktif Takip</span></td><td><button class="link-btn">Dosya</button></td></tr>
-                  <tr><td><span class="cell-user"><span class="appt-avatar sm">ZA</span> Zeynep Acar</span></td><td>02 May 2026</td><td><span class="badge badge-blue">Yeni</span></td><td><button class="link-btn">Dosya</button></td></tr>
-                  <tr><td><span class="cell-user"><span class="appt-avatar sm">CÖ</span> Can Öztürk</span></td><td>28 Nis 2026</td><td><span class="badge badge-amber">Kontrol Bekliyor</span></td><td><button class="link-btn">Dosya</button></td></tr>
-                  <tr><td><span class="cell-user"><span class="appt-avatar sm">EŞ</span> Elif Şahin</span></td><td>20 Nis 2026</td><td><span class="badge badge-green">Aktif Takip</span></td><td><button class="link-btn">Dosya</button></td></tr>
+                  <tr><td><span class="cell-user"><span class="appt-avatar sm">AD</span> Ahmet Demir</span></td><td>12 May 2026</td><td><span class="badge badge-green" data-i18n="dd.pstat.active">Aktif Takip</span></td><td><button class="link-btn" data-i18n="dd.fileBtn">Dosya</button></td></tr>
+                  <tr><td><span class="cell-user"><span class="appt-avatar sm">ZA</span> Zeynep Acar</span></td><td>02 May 2026</td><td><span class="badge badge-blue" data-i18n="dd.pstat.new">Yeni</span></td><td><button class="link-btn" data-i18n="dd.fileBtn">Dosya</button></td></tr>
+                  <tr><td><span class="cell-user"><span class="appt-avatar sm">CÖ</span> Can Öztürk</span></td><td>28 Nis 2026</td><td><span class="badge badge-amber" data-i18n="dd.pstat.followup">Kontrol Bekliyor</span></td><td><button class="link-btn" data-i18n="dd.fileBtn">Dosya</button></td></tr>
+                  <tr><td><span class="cell-user"><span class="appt-avatar sm">EŞ</span> Elif Şahin</span></td><td>20 Nis 2026</td><td><span class="badge badge-green" data-i18n="dd.pstat.active">Aktif Takip</span></td><td><button class="link-btn" data-i18n="dd.fileBtn">Dosya</button></td></tr>
                 </tbody>
               </table>
             </div>
@@ -177,11 +195,11 @@
         <!-- MESSAGES -->
         <section class="panel" data-panel="messages">
           <div class="card">
-            <div class="card-head"><h3>Mesajlar</h3></div>
+            <div class="card-head"><h3 data-i18n="acc.nav.messages">Mesajlar</h3></div>
             <ul class="msg-list">
-              <li class="unread"><span class="appt-avatar">AD</span><div class="msg-info"><strong>Ahmet Demir</strong><span>Doktor bey, ilacı aç karnına mı almalıyım?</span></div><time>1 sa</time></li>
-              <li class="unread"><span class="appt-avatar">ZA</span><div class="msg-info"><strong>Zeynep Acar</strong><span>Randevu için teşekkürler, görüşmek üzere.</span></div><time>4 sa</time></li>
-              <li><span class="appt-avatar">EŞ</span><div class="msg-info"><strong>Elif Şahin</strong><span>Tahlil sonuçlarımı yükledim.</span></div><time>1 gün</time></li>
+              <li class="unread"><span class="appt-avatar">AD</span><div class="msg-info"><strong>Ahmet Demir</strong><span data-i18n="dd.msg1">Doktor bey, ilacı aç karnına mı almalıyım?</span></div><time data-i18n="dd.t.1h">1 sa</time></li>
+              <li class="unread"><span class="appt-avatar">ZA</span><div class="msg-info"><strong>Zeynep Acar</strong><span data-i18n="dd.msg2">Randevu için teşekkürler, görüşmek üzere.</span></div><time data-i18n="dd.t.4h">4 sa</time></li>
+              <li><span class="appt-avatar">EŞ</span><div class="msg-info"><strong>Elif Şahin</strong><span data-i18n="dd.msg3">Tahlil sonuçlarımı yükledim.</span></div><time data-i18n="dd.t.1d">1 gün</time></li>
             </ul>
           </div>
         </section>
@@ -194,14 +212,14 @@
               <div><h3 id="profName">—</h3><p id="profEmail">—</p><span class="badge badge-blue" id="profSpec">Doktor</span></div>
             </div>
             <form id="profileForm" class="form-grid">
-              <label class="field"><span class="field-label">Ad Soyad</span><span class="field-box"><input name="name" type="text" required /></span></label>
-              <label class="field"><span class="field-label">E-posta</span><span class="field-box"><input name="email" type="email" disabled /></span></label>
-              <label class="field"><span class="field-label">Uzmanlık Alanı</span><span class="field-box"><input name="specialty" type="text" placeholder="Kardiyoloji" /></span></label>
-              <label class="field"><span class="field-label">Diploma / Lisans No</span><span class="field-box"><input name="license" type="text" /></span></label>
-              <label class="field"><span class="field-label">Telefon</span><span class="field-box"><input name="phone" type="tel" /></span></label>
-              <label class="field"><span class="field-label">Ülke</span><span class="field-box"><input name="country" type="text" /></span></label>
-              <label class="field span-2"><span class="field-label">Hakkımda</span><span class="field-box"><textarea name="bio" rows="3" placeholder="Hastalarınıza kendinizi tanıtın…"></textarea></span></label>
-              <div class="form-actions span-2"><button class="btn-primary sm" type="submit">Değişiklikleri Kaydet</button><span class="save-ok" id="profSaved" hidden>Kaydedildi ✓</span></div>
+              <label class="field"><span class="field-label" data-i18n="acc.f.name">Ad Soyad</span><span class="field-box"><input name="name" type="text" required /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.f.email">E-posta</span><span class="field-box"><input name="email" type="email" disabled /></span></label>
+              <label class="field"><span class="field-label" data-i18n="dd.f.specialty">Uzmanlık Alanı</span><span class="field-box"><input name="specialty" type="text" placeholder="Kardiyoloji" data-i18n-placeholder="dd.ph.specialty" /></span></label>
+              <label class="field"><span class="field-label" data-i18n="dd.f.license">Diploma / Lisans No</span><span class="field-box"><input name="license" type="text" /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.f.phone">Telefon</span><span class="field-box"><input name="phone" type="tel" /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.f.country">Ülke</span><span class="field-box"><input name="country" type="text" /></span></label>
+              <label class="field span-2"><span class="field-label" data-i18n="dd.f.bio">Hakkımda</span><span class="field-box"><textarea name="bio" rows="3" placeholder="Hastalarınıza kendinizi tanıtın…" data-i18n-placeholder="dd.ph.bio"></textarea></span></label>
+              <div class="form-actions span-2"><button class="btn-primary sm" type="submit" data-i18n="acc.save">Değişiklikleri Kaydet</button><span class="save-ok" id="profSaved" hidden data-i18n="acc.saved">Kaydedildi ✓</span></div>
             </form>
           </div>
         </section>
@@ -209,20 +227,20 @@
         <!-- SETTINGS -->
         <section class="panel" data-panel="settings">
           <div class="card">
-            <div class="card-head"><h3>Şifre Değiştir</h3></div>
+            <div class="card-head"><h3 data-i18n="acc.pw.title">Şifre Değiştir</h3></div>
             <form id="pwForm" class="form-grid">
-              <label class="field span-2"><span class="field-label">Mevcut Şifre</span><span class="field-box"><input name="old" type="password" required /></span></label>
-              <label class="field"><span class="field-label">Yeni Şifre</span><span class="field-box"><input name="new" type="password" required /></span></label>
-              <label class="field"><span class="field-label">Yeni Şifre (tekrar)</span><span class="field-box"><input name="confirm" type="password" required /></span></label>
-              <div class="form-actions span-2"><button class="btn-primary sm" type="submit">Şifreyi Güncelle</button><span class="save-ok" id="pwSaved" hidden>Güncellendi ✓</span><span class="save-err" id="pwErr" hidden></span></div>
+              <label class="field span-2"><span class="field-label" data-i18n="acc.pw.current">Mevcut Şifre</span><span class="field-box"><input name="old" type="password" required /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.pw.new">Yeni Şifre</span><span class="field-box"><input name="new" type="password" required /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.pw.confirm">Yeni Şifre (tekrar)</span><span class="field-box"><input name="confirm" type="password" required /></span></label>
+              <div class="form-actions span-2"><button class="btn-primary sm" type="submit" data-i18n="acc.pw.update">Şifreyi Güncelle</button><span class="save-ok" id="pwSaved" hidden data-i18n="acc.pw.updated">Güncellendi ✓</span><span class="save-err" id="pwErr" hidden></span></div>
             </form>
           </div>
           <div class="card">
-            <div class="card-head"><h3>Çalışma Tercihleri</h3></div>
+            <div class="card-head"><h3 data-i18n="dd.workPrefsTitle">Çalışma Tercihleri</h3></div>
             <ul class="toggle-list">
-              <li><span>Çevrimiçi görüşmeleri kabul et</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
-              <li><span>Yeni randevu talebi bildirimi</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
-              <li><span>Hafta sonu randevuları</span><label class="switch"><input type="checkbox"><span></span></label></li>
+              <li><span data-i18n="dd.pref.online">Çevrimiçi görüşmeleri kabul et</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
+              <li><span data-i18n="dd.pref.newReq">Yeni randevu talebi bildirimi</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
+              <li><span data-i18n="dd.pref.weekend">Hafta sonu randevuları</span><label class="switch"><input type="checkbox"><span></span></label></li>
             </ul>
           </div>
         </section>
@@ -233,30 +251,43 @@
 
   <script src="../js/auth.js"></script>
   <script src="../js/dashboard.js"></script>
+  <script src="../js/i18n-account.js"></script>
+  <script src="../js/i18n-dash-doctor.js"></script>
+  <script src="../js/i18n-core.js"></script>
   <script>
   (function () {
     var H = window.Healthperia;
+    var T = function (k, fb) { return window.HPI ? window.HPI.t(k, fb) : fb; };
     var user = H.guard('doctor');
     if (!user) return;
     Dashboard.init(user, { role: 'Doktor' });
 
-    var navSpec = document.getElementById('navSpec'); if (navSpec) navSpec.textContent = user.specialty || 'Doktor';
+    var navSpec  = document.getElementById('navSpec');
+    var profSpec = document.getElementById('profSpec');
     var pf = document.getElementById('profileForm');
+    /* show the doctor's specialty, or the localized word "Doctor" as a fallback */
+    function specOrRole() { return pf.specialty.value || user.specialty || T('acc.role.doctor', 'Doktor'); }
+    function paintSpec() {
+      var s = specOrRole();
+      if (navSpec) navSpec.textContent = s;
+      if (profSpec) profSpec.textContent = s;
+    }
     pf.name.value = user.name || ''; pf.email.value = user.email || '';
     pf.specialty.value = user.specialty || ''; pf.license.value = user.license || '';
     pf.phone.value = user.phone || ''; pf.country.value = user.country || ''; pf.bio.value = user.bio || '';
     document.getElementById('profName').textContent = user.name || '';
     document.getElementById('profEmail').textContent = user.email || '';
-    document.getElementById('profSpec').textContent = user.specialty || 'Doktor';
+    paintSpec();
     document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+    /* keep the "Doctor" fallback localized when the language changes */
+    if (window.HPI && window.HPI.onChange) window.HPI.onChange(paintSpec);
 
     pf.addEventListener('submit', function (e) {
       e.preventDefault();
       H.updateProfile({ name: pf.name.value, specialty: pf.specialty.value, license: pf.license.value, phone: pf.phone.value, country: pf.country.value, bio: pf.bio.value });
       Dashboard.refreshIdentity();
       document.getElementById('profName').textContent = pf.name.value;
-      document.getElementById('profSpec').textContent = pf.specialty.value || 'Doktor';
-      if (navSpec) navSpec.textContent = pf.specialty.value || 'Doktor';
+      paintSpec();
       var ok = document.getElementById('profSaved'); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
     });
 
@@ -265,9 +296,9 @@
       e.preventDefault();
       var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
       err.hidden = true; ok.hidden = true;
-      if (pw.new.value !== pw.confirm.value) { err.textContent = 'Yeni şifreler eşleşmiyor.'; err.hidden = false; return; }
+      if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
       var r = H.changePassword(pw.old.value, pw.new.value);
-      if (!r.ok) { err.textContent = r.error; err.hidden = false; return; }
+      if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
       pw.reset(); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
     });
 
@@ -280,8 +311,8 @@
       var accepted = btn.dataset.act === 'accept';
       li.classList.add('resolved');
       li.querySelector('.req-actions').innerHTML = accepted
-        ? '<span class="badge badge-green">Kabul edildi ✓</span>'
-        : '<span class="badge badge-red">Reddedildi</span>';
+        ? '<span class="badge badge-green">' + T('dd.reqAccepted', 'Kabul edildi ✓') + '</span>'
+        : '<span class="badge badge-red">' + T('dd.reqRejected', 'Reddedildi') + '</span>';
       var left = reqList.querySelectorAll('li:not(.resolved)').length;
       reqBadge.textContent = left; if (left === 0) reqBadge.style.display = 'none';
     });

@@ -134,14 +134,14 @@
     var email = normEmail(data.email);
     var pw    = String(data.password || '');
 
-    if (name.length < 2)  return { ok: false, error: 'Lütfen geçerli bir ad soyad girin.' };
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: 'Lütfen geçerli bir e-posta adresi girin.' };
-    if (pw.length < 6)    return { ok: false, error: 'Şifre en az 6 karakter olmalıdır.' };
-    if (data.confirm !== undefined && pw !== data.confirm) return { ok: false, error: 'Şifreler eşleşmiyor.' };
-    if (findByEmail(email)) return { ok: false, error: 'Bu e-posta ile bir hesap zaten mevcut.' };
+    if (name.length < 2)  return { ok: false, key: 'err.nameInvalid', error: 'Lütfen geçerli bir ad soyad girin.' };
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, key: 'err.emailInvalid', error: 'Lütfen geçerli bir e-posta adresi girin.' };
+    if (pw.length < 6)    return { ok: false, key: 'err.pwLen', error: 'Şifre en az 6 karakter olmalıdır.' };
+    if (data.confirm !== undefined && pw !== data.confirm) return { ok: false, key: 'err.pwMismatch', error: 'Şifreler eşleşmiyor.' };
+    if (findByEmail(email)) return { ok: false, key: 'err.emailExists', error: 'Bu e-posta ile bir hesap zaten mevcut.' };
     if (role === 'doctor') {
-      if (!String(data.specialty || '').trim()) return { ok: false, error: 'Lütfen uzmanlık alanınızı girin.' };
-      if (!String(data.license || '').trim())   return { ok: false, error: 'Lütfen diploma / lisans numaranızı girin.' };
+      if (!String(data.specialty || '').trim()) return { ok: false, key: 'err.specialty', error: 'Lütfen uzmanlık alanınızı girin.' };
+      if (!String(data.license || '').trim())   return { ok: false, key: 'err.license', error: 'Lütfen diploma / lisans numaranızı girin.' };
     }
 
     var users = getUsers();
@@ -155,7 +155,7 @@
     saveUsers(users);
 
     if (role === 'doctor') {
-      return { ok: true, pending: true, user: user,
+      return { ok: true, pending: true, user: user, key: 'msg.docPending',
         message: 'Hesabınız oluşturuldu. Doktor hesapları, güvenlik için ekibimiz tarafından onaylandıktan sonra aktif olur.' };
     }
     setSession(user);
@@ -164,12 +164,12 @@
 
   function login(email, password, role) {
     var u = findByEmail(email);
-    if (!u) return { ok: false, error: 'Bu e-posta ile kayıtlı bir hesap bulunamadı.' };
-    if (u.pass !== hashPw(String(password || ''), u.salt)) return { ok: false, error: 'E-posta veya şifre hatalı.' };
-    if (role && u.role !== role) return { ok: false, error: 'Bu hesap "' + roleLabel(u.role) + '" türünde. Lütfen doğru sekmeyi seçin.' };
-    if (u.status === 'pending')   return { ok: false, error: 'Doktor hesabınız henüz onay bekliyor. Onaylandığında bilgilendirileceksiniz.' };
-    if (u.status === 'suspended') return { ok: false, error: 'Hesabınız askıya alınmış. Lütfen destek ekibiyle iletişime geçin.' };
-    if (u.status === 'deleted')   return { ok: false, error: 'Bu hesap mevcut değil.' };
+    if (!u) return { ok: false, key: 'err.noAccount', error: 'Bu e-posta ile kayıtlı bir hesap bulunamadı.' };
+    if (u.pass !== hashPw(String(password || ''), u.salt)) return { ok: false, key: 'err.badCreds', error: 'E-posta veya şifre hatalı.' };
+    if (role && u.role !== role) return { ok: false, key: 'err.wrongTab', data: { role: u.role }, error: 'Bu hesap "' + roleLabel(u.role) + '" türünde. Lütfen doğru sekmeyi seçin.' };
+    if (u.status === 'pending')   return { ok: false, key: 'err.pending', error: 'Doktor hesabınız henüz onay bekliyor. Onaylandığında bilgilendirileceksiniz.' };
+    if (u.status === 'suspended') return { ok: false, key: 'err.suspended', error: 'Hesabınız askıya alınmış. Lütfen destek ekibiyle iletişime geçin.' };
+    if (u.status === 'deleted')   return { ok: false, key: 'err.deleted', error: 'Bu hesap mevcut değil.' };
     setSession(u);
     return { ok: true, user: u };
   }
@@ -197,15 +197,15 @@
   }
   function verifyReset(email, code) {
     var r = read(RESET_KEY, null);
-    if (!r || r.email !== normEmail(email)) return { ok: false, error: 'Sıfırlama isteği bulunamadı. Lütfen tekrar deneyin.' };
-    if (String(code).trim() !== r.code)     return { ok: false, error: 'Doğrulama kodu hatalı.' };
-    if (Date.now() - r.at > 1000 * 60 * 30)  return { ok: false, error: 'Kodun süresi doldu. Lütfen yeni kod isteyin.' };
+    if (!r || r.email !== normEmail(email)) return { ok: false, key: 'err.resetNotFound', error: 'Sıfırlama isteği bulunamadı. Lütfen tekrar deneyin.' };
+    if (String(code).trim() !== r.code)     return { ok: false, key: 'err.codeWrong', error: 'Doğrulama kodu hatalı.' };
+    if (Date.now() - r.at > 1000 * 60 * 30)  return { ok: false, key: 'err.codeExpired', error: 'Kodun süresi doldu. Lütfen yeni kod isteyin.' };
     return { ok: true };
   }
   function resetPassword(email, code, newPassword) {
     var v = verifyReset(email, code);
     if (!v.ok) return v;
-    if (String(newPassword || '').length < 6) return { ok: false, error: 'Yeni şifre en az 6 karakter olmalıdır.' };
+    if (String(newPassword || '').length < 6) return { ok: false, key: 'err.newPwLen', error: 'Yeni şifre en az 6 karakter olmalıdır.' };
     var users = getUsers();
     var found = false;
     users.forEach(function (u) {
@@ -215,7 +215,7 @@
         found = true;
       }
     });
-    if (!found) return { ok: false, error: 'Hesap bulunamadı.' };
+    if (!found) return { ok: false, key: 'err.account', error: 'Hesap bulunamadı.' };
     saveUsers(users);
     try { localStorage.removeItem(RESET_KEY); } catch (_) {}
     return { ok: true };
@@ -224,7 +224,7 @@
   /* ---------- profile ---------- */
   function updateProfile(patch) {
     var s = getSession();
-    if (!s) return { ok: false, error: 'Oturum bulunamadı.' };
+    if (!s) return { ok: false, key: 'err.session', error: 'Oturum bulunamadı.' };
     var users = getUsers();
     var updated = null;
     users.forEach(function (u) {
@@ -235,16 +235,16 @@
         updated = u;
       }
     });
-    if (!updated) return { ok: false, error: 'Hesap bulunamadı.' };
+    if (!updated) return { ok: false, key: 'err.account', error: 'Hesap bulunamadı.' };
     saveUsers(users);
     setSession(updated);
     return { ok: true, user: updated };
   }
   function changePassword(oldPw, newPw) {
     var u = currentUser();
-    if (!u) return { ok: false, error: 'Oturum bulunamadı.' };
-    if (u.pass !== hashPw(String(oldPw || ''), u.salt)) return { ok: false, error: 'Mevcut şifre hatalı.' };
-    if (String(newPw || '').length < 6) return { ok: false, error: 'Yeni şifre en az 6 karakter olmalıdır.' };
+    if (!u) return { ok: false, key: 'err.session', error: 'Oturum bulunamadı.' };
+    if (u.pass !== hashPw(String(oldPw || ''), u.salt)) return { ok: false, key: 'err.currentPw', error: 'Mevcut şifre hatalı.' };
+    if (String(newPw || '').length < 6) return { ok: false, key: 'err.newPwLen', error: 'Yeni şifre en az 6 karakter olmalıdır.' };
     var users = getUsers();
     users.forEach(function (x) {
       if (x.id === u.id) { x.salt = randSalt(); x.pass = hashPw(newPw, x.salt); }

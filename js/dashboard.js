@@ -16,15 +16,21 @@
   }
 
   var els = {};
+  var currentSection = 'overview';
 
   function setTitle(section) {
     var link = document.querySelector('.side-link[data-section="' + section + '"]');
     if (link && els.pageTitle) {
-      els.pageTitle.textContent = link.textContent.replace(/\d+$/, '').trim();
+      /* prefer the dedicated label span (so the badge number isn't swept in);
+         fall back to the link's text minus any trailing badge digits */
+      var label = link.querySelector('.side-label');
+      els.pageTitle.textContent = label ? label.textContent.trim()
+                                        : link.textContent.replace(/\d+$/, '').trim();
     }
   }
 
   function showSection(section) {
+    currentSection = section;
     document.querySelectorAll('.panel').forEach(function (p) {
       p.classList.toggle('is-active', p.dataset.panel === section);
     });
@@ -57,8 +63,8 @@
 
     /* identity */
     refreshIdentity();
-    var crumb = document.getElementById('pageCrumb');
-    if (crumb && opts.role) crumb.textContent = opts.role + ' Paneli';
+    /* page crumb is translated via data-i18n in the HTML / i18n-core, so we
+       no longer overwrite it here. */
 
     /* section navigation (sidebar + any [data-section] + [data-jump]) */
     document.addEventListener('click', function (e) {
@@ -98,6 +104,13 @@
 
     /* esc closes sidebar */
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
+
+    /* reflect the current section in the page title (the HTML default is just
+       a Turkish placeholder); then keep it in sync when the language changes */
+    setTitle(currentSection);
+    if (global.HPI && typeof global.HPI.onChange === 'function') {
+      global.HPI.onChange(function () { setTitle(currentSection); });
+    }
   }
 
   global.Dashboard = {
