@@ -115,6 +115,16 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
   }
 
+  /* One-time reset: clear any previously-saved language so everyone starts
+     fresh on Turkish (older builds could leave a non-TR value stuck). New
+     choices made after this still persist across pages/reloads. */
+  try {
+    if (localStorage.getItem('treatperia.langv') !== '2') {
+      localStorage.removeItem(STORE);
+      localStorage.setItem('treatperia.langv', '2');
+    }
+  } catch (_) {}
+
   /* First visit → Turkish; otherwise keep the user's saved choice. */
   var saved = 'tr';
   try { saved = localStorage.getItem(STORE) || 'tr'; } catch (_) {}

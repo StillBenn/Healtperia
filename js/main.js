@@ -637,6 +637,16 @@
     document.addEventListener('click', (e) => { if (!langWrap.contains(e.target)) closeMenu(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
+    /* One-time reset: clear any previously-saved language so everyone starts
+       fresh on Turkish (older builds could leave a non-TR value stuck). New
+       choices made after this still persist across pages/reloads. */
+    try {
+      if (localStorage.getItem('treatperia.langv') !== '2') {
+        localStorage.removeItem('treatperia.lang');
+        localStorage.setItem('treatperia.langv', '2');
+      }
+    } catch (_) {}
+
     /* First visit (no saved language) → Turkish; otherwise keep the user's
        chosen language across page reloads. (Browser auto-translate is disabled
        via translate="no", so this never starts in a browser-influenced lang.) */
