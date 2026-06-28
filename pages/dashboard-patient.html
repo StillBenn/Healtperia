@@ -29,10 +29,10 @@
           <span class="side-label" data-i18n="acc.nav.overview">Genel Bakış</span></a>
         <a class="side-link" data-section="appointments" href="#appointments">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
-          <span class="side-label" data-i18n="dp.nav.appts">Randevularım</span><span class="side-badge" id="apptBadge">2</span></a>
+          <span class="side-label" data-i18n="dp.nav.appts">Randevularım</span><span class="side-badge" id="apptBadge" style="display:none"></span></a>
         <a class="side-link" data-section="messages" href="#messages">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge">3</span></a>
+          <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge" style="display:none"></span></a>
         <a class="side-link" data-section="records" href="#records">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 11v6M9 14h6"/></svg>
           <span class="side-label" data-i18n="dp.nav.records">Tıbbi Kayıtlar</span></a>
@@ -92,7 +92,7 @@
               <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
             </ul>
           </div>
-          <button class="icon-btn" data-i18n-aria="acc.aria.notifications" aria-label="Bildirimler"><span class="dot"></span>
+          <button class="icon-btn" data-i18n-aria="acc.aria.notifications" aria-label="Bildirimler">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
           </button>
           <div class="user-menu" id="userMenu">
@@ -138,39 +138,26 @@
           <div class="stat-grid">
             <article class="stat-card">
               <div class="stat-ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
-              <div class="stat-meta"><strong>2</strong><span data-i18n="dp.stat.upcoming">Yaklaşan Randevu</span></div>
+              <div class="stat-meta"><strong id="pUpcoming">0</strong><span data-i18n="dp.stat.upcoming">Yaklaşan Randevu</span></div>
             </article>
             <article class="stat-card">
               <div class="stat-ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-              <div class="stat-meta"><strong>3</strong><span data-i18n="dp.stat.unread">Okunmamış Mesaj</span></div>
+              <div class="stat-meta"><strong id="pUnread">0</strong><span data-i18n="dp.stat.unread">Okunmamış Mesaj</span></div>
             </article>
             <article class="stat-card">
               <div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
-              <div class="stat-meta"><strong>8</strong><span data-i18n="dp.stat.records">Tıbbi Kayıt</span></div>
+              <div class="stat-meta"><strong id="pTotal">0</strong><span>Toplam Randevu</span></div>
             </article>
             <article class="stat-card">
-              <div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></div>
-              <div class="stat-meta"><strong>5</strong><span data-i18n="dp.stat.favDoc">Favori Doktor</span></div>
+              <div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+              <div class="stat-meta"><strong id="pDocs">0</strong><span>Doktorlar</span></div>
             </article>
           </div>
 
           <div class="grid-2">
             <div class="card">
               <div class="card-head"><h3 data-i18n="dp.upcomingTitle">Yaklaşan Randevular</h3><button class="link-btn" data-jump="appointments" data-i18n="dp.seeAll">Tümünü gör</button></div>
-              <ul class="appt-list">
-                <li>
-                  <span class="appt-avatar">EY</span>
-                  <div class="appt-info"><strong>Dr. Elif Yılmaz</strong><span><span data-i18n="dp.spec.cardiology">Kardiyoloji</span> · <span data-i18n="dp.mode.online">Çevrimiçi görüşme</span></span></div>
-                  <div class="appt-when"><strong>28 Haz</strong><span>14:30</span></div>
-                  <span class="badge badge-blue" data-i18n="dp.badge.confirmed">Onaylandı</span>
-                </li>
-                <li>
-                  <span class="appt-avatar">MK</span>
-                  <div class="appt-info"><strong>Dr. Murat Kaya</strong><span><span data-i18n="dp.spec.dermatology">Dermatoloji</span> · <span data-i18n="dp.loc.acibadem">Acıbadem Kliniği</span></span></div>
-                  <div class="appt-when"><strong>03 Tem</strong><span>10:00</span></div>
-                  <span class="badge badge-amber" data-i18n="dp.badge.pending">Bekliyor</span>
-                </li>
-              </ul>
+              <ul class="appt-list" id="patientUpcoming"></ul>
             </div>
 
             <div class="card">
@@ -360,10 +347,31 @@
               '<div class="appt-info"><strong>' + esc(doc.name||'Doktor') + '</strong><span>' + esc(doc.specialty||'') + (a.treatment ? ' · ' + esc(a.treatment) : '') + '</span></div>' +
               '<div class="appt-when"><strong>' + d + '</strong></div>' + apptBadge(a.status) + '</li>';
           }).join('') || '<li style="display:block;color:var(--text-dim);padding:18px">Henüz randevunuz yok.</li>';
+          /* overview stats + upcoming preview + sidebar badge (real) */
+          var upcoming = appts.filter(function (a){ return a.status === 'pending' || a.status === 'accepted'; });
+          var el;
+          if ((el = document.getElementById('pUpcoming'))) el.textContent = upcoming.length;
+          if ((el = document.getElementById('pTotal')))    el.textContent = appts.length;
+          var ab = document.getElementById('apptBadge'); if (ab) { ab.textContent = upcoming.length; ab.style.display = upcoming.length ? '' : 'none'; }
+          var up = document.getElementById('patientUpcoming');
+          if (up) up.innerHTML = upcoming.slice(0, 5).map(function (a) {
+            var doc = a.doctor || {};
+            return '<li><span class="appt-avatar">' + esc(Dashboard.initials(doc.name)) + '</span><div class="appt-info"><strong>' + esc(doc.name||'Doktor') + '</strong><span>' + esc(doc.specialty||'') + (a.treatment ? ' · ' + esc(a.treatment) : '') + '</span></div>' + apptBadge(a.status) + '</li>';
+          }).join('') || '<li style="display:block;color:var(--text-dim);padding:18px">Yaklaşan randevunuz yok.</li>';
           var atabs = document.getElementById('apptTabs'); var active = atabs && atabs.querySelector('button.is-active'); if (active) active.click();
         });
       }
-      H.listDoctors().then(function (docs) { allDocs = docs; renderDocs(''); });
+      function refreshPatientMsg() {
+        return H.inbox().then(function (msgs) {
+          var unread = msgs.filter(function (m){ return m.receiver_id === user.id && !m.read; });
+          var senders = {}; unread.forEach(function (m){ senders[m.sender_id] = 1; });
+          var n = Object.keys(senders).length, el;
+          if ((el = document.getElementById('pUnread'))) el.textContent = n;
+          var mb = document.getElementById('msgBadge'); if (mb) { mb.textContent = n; mb.style.display = n ? '' : 'none'; }
+        });
+      }
+      refreshPatientMsg();
+      H.listDoctors().then(function (docs) { allDocs = docs; renderDocs(''); var el = document.getElementById('pDocs'); if (el) el.textContent = docs.length; });
       docGrid.addEventListener('click', function (e) {
         var m = e.target.closest('[data-msg]'); var b = e.target.closest('[data-book]');
         if (m && window.HPChat) { HPChat.openWith(m.dataset.msg, m.dataset.name); }
