@@ -322,7 +322,7 @@
       });
 
       /* ===== messaging (live) ===== */
-      if (window.HPChat) HPChat.mount(document.getElementById('patientChat'), { emptyText: 'Henüz mesajınız yok. "Doktor Bul" sekmesinden bir doktora mesaj gönderebilirsiniz.' });
+      if (window.HPChat) HPChat.mount(document.getElementById('patientChat'), { emptyText: 'Henüz mesajınız yok. "Doktor Bul" sekmesinden bir doktora mesaj gönderebilirsiniz.', onReadChange: refreshPatientMsg });
 
       /* ===== doctors (live) ===== */
       var docGrid = document.getElementById('patientDoctors');

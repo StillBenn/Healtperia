@@ -270,7 +270,7 @@
       });
 
       /* ===== messaging (live, realtime) ===== */
-      if (window.HPChat) HPChat.mount(document.getElementById('doctorChat'), { emptyText: 'Henüz mesajınız yok. Hastalarınız size yazdığında burada görünür.' });
+      if (window.HPChat) HPChat.mount(document.getElementById('doctorChat'), { emptyText: 'Henüz mesajınız yok. Hastalarınız size yazdığında burada görünür.', onReadChange: refreshMsgBadge });
       function refreshMsgBadge() {
         H.inbox().then(function (msgs) {
           var unread = msgs.filter(function (m){ return m.receiver_id === user.id && !m.read; });

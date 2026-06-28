@@ -22,13 +22,14 @@
   }
 
   var Chat = window.HPChat = {};
-  var root, me, peerId = null, peerName = '', sub = null, emptyText = 'Henüz mesaj yok.';
+  var root, me, peerId = null, peerName = '', sub = null, emptyText = 'Henüz mesaj yok.', onRead = null;
 
   Chat.mount = function (container, opts) {
     opts = opts || {};
     root = container;
     me = H.currentUser();
     emptyText = opts.emptyText || emptyText;
+    onRead = opts.onReadChange || null;   // panel callback to refresh the unread badge
     root.classList.add('hp-chat');
     renderInbox();
     /* realtime: any new message involving me → refresh */
@@ -36,10 +37,11 @@
     sub = H.subscribeMessages(function (payload) {
       var m = payload && payload.new; if (!m) return;
       var other = m.sender_id === me.id ? m.receiver_id : m.sender_id;
-      if (peerId && other === peerId) { appendBubble(m); H.markRead(peerId); }
-      else { renderInbox(); }
+      if (peerId && other === peerId) { appendBubble(m); H.markRead(peerId).then(notifyRead); }
+      else { renderInbox(); notifyRead(); }
     });
   };
+  function notifyRead() { if (onRead) { try { onRead(); } catch (_) {} } }
 
   /* open a conversation directly (e.g. from the doctor list "Message" button) */
   Chat.openWith = function (id, name) {
@@ -105,7 +107,7 @@
       s.innerHTML = msgs.map(bubbleHtml).join('') || '<div class="chat-empty sm"><p>' + esc(emptyText) + '</p></div>';
       s.scrollTop = s.scrollHeight;
     });
-    H.markRead(id);
+    H.markRead(id).then(notifyRead);   // reading clears the unread badge
   }
 
   function bubbleHtml(m) {
