@@ -248,63 +248,72 @@
     </div>
   </div>
 
-  <script src="../js/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-dash-doctor.js"></script>
   <script src="../js/i18n-core.js"></script>
   <script>
   (function () {
-    var H = window.Healthperia;
+    var H = window.HP;
     var T = function (k, fb) { return window.HPI ? window.HPI.t(k, fb) : fb; };
-    var user = H.guard('doctor');
-    if (!user) return;
-    Dashboard.init(user, { role: 'Doktor' });
 
-    var navSpec  = document.getElementById('navSpec');
-    var profSpec = document.getElementById('profSpec');
-    var pf = document.getElementById('profileForm');
-    /* show the doctor's specialty, or the localized word "Doctor" as a fallback */
-    function specOrRole() { return pf.specialty.value || user.specialty || T('acc.role.doctor', 'Doktor'); }
-    function paintSpec() {
-      var s = specOrRole();
-      if (navSpec) navSpec.textContent = s;
-      if (profSpec) profSpec.textContent = s;
-    }
-    pf.name.value = user.name || ''; pf.email.value = user.email || '';
-    pf.specialty.value = user.specialty || ''; pf.license.value = user.license || '';
-    pf.phone.value = user.phone || ''; pf.country.value = user.country || ''; pf.bio.value = user.bio || '';
-    document.getElementById('profName').textContent = user.name || '';
-    document.getElementById('profEmail').textContent = user.email || '';
-    paintSpec();
-    document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
-    /* keep the "Doctor" fallback localized when the language changes */
-    if (window.HPI && window.HPI.onChange) window.HPI.onChange(paintSpec);
+    H.guard('doctor').then(function (user) {
+      if (!user) return;
+      Dashboard.init(user, { role: 'Doktor' });
 
-    pf.addEventListener('submit', function (e) {
-      e.preventDefault();
-      H.updateProfile({ name: pf.name.value, specialty: pf.specialty.value, license: pf.license.value, phone: pf.phone.value, country: pf.country.value, bio: pf.bio.value });
-      Dashboard.refreshIdentity();
-      document.getElementById('profName').textContent = pf.name.value;
+      var navSpec  = document.getElementById('navSpec');
+      var profSpec = document.getElementById('profSpec');
+      var pf = document.getElementById('profileForm');
+      /* show the doctor's specialty, or the localized word "Doctor" as a fallback */
+      function specOrRole() { return pf.specialty.value || user.specialty || T('acc.role.doctor', 'Doktor'); }
+      function paintSpec() {
+        var s = specOrRole();
+        if (navSpec) navSpec.textContent = s;
+        if (profSpec) profSpec.textContent = s;
+      }
+      pf.name.value = user.name || ''; pf.email.value = user.email || '';
+      pf.specialty.value = user.specialty || ''; pf.license.value = user.license || '';
+      pf.phone.value = user.phone || ''; pf.country.value = user.country || ''; pf.bio.value = user.bio || '';
+      document.getElementById('profName').textContent = user.name || '';
+      document.getElementById('profEmail').textContent = user.email || '';
       paintSpec();
-      var ok = document.getElementById('profSaved'); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
+      document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+      /* keep the "Doctor" fallback localized when the language changes */
+      if (window.HPI && window.HPI.onChange) window.HPI.onChange(paintSpec);
+
+      pf.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = pf.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+        H.updateProfile({ name: pf.name.value, specialty: pf.specialty.value, license: pf.license.value, phone: pf.phone.value, country: pf.country.value, bio: pf.bio.value }).then(function () {
+          if (btn) btn.disabled = false;
+          Dashboard.refreshIdentity();
+          document.getElementById('profName').textContent = pf.name.value;
+          paintSpec();
+          var ok = document.getElementById('profSaved'); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
+        });
+      });
+
+      var pw = document.getElementById('pwForm');
+      pw.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
+        err.hidden = true; ok.hidden = true;
+        if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
+        var btn = pw.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+        H.changePassword(pw.old.value, pw.new.value).then(function (r) {
+          if (btn) btn.disabled = false;
+          if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
+          pw.reset(); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
+        });
+      });
     });
 
-    var pw = document.getElementById('pwForm');
-    pw.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
-      err.hidden = true; ok.hidden = true;
-      if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
-      var r = H.changePassword(pw.old.value, pw.new.value);
-      if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
-      pw.reset(); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
-    });
-
-    /* accept / reject requests (demo) */
+    /* accept / reject requests (static demo content for now) */
     var reqList = document.getElementById('reqList');
     var reqBadge = document.getElementById('reqBadge');
-    reqList.addEventListener('click', function (e) {
+    if (reqList) reqList.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-act]'); if (!btn) return;
       var li = btn.closest('li');
       var accepted = btn.dataset.act === 'accept';

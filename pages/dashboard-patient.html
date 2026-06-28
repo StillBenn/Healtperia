@@ -314,51 +314,60 @@
     </div>
   </div>
 
-  <script src="../js/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-dash-patient.js"></script>
   <script src="../js/i18n-core.js"></script>
   <script>
   (function () {
-    var H = window.Healthperia;
+    var H = window.HP;
     var T = function (k, fb) { return window.HPI ? window.HPI.t(k, fb) : fb; };
-    var user = H.guard('patient');
-    if (!user) return;
-    Dashboard.init(user, { role: 'Hasta' });
 
-    /* profile prefill */
-    var pf = document.getElementById('profileForm');
-    pf.name.value = user.name || '';
-    pf.email.value = user.email || '';
-    pf.phone.value = user.phone || '';
-    pf.country.value = user.country || '';
-    pf.city.value = user.city || '';
-    document.getElementById('profName').textContent = user.name || '';
-    document.getElementById('profEmail').textContent = user.email || '';
-    document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+    H.guard('patient').then(function (user) {
+      if (!user) return;
+      Dashboard.init(user, { role: 'Hasta' });
 
-    pf.addEventListener('submit', function (e) {
-      e.preventDefault();
-      H.updateProfile({ name: pf.name.value, phone: pf.phone.value, country: pf.country.value, city: pf.city.value });
-      Dashboard.refreshIdentity();
-      document.getElementById('profName').textContent = pf.name.value;
-      var ok = document.getElementById('profSaved'); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
+      /* profile prefill */
+      var pf = document.getElementById('profileForm');
+      pf.name.value = user.name || '';
+      pf.email.value = user.email || '';
+      pf.phone.value = user.phone || '';
+      pf.country.value = user.country || '';
+      pf.city.value = user.city || '';
+      document.getElementById('profName').textContent = user.name || '';
+      document.getElementById('profEmail').textContent = user.email || '';
+      document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+
+      pf.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = pf.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+        H.updateProfile({ name: pf.name.value, phone: pf.phone.value, country: pf.country.value, city: pf.city.value }).then(function () {
+          if (btn) btn.disabled = false;
+          Dashboard.refreshIdentity();
+          document.getElementById('profName').textContent = pf.name.value;
+          var ok = document.getElementById('profSaved'); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
+        });
+      });
+
+      /* change password */
+      var pw = document.getElementById('pwForm');
+      pw.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
+        err.hidden = true; ok.hidden = true;
+        if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
+        var btn = pw.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+        H.changePassword(pw.old.value, pw.new.value).then(function (r) {
+          if (btn) btn.disabled = false;
+          if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
+          pw.reset(); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
+        });
+      });
     });
 
-    /* change password */
-    var pw = document.getElementById('pwForm');
-    pw.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
-      err.hidden = true; ok.hidden = true;
-      if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
-      var r = H.changePassword(pw.old.value, pw.new.value);
-      if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
-      pw.reset(); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
-    });
-
-    /* appointment filter tabs */
+    /* appointment filter tabs (static demo content for now) */
     var tabs = document.getElementById('apptTabs');
     if (tabs) {
       tabs.addEventListener('click', function (e) {

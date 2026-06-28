@@ -7,7 +7,7 @@
 
 (function (global) {
   'use strict';
-  var H = global.Healthperia;
+  var H = global.HP;
 
   function initials(name) {
     if (!name) return 'HP';

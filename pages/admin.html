@@ -216,27 +216,24 @@
     </div>
   </div>
 
-  <script src="../js/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-admin.js"></script>
   <script src="../js/i18n-core.js"></script>
   <script>
   (function () {
-    var H = window.Healthperia;
+    var H = window.HP;
     var T = function (k, fb) { return window.HPI ? window.HPI.t(k, fb) : fb; };
-    var user = H.guard('admin');
-    if (!user) return;
-    Dashboard.init(user, { role: 'Yönetim' });
-
-    /* localized role / status labels (fall back to auth.js Turkish labels) */
-    var roleLabel   = function (r) { return T('acc.role.' + r, H.roleLabel(r)); };
-    var statusLabel = function (s) { return T('acc.status.' + s, H.statusLabel(s)); };
     var LOCALES = { tr:'tr-TR', en:'en-US', de:'de-DE', ru:'ru-RU', fr:'fr-FR', es:'es-ES', pt:'pt-BR', ar:'ar', nl:'nl-NL' };
     var ini = Dashboard.initials;
     var currentRoleFilter = 'all';
     var search = '';
+    var me = null;
 
+    var roleLabel   = function (r) { return T('acc.role.' + r, H.roleLabel(r)); };
+    var statusLabel = function (s) { return T('acc.status.' + s, H.statusLabel(s)); };
     function fmtDate(ts) {
       var loc = (window.HPI && LOCALES[window.HPI.lang]) || 'tr-TR';
       try { return new Date(ts).toLocaleDateString(loc, { day: '2-digit', month: 'short', year: 'numeric' }); }
@@ -251,119 +248,127 @@
     }
 
     function render() {
-      var users = H.listUsers();
-      var docs = users.filter(function (u){ return u.role === 'doctor'; });
-      var pats = users.filter(function (u){ return u.role === 'patient'; });
-      var pending = docs.filter(function (u){ return u.status === 'pending'; });
+      return H.listUsers().then(function (users) {
+        var docs = users.filter(function (u){ return u.role === 'doctor'; });
+        var pats = users.filter(function (u){ return u.role === 'patient'; });
+        var pending = docs.filter(function (u){ return u.status === 'pending'; });
 
-      /* stats */
-      document.getElementById('stTotal').textContent = users.length;
-      document.getElementById('stDocs').textContent = docs.length;
-      document.getElementById('stPatients').textContent = pats.length;
-      document.getElementById('stPending').textContent = pending.length;
-      var pb = document.getElementById('pendingBadge');
-      pb.textContent = pending.length; pb.style.display = pending.length ? '' : 'none';
+        document.getElementById('stTotal').textContent = users.length;
+        document.getElementById('stDocs').textContent = docs.length;
+        document.getElementById('stPatients').textContent = pats.length;
+        document.getElementById('stPending').textContent = pending.length;
+        var pb = document.getElementById('pendingBadge');
+        pb.textContent = pending.length; pb.style.display = pending.length ? '' : 'none';
 
-      /* recent */
-      var recent = users.slice().sort(function (a,b){ return b.createdAt - a.createdAt; }).slice(0, 5);
-      document.querySelector('#recentTable tbody').innerHTML = recent.map(function (u) {
-        return '<tr><td><span class="cell-user">' + avatar(u.name, u.role) + ' ' + u.name + '</span></td><td>' + roleLabel(u.role) + '</td><td>' + statusBadge(u.status) + '</td></tr>';
-      }).join('');
+        /* recent (listUsers already returns newest first) */
+        var recent = users.slice(0, 5);
+        document.querySelector('#recentTable tbody').innerHTML = recent.map(function (u) {
+          return '<tr><td><span class="cell-user">' + avatar(u.name, u.role) + ' ' + (u.name||'') + '</span></td><td>' + roleLabel(u.role) + '</td><td>' + statusBadge(u.status) + '</td></tr>';
+        }).join('');
 
-      /* pending approvals */
-      var pl = document.getElementById('pendingList');
-      if (!pending.length) {
-        pl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><p>' + T('ad.emptyPending', 'Onay bekleyen başvuru yok.') + '</p></div>';
-      } else {
-        pl.innerHTML = '<ul class="req-list">' + pending.map(function (u) {
-          return '<li data-id="' + u.id + '">' + avatar(u.name, u.role) +
-            '<div class="appt-info"><strong>' + u.name + '</strong><span>' + (u.specialty || T('ad.noSpecialty', 'Uzmanlık belirtilmedi')) + ' · ' + T('ad.licenseLabel', 'Lisans') + ': ' + (u.license || '—') + ' · ' + u.email + '</span></div>' +
-            '<div class="req-actions"><button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button><button class="btn-mini no" data-reject="' + u.id + '">' + T('ad.reject', 'Reddet') + '</button></div></li>';
-        }).join('') + '</ul>';
-      }
+        /* pending approvals */
+        var pl = document.getElementById('pendingList');
+        if (!pending.length) {
+          pl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><p>' + T('ad.emptyPending', 'Onay bekleyen başvuru yok.') + '</p></div>';
+        } else {
+          pl.innerHTML = '<ul class="req-list">' + pending.map(function (u) {
+            return '<li data-id="' + u.id + '">' + avatar(u.name, u.role) +
+              '<div class="appt-info"><strong>' + (u.name||'') + '</strong><span>' + (u.specialty || T('ad.noSpecialty', 'Uzmanlık belirtilmedi')) + ' · ' + T('ad.licenseLabel', 'Lisans') + ': ' + (u.license || '—') + ' · ' + u.email + '</span></div>' +
+              '<div class="req-actions"><button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button><button class="btn-mini no" data-reject="' + u.id + '">' + T('ad.reject', 'Reddet') + '</button></div></li>';
+          }).join('') + '</ul>';
+        }
 
-      /* users table */
-      var filtered = users.filter(function (u) {
-        if (currentRoleFilter !== 'all' && u.role !== currentRoleFilter) return false;
-        if (search && (u.name + ' ' + u.email).toLowerCase().indexOf(search) === -1) return false;
-        return true;
+        /* users table */
+        var filtered = users.filter(function (u) {
+          if (currentRoleFilter !== 'all' && u.role !== currentRoleFilter) return false;
+          if (search && ((u.name||'') + ' ' + (u.email||'')).toLowerCase().indexOf(search) === -1) return false;
+          return true;
+        });
+        document.querySelector('#usersTable tbody').innerHTML = filtered.map(function (u) {
+          var isSelf = me && u.id === me.id;
+          var actions = '';
+          if (u.status === 'pending') actions += '<button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button>';
+          if (u.status === 'suspended') actions += '<button class="btn-mini ok" data-activate="' + u.id + '">' + T('ad.activate', 'Aktifleştir') + '</button>';
+          else if (u.status === 'active' && !isSelf) actions += '<button class="btn-mini warn" data-suspend="' + u.id + '">' + T('ad.suspend', 'Askıya Al') + '</button>';
+          if (!isSelf) actions += '<button class="btn-mini no" data-delete="' + u.id + '">' + T('ad.delete', 'Sil') + '</button>';
+          if (isSelf) actions = '<span class="muted-line sm">' + T('ad.you', 'Bu sizsiniz') + '</span>';
+          return '<tr><td><span class="cell-user">' + avatar(u.name, u.role) + ' ' + (u.name||'') + '</span></td><td>' + u.email + '</td><td>' + roleLabel(u.role) + '</td><td>' + statusBadge(u.status) + '</td><td>' + fmtDate(u.created_at) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
+        }).join('') || '<tr><td colspan="6"><div class="empty-state sm"><p>' + T('ad.emptyUsers', 'Kayıt bulunamadı.') + '</p></div></td></tr>';
+
+        /* doctors table */
+        document.querySelector('#doctorsTable tbody').innerHTML = docs.map(function (u) {
+          var actions = u.status === 'pending'
+            ? '<button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button><button class="btn-mini no" data-reject="' + u.id + '">' + T('ad.reject', 'Reddet') + '</button>'
+            : (u.status === 'suspended' ? '<button class="btn-mini ok" data-activate="' + u.id + '">' + T('ad.activate', 'Aktifleştir') + '</button>' : '<button class="btn-mini warn" data-suspend="' + u.id + '">' + T('ad.suspend', 'Askıya Al') + '</button>');
+          return '<tr><td><span class="cell-user">' + avatar(u.name) + ' ' + (u.name||'') + '</span></td><td>' + (u.specialty || '—') + '</td><td>' + (u.license || '—') + '</td><td>' + statusBadge(u.status) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
+        }).join('') || '<tr><td colspan="5"><div class="empty-state sm"><p>' + T('ad.emptyDoctors', 'Doktor kaydı yok.') + '</p></div></td></tr>';
+
+        /* patients table */
+        document.querySelector('#patientsTable tbody').innerHTML = pats.map(function (u) {
+          var actions = u.status === 'suspended'
+            ? '<button class="btn-mini ok" data-activate="' + u.id + '">' + T('ad.activate', 'Aktifleştir') + '</button>'
+            : '<button class="btn-mini warn" data-suspend="' + u.id + '">' + T('ad.suspend', 'Askıya Al') + '</button>';
+          actions += '<button class="btn-mini no" data-delete="' + u.id + '">' + T('ad.delete', 'Sil') + '</button>';
+          return '<tr><td><span class="cell-user">' + avatar(u.name) + ' ' + (u.name||'') + '</span></td><td>' + u.email + '</td><td>' + (u.country || '—') + '</td><td>' + statusBadge(u.status) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
+        }).join('') || '<tr><td colspan="5"><div class="empty-state sm"><p>' + T('ad.emptyPatients', 'Hasta kaydı yok.') + '</p></div></td></tr>';
       });
-      document.querySelector('#usersTable tbody').innerHTML = filtered.map(function (u) {
-        var isSelf = u.id === user.id;
-        var actions = '';
-        if (u.status === 'pending') actions += '<button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button>';
-        if (u.status === 'suspended') actions += '<button class="btn-mini ok" data-activate="' + u.id + '">' + T('ad.activate', 'Aktifleştir') + '</button>';
-        else if (u.status === 'active' && !isSelf) actions += '<button class="btn-mini warn" data-suspend="' + u.id + '">' + T('ad.suspend', 'Askıya Al') + '</button>';
-        if (!isSelf) actions += '<button class="btn-mini no" data-delete="' + u.id + '">' + T('ad.delete', 'Sil') + '</button>';
-        if (isSelf) actions = '<span class="muted-line sm">' + T('ad.you', 'Bu sizsiniz') + '</span>';
-        return '<tr><td><span class="cell-user">' + avatar(u.name, u.role) + ' ' + u.name + '</span></td><td>' + u.email + '</td><td>' + roleLabel(u.role) + '</td><td>' + statusBadge(u.status) + '</td><td>' + fmtDate(u.createdAt) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
-      }).join('') || '<tr><td colspan="6"><div class="empty-state sm"><p>' + T('ad.emptyUsers', 'Kayıt bulunamadı.') + '</p></div></td></tr>';
-
-      /* doctors table */
-      document.querySelector('#doctorsTable tbody').innerHTML = docs.map(function (u) {
-        var actions = u.status === 'pending'
-          ? '<button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button><button class="btn-mini no" data-reject="' + u.id + '">' + T('ad.reject', 'Reddet') + '</button>'
-          : (u.status === 'suspended' ? '<button class="btn-mini ok" data-activate="' + u.id + '">' + T('ad.activate', 'Aktifleştir') + '</button>' : '<button class="btn-mini warn" data-suspend="' + u.id + '">' + T('ad.suspend', 'Askıya Al') + '</button>');
-        return '<tr><td><span class="cell-user">' + avatar(u.name) + ' ' + u.name + '</span></td><td>' + (u.specialty || '—') + '</td><td>' + (u.license || '—') + '</td><td>' + statusBadge(u.status) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
-      }).join('') || '<tr><td colspan="5"><div class="empty-state sm"><p>' + T('ad.emptyDoctors', 'Doktor kaydı yok.') + '</p></div></td></tr>';
-
-      /* patients table */
-      document.querySelector('#patientsTable tbody').innerHTML = pats.map(function (u) {
-        var actions = u.status === 'suspended'
-          ? '<button class="btn-mini ok" data-activate="' + u.id + '">' + T('ad.activate', 'Aktifleştir') + '</button>'
-          : '<button class="btn-mini warn" data-suspend="' + u.id + '">' + T('ad.suspend', 'Askıya Al') + '</button>';
-        actions += '<button class="btn-mini no" data-delete="' + u.id + '">' + T('ad.delete', 'Sil') + '</button>';
-        return '<tr><td><span class="cell-user">' + avatar(u.name) + ' ' + u.name + '</span></td><td>' + u.email + '</td><td>' + (u.country || '—') + '</td><td>' + statusBadge(u.status) + '</td><td><div class="row-actions">' + actions + '</div></td></tr>';
-      }).join('') || '<tr><td colspan="5"><div class="empty-state sm"><p>' + T('ad.emptyPatients', 'Hasta kaydı yok.') + '</p></div></td></tr>';
     }
 
-    /* delegated actions */
+    /* delegated row actions */
     document.addEventListener('click', function (e) {
       var t = e.target.closest('[data-approve],[data-reject],[data-suspend],[data-activate],[data-delete]');
       if (!t) return;
-      if (t.dataset.approve)  H.approveDoctor(t.dataset.approve);
-      else if (t.dataset.reject)   H.rejectDoctor(t.dataset.reject);
-      else if (t.dataset.suspend)  { if (confirm(T('ad.confirmSuspend', 'Bu kullanıcıyı askıya almak istiyor musunuz?'))) H.setStatus(t.dataset.suspend, 'suspended'); else return; }
-      else if (t.dataset.activate) H.setStatus(t.dataset.activate, 'active');
-      else if (t.dataset.delete)   { if (confirm(T('ad.confirmDelete', 'Bu kullanıcıyı silmek istiyor musunuz? Bu işlem geri alınamaz.'))) H.removeUser(t.dataset.delete); else return; }
+      var p = null;
+      if (t.dataset.approve)  p = H.approveDoctor(t.dataset.approve);
+      else if (t.dataset.reject)   p = H.rejectDoctor(t.dataset.reject);
+      else if (t.dataset.suspend)  { if (!confirm(T('ad.confirmSuspend', 'Bu kullanıcıyı askıya almak istiyor musunuz?'))) return; p = H.setStatus(t.dataset.suspend, 'suspended'); }
+      else if (t.dataset.activate) p = H.setStatus(t.dataset.activate, 'active');
+      else if (t.dataset.delete)   { if (!confirm(T('ad.confirmDelete', 'Bu kullanıcıyı silmek istiyor musunuz? Bu işlem geri alınamaz.'))) return; p = H.removeUser(t.dataset.delete); }
+      if (p) p.then(render);
+    });
+
+    H.guard('admin').then(function (user) {
+      if (!user) return;
+      me = user;
+      Dashboard.init(user, { role: 'Yönetim' });
       render();
-    });
+      if (window.HPI && window.HPI.onChange) window.HPI.onChange(render);
 
-    /* role filter */
-    var rf = document.getElementById('roleFilter');
-    rf.addEventListener('click', function (e) {
-      var b = e.target.closest('button'); if (!b) return;
-      rf.querySelectorAll('button').forEach(function (x){ x.classList.remove('is-active'); });
-      b.classList.add('is-active'); currentRoleFilter = b.dataset.role; render();
-    });
+      /* role filter */
+      var rf = document.getElementById('roleFilter');
+      rf.addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        rf.querySelectorAll('button').forEach(function (x){ x.classList.remove('is-active'); });
+        b.classList.add('is-active'); currentRoleFilter = b.dataset.role; render();
+      });
 
-    /* search */
-    document.getElementById('userSearch').addEventListener('input', function (e) {
-      search = e.target.value.trim().toLowerCase(); render();
-    });
+      /* search */
+      document.getElementById('userSearch').addEventListener('input', function (e) {
+        search = e.target.value.trim().toLowerCase(); render();
+      });
 
-    /* change password */
-    var pw = document.getElementById('pwForm');
-    pw.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
-      err.hidden = true; ok.hidden = true;
-      if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
-      var r = H.changePassword(pw.old.value, pw.new.value);
-      if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
-      pw.reset(); ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 2500);
-    });
+      /* change password */
+      var pw = document.getElementById('pwForm');
+      pw.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = document.getElementById('pwErr'); var ok = document.getElementById('pwSaved');
+        err.hidden = true; ok.hidden = true;
+        if (pw.new.value !== pw.confirm.value) { err.textContent = T('acc.pw.mismatch', 'Yeni şifreler eşleşmiyor.'); err.hidden = false; return; }
+        var btn = pw.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+        H.changePassword(pw.old.value, pw.new.value).then(function (r) {
+          if (btn) btn.disabled = false;
+          if (!r.ok) { err.textContent = r.key ? T(r.key, r.error) : r.error; err.hidden = false; return; }
+          pw.reset(); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
+        });
+      });
 
-    /* reset demo data */
-    document.getElementById('resetData').addEventListener('click', function () {
-      if (!confirm(T('ad.confirmReset', 'Tüm demo verileri silinecek ve çıkış yapılacak. Emin misiniz?'))) return;
-      try { localStorage.removeItem('healthperia.users'); localStorage.removeItem('healthperia.session'); localStorage.removeItem('healthperia.reset'); } catch (_) {}
-      location.href = 'auth.html';
+      /* danger zone → sign out (real data lives in Supabase, not localStorage) */
+      var rd = document.getElementById('resetData');
+      if (rd) rd.addEventListener('click', function () {
+        if (!confirm(T('ad.confirmReset', 'Tüm demo verileri silinecek ve çıkış yapılacak. Emin misiniz?'))) return;
+        H.logout();
+      });
     });
-
-    render();
-    /* re-render the JS-built tables (role/status labels, actions) on language change */
-    if (window.HPI && window.HPI.onChange) window.HPI.onChange(render);
   })();
   </script>
 </body>

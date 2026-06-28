@@ -281,14 +281,15 @@
     </section>
   </main>
 
-  <script src="../js/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-auth.js"></script>
   <script src="../js/i18n-core.js"></script>
   <script>
   (function () {
     'use strict';
-    var H = window.Healthperia;
+    var H = window.HP;
     var I = window.HPI;
     var T = function (k, fb) { return I ? I.t(k, fb) : fb; };
     /* turn an auth.js result {key,data,error} into a localized message */
@@ -300,8 +301,10 @@
     }
 
     /* already logged in? → straight to the right dashboard */
-    var cu = H.currentUser();
-    if (cu) { location.replace(H.dashboardFor(cu.role)); return; }
+    H.ready.then(function () {
+      var cu = H.currentUser();
+      if (cu) location.replace(H.dashboardFor(cu.role));
+    });
 
     var loginForm = document.getElementById('loginForm');
     var regForm   = document.getElementById('registerForm');
@@ -443,9 +446,12 @@
       e.preventDefault();
       clearAlert();
       var role = state.admin ? 'admin' : state.role;
-      var r = H.login(loginForm.email.value, loginForm.password.value, role);
-      if (!r.ok) { showAlert(tErr(r)); return; }
-      goDash(r.user);
+      var sbtn = loginForm.querySelector('.auth-submit'); if (sbtn) sbtn.disabled = true;
+      H.login(loginForm.email.value, loginForm.password.value, role).then(function (r) {
+        if (sbtn) sbtn.disabled = false;
+        if (!r.ok) { showAlert(tErr(r)); return; }
+        goDash(r.user);
+      });
     });
 
     /* ---- submit: register ---- */
@@ -453,7 +459,8 @@
       e.preventDefault();
       clearAlert();
       if (!regForm.terms.checked) { showAlert(T('au.alert.terms', 'Devam etmek için şartları kabul etmelisiniz.')); return; }
-      var r = H.register({
+      var sbtn = regForm.querySelector('.auth-submit'); if (sbtn) sbtn.disabled = true;
+      H.register({
         role: state.role,
         name: regForm.name.value,
         email: regForm.email.value,
@@ -463,16 +470,18 @@
         confirm: regForm.confirm.value,
         specialty: regForm.specialty.value,
         license: regForm.license.value
+      }).then(function (r) {
+        if (sbtn) sbtn.disabled = false;
+        if (!r.ok) { showAlert(tErr(r)); return; }
+        if (r.pending) {
+          showAlert(tErr(r), 'success');
+          setMode('login');
+          segBtns[1].click();                  // doctor tab for the later login
+          loginForm.email.value = regForm.email.value;
+          return;
+        }
+        goDash(r.user);
       });
-      if (!r.ok) { showAlert(tErr(r)); return; }
-      if (r.pending) {
-        showAlert(tErr(r), 'success');
-        setMode('login');
-        segBtns[1].click();                    // doctor tab for the later login
-        loginForm.email.value = regForm.email.value;
-        return;
-      }
-      goDash(r.user);
     });
 
     function goDash(user) {
