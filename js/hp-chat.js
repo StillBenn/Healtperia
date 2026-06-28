@@ -110,10 +110,13 @@
 
   function bubbleHtml(m) {
     var mine = m.sender_id === me.id;
-    return '<div class="chat-bubble ' + (mine ? 'mine' : 'theirs') + '"><p>' + esc(m.body) + '</p><time>' + timeShort(m.created_at) + '</time></div>';
+    return '<div class="chat-bubble ' + (mine ? 'mine' : 'theirs') + '" data-mid="' + m.id + '"><p>' + esc(m.body) + '</p><time>' + timeShort(m.created_at) + '</time></div>';
   }
   function appendBubble(m) {
     var s = root.querySelector('#chatStream'); if (!s) return;
+    /* skip if this message is already shown (optimistic send + realtime event
+       both fire for your own message) */
+    if (m.id && s.querySelector('[data-mid="' + m.id + '"]')) return;
     var empty = s.querySelector('.chat-empty'); if (empty) s.innerHTML = '';
     s.insertAdjacentHTML('beforeend', bubbleHtml(m));
     s.scrollTop = s.scrollHeight;
