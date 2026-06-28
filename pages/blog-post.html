@@ -172,9 +172,35 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg>
   </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
   <script src="../js/i18n-post.js"></script>
   <script src="../js/main.js"></script>
   <script>
+    /* dynamic post: blog-post.html?id=<uuid> loads a Supabase post */
+    (function () {
+      var id = new URLSearchParams(location.search).get('id');
+      if (!id || !window.HP) return;
+      function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+      HP.getPost(id).then(function (p) {
+        if (!p) return;
+        var titleEl = document.querySelector('.post-title');
+        if (titleEl) { titleEl.removeAttribute('data-i18n'); titleEl.textContent = p.title; }
+        document.title = p.title + ' — Healthperia Blog';
+        var crumb = document.querySelector('.post-breadcrumb [data-i18n="post.crumbCat"]');
+        if (crumb) { crumb.removeAttribute('data-i18n'); crumb.textContent = p.section || 'Blog'; }
+        var body = document.querySelector('.post-body');
+        if (body) {
+          var paras = (p.body || '').split(/\n+/).filter(function (x){ return x.trim(); });
+          var date = ''; try { date = new Date(p.created_at).toLocaleDateString('tr-TR'); } catch (_) {}
+          body.innerHTML = (paras.length ? paras.map(function (t){ return '<p>' + esc(t) + '</p>'; }).join('')
+                                          : '<p>' + esc(p.body || '') + '</p>') +
+            '<div class="post-author"><div class="pa-meta"><span class="pa-date">' + date + '</span></div></div>';
+        }
+        var rel = document.querySelector('.post-related'); if (rel) rel.style.display = 'none';
+      });
+    })();
+
     /* click a side thumbnail → it becomes the main image (swap) */
     (function () {
       var main = document.querySelector('.pg-main');

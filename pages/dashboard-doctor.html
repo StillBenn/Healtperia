@@ -145,14 +145,7 @@
         <section class="panel" data-panel="requests">
           <div class="card">
             <div class="card-head"><h3 data-i18n="dd.nav.requests">Randevu Talepleri</h3></div>
-            <ul class="req-list" id="reqList">
-              <li><span class="appt-avatar">AD</span><div class="appt-info"><strong>Ahmet Demir</strong><span data-i18n="dd.req1">Kardiyoloji kontrolü · 28 Haz, 14:30 talep edildi</span></div>
-                <div class="req-actions"><button class="btn-mini ok" data-act="accept" data-i18n="dd.accept">Kabul</button><button class="btn-mini no" data-act="reject" data-i18n="dd.reject">Reddet</button></div></li>
-              <li><span class="appt-avatar">ZA</span><div class="appt-info"><strong>Zeynep Acar</strong><span data-i18n="dd.req2">İlk muayene · 29 Haz, 11:00 talep edildi</span></div>
-                <div class="req-actions"><button class="btn-mini ok" data-act="accept" data-i18n="dd.accept">Kabul</button><button class="btn-mini no" data-act="reject" data-i18n="dd.reject">Reddet</button></div></li>
-              <li><span class="appt-avatar">CÖ</span><div class="appt-info"><strong>Can Öztürk</strong><span data-i18n="dd.req3">Tahlil değerlendirme · 30 Haz, 16:00 talep edildi</span></div>
-                <div class="req-actions"><button class="btn-mini ok" data-act="accept" data-i18n="dd.accept">Kabul</button><button class="btn-mini no" data-act="reject" data-i18n="dd.reject">Reddet</button></div></li>
-            </ul>
+            <ul class="req-list" id="reqList"></ul>
           </div>
         </section>
 
@@ -195,11 +188,7 @@
         <section class="panel" data-panel="messages">
           <div class="card">
             <div class="card-head"><h3 data-i18n="acc.nav.messages">Mesajlar</h3></div>
-            <ul class="msg-list">
-              <li class="unread"><span class="appt-avatar">AD</span><div class="msg-info"><strong>Ahmet Demir</strong><span data-i18n="dd.msg1">Doktor bey, ilacı aç karnına mı almalıyım?</span></div><time data-i18n="dd.t.1h">1 sa</time></li>
-              <li class="unread"><span class="appt-avatar">ZA</span><div class="msg-info"><strong>Zeynep Acar</strong><span data-i18n="dd.msg2">Randevu için teşekkürler, görüşmek üzere.</span></div><time data-i18n="dd.t.4h">4 sa</time></li>
-              <li><span class="appt-avatar">EŞ</span><div class="msg-info"><strong>Elif Şahin</strong><span data-i18n="dd.msg3">Tahlil sonuçlarımı yükledim.</span></div><time data-i18n="dd.t.1d">1 gün</time></li>
-            </ul>
+            <div id="doctorChat"></div>
           </div>
         </section>
 
@@ -250,6 +239,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/hp-api.js"></script>
+  <script src="../js/hp-chat.js"></script>
   <script src="../js/dashboard.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-dash-doctor.js"></script>
@@ -258,6 +248,7 @@
   (function () {
     var H = window.HP;
     var T = function (k, fb) { return window.HPI ? window.HPI.t(k, fb) : fb; };
+    function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
 
     H.guard('doctor').then(function (user) {
       if (!user) return;
@@ -308,21 +299,43 @@
           pw.reset(); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
         });
       });
-    });
 
-    /* accept / reject requests (static demo content for now) */
-    var reqList = document.getElementById('reqList');
-    var reqBadge = document.getElementById('reqBadge');
-    if (reqList) reqList.addEventListener('click', function (e) {
-      var btn = e.target.closest('[data-act]'); if (!btn) return;
-      var li = btn.closest('li');
-      var accepted = btn.dataset.act === 'accept';
-      li.classList.add('resolved');
-      li.querySelector('.req-actions').innerHTML = accepted
-        ? '<span class="badge badge-green">' + T('dd.reqAccepted', 'Kabul edildi ✓') + '</span>'
-        : '<span class="badge badge-red">' + T('dd.reqRejected', 'Reddedildi') + '</span>';
-      var left = reqList.querySelectorAll('li:not(.resolved)').length;
-      reqBadge.textContent = left; if (left === 0) reqBadge.style.display = 'none';
+      /* ===== messaging (live, realtime) ===== */
+      if (window.HPChat) HPChat.mount(document.getElementById('doctorChat'), { emptyText: 'Henüz mesajınız yok. Hastalarınız size yazdığında burada görünür.' });
+
+      /* ===== appointment requests (live) ===== */
+      var reqList = document.getElementById('reqList');
+      var reqBadge = document.getElementById('reqBadge');
+      function fmtD(ts){ try { return ts ? new Date(ts).toLocaleDateString('tr-TR') : ''; } catch (_) { return ''; } }
+      function renderRequests() {
+        return H.myAppointments().then(function (appts) {
+          var pending = appts.filter(function (a){ return a.status === 'pending'; });
+          if (reqBadge) { reqBadge.textContent = pending.length; reqBadge.style.display = pending.length ? '' : 'none'; }
+          reqList.innerHTML = appts.map(function (a) {
+            var pat = a.patient || {};
+            var meta = (a.treatment ? esc(a.treatment) + ' · ' : '') + fmtD(a.created_at) + (pat.country ? ' · ' + esc(pat.country) : '');
+            var tail;
+            if (a.status === 'pending') {
+              tail = '<div class="req-actions"><button class="btn-mini ok" data-acc="' + a.id + '">' + T('dd.accept','Kabul') + '</button>' +
+                     '<button class="btn-mini no" data-rej="' + a.id + '">' + T('dd.reject','Reddet') + '</button></div>';
+            } else if (a.status === 'accepted') {
+              tail = '<div class="req-actions"><span class="badge badge-green">' + T('dd.reqAccepted','Kabul edildi ✓') + '</span></div>';
+            } else if (a.status === 'rejected') {
+              tail = '<div class="req-actions"><span class="badge badge-red">' + T('dd.reqRejected','Reddedildi') + '</span></div>';
+            } else {
+              tail = '<div class="req-actions"><span class="badge badge-blue">' + esc(a.status) + '</span></div>';
+            }
+            return '<li><span class="appt-avatar">' + esc(Dashboard.initials(pat.name)) + '</span>' +
+              '<div class="appt-info"><strong>' + esc(pat.name||'Hasta') + '</strong><span>' + meta + '</span></div>' + tail + '</li>';
+          }).join('') || '<li style="display:block;color:var(--text-dim);padding:18px">Henüz randevu talebiniz yok.</li>';
+        });
+      }
+      reqList.addEventListener('click', function (e) {
+        var ac = e.target.closest('[data-acc]'); var rj = e.target.closest('[data-rej]');
+        if (ac) { ac.disabled = true; H.setAppointmentStatus(ac.dataset.acc, 'accepted').then(renderRequests); }
+        else if (rj) { rj.disabled = true; H.setAppointmentStatus(rj.dataset.rej, 'rejected').then(renderRequests); }
+      });
+      renderRequests();
     });
   })();
   </script>

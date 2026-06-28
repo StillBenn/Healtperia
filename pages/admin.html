@@ -181,15 +181,22 @@
 
         <!-- CONTENT -->
         <section class="panel" data-panel="content">
+          <div class="card" id="postEditorCard" hidden>
+            <div class="card-head"><h3 id="postEditorTitle">Yeni Yazı</h3></div>
+            <form id="postForm" class="form-grid">
+              <input type="hidden" name="id" />
+              <label class="field span-2"><span class="field-label">Başlık</span><span class="field-box"><input name="title" type="text" required placeholder="Yazı başlığı" /></span></label>
+              <label class="field"><span class="field-label">Bölüm</span><span class="field-box"><input name="section" type="text" value="Blog" /></span></label>
+              <label class="field"><span class="field-label">Durum</span><span class="field-box"><select name="status"><option value="draft">Taslak</option><option value="published">Yayında</option></select></span></label>
+              <label class="field span-2"><span class="field-label">İçerik</span><span class="field-box"><textarea name="body" rows="8" placeholder="Yazı içeriği…"></textarea></span></label>
+              <div class="form-actions span-2"><button type="button" class="btn-ghost sm" id="postCancel">İptal</button><button type="submit" class="btn-primary sm">Kaydet</button><span class="save-ok" id="postSaved" hidden>Kaydedildi ✓</span></div>
+            </form>
+          </div>
           <div class="card">
-            <div class="card-head"><h3 data-i18n="ad.contentTitle">İçerik & Blog Yönetimi</h3><button class="btn-primary sm" data-i18n="ad.newPost">Yeni Yazı</button></div>
+            <div class="card-head"><h3 data-i18n="ad.contentTitle">İçerik & Blog Yönetimi</h3><button class="btn-primary sm" id="newPostBtn" data-i18n="ad.newPost">Yeni Yazı</button></div>
             <div class="table-wrap"><table class="data-table">
               <thead><tr><th data-i18n="ad.th.title">Başlık</th><th data-i18n="ad.th.section">Bölüm</th><th data-i18n="ad.th.status">Durum</th><th data-i18n="ad.th.action">İşlem</th></tr></thead>
-              <tbody>
-                <tr><td data-i18n="ad.post1">Yurt dışında tedavi rehberi</td><td data-i18n="ad.section.blog">Blog</td><td><span class="badge badge-green" data-i18n="ad.pubStatus.live">Yayında</span></td><td><button class="link-btn" data-i18n="ad.editBtn">Düzenle</button></td></tr>
-                <tr><td data-i18n="ad.post2">Doktor seçerken dikkat edilmesi gerekenler</td><td data-i18n="ad.section.blog">Blog</td><td><span class="badge badge-green" data-i18n="ad.pubStatus.live">Yayında</span></td><td><button class="link-btn" data-i18n="ad.editBtn">Düzenle</button></td></tr>
-                <tr><td data-i18n="ad.post3">Sağlık turizmi maliyetleri 2026</td><td data-i18n="ad.section.blog">Blog</td><td><span class="badge badge-amber" data-i18n="ad.pubStatus.draft">Taslak</span></td><td><button class="link-btn" data-i18n="ad.editBtn">Düzenle</button></td></tr>
-              </tbody>
+              <tbody id="blogTableBody"></tbody>
             </table></div>
           </div>
         </section>
@@ -368,6 +375,59 @@
         if (!confirm(T('ad.confirmReset', 'Tüm demo verileri silinecek ve çıkış yapılacak. Emin misiniz?'))) return;
         H.logout();
       });
+
+      /* ---- blog / content management (live) ---- */
+      var editorCard = document.getElementById('postEditorCard');
+      var postForm = document.getElementById('postForm');
+      var blogBody = document.getElementById('blogTableBody');
+      var postCache = [];
+      function escapeHtml(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function (c){ return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+
+      function renderBlog() {
+        return H.listPosts().then(function (posts) {
+          postCache = posts;
+          blogBody.innerHTML = posts.map(function (p) {
+            var badge = p.status === 'published'
+              ? '<span class="badge badge-green">' + T('ad.pubStatus.live', 'Yayında') + '</span>'
+              : '<span class="badge badge-amber">' + T('ad.pubStatus.draft', 'Taslak') + '</span>';
+            return '<tr><td>' + escapeHtml(p.title) + '</td><td>' + escapeHtml(p.section || 'Blog') + '</td><td>' + badge + '</td>' +
+              '<td><div class="row-actions"><button class="btn-mini ok" data-postedit="' + p.id + '">' + T('ad.editBtn', 'Düzenle') + '</button>' +
+              '<button class="btn-mini no" data-postdel="' + p.id + '">' + T('ad.delete', 'Sil') + '</button></div></td></tr>';
+          }).join('') || '<tr><td colspan="4"><div class="empty-state sm"><p>Henüz yazı yok.</p></div></td></tr>';
+        });
+      }
+      function openEditor(post) {
+        postForm.id.value = post ? post.id : '';
+        postForm.title.value = post ? post.title : '';
+        postForm.section.value = post ? (post.section || 'Blog') : 'Blog';
+        postForm.status.value = post ? post.status : 'draft';
+        postForm.body.value = post ? (post.body || '') : '';
+        document.getElementById('postEditorTitle').textContent = post ? 'Yazıyı Düzenle' : 'Yeni Yazı';
+        editorCard.hidden = false;
+        editorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      document.getElementById('newPostBtn').addEventListener('click', function () { openEditor(null); });
+      document.getElementById('postCancel').addEventListener('click', function () { editorCard.hidden = true; });
+      blogBody.addEventListener('click', function (e) {
+        var ed = e.target.closest('[data-postedit]'); var dl = e.target.closest('[data-postdel]');
+        if (ed) { var p = postCache.filter(function (x){ return x.id === ed.dataset.postedit; })[0]; if (p) openEditor(p); }
+        else if (dl) { if (confirm('Bu yazıyı silmek istiyor musunuz?')) H.deletePost(dl.dataset.postdel).then(renderBlog); }
+      });
+      postForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = { title: postForm.title.value.trim(), section: postForm.section.value.trim() || 'Blog', body: postForm.body.value, status: postForm.status.value };
+        if (!data.title) return;
+        var id = postForm.id.value;
+        var btn = postForm.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+        (id ? H.updatePost(id, data) : H.createPost(data)).then(function (r) {
+          if (btn) btn.disabled = false;
+          if (r && r.ok === false) { alert(r.error || 'Hata'); return; }
+          editorCard.hidden = true;
+          var ps = document.getElementById('postSaved'); if (ps) { ps.hidden = false; setTimeout(function(){ ps.hidden = true; }, 2000); }
+          renderBlog();
+        });
+      });
+      renderBlog();
     });
   })();
   </script>

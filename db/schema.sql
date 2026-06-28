@@ -149,6 +149,10 @@ drop policy if exists blog_delete on public.blog_posts;
 
 create policy blog_select on public.blog_posts for select to authenticated
   using (status = 'published' or author_id = auth.uid() or public.is_admin());
+-- public (logged-out) visitors can read PUBLISHED posts on the blog pages
+drop policy if exists blog_select_public on public.blog_posts;
+create policy blog_select_public on public.blog_posts for select to anon
+  using (status = 'published');
 create policy blog_insert on public.blog_posts for insert to authenticated
   with check (author_id = auth.uid()
               and exists (select 1 from public.profiles where id = auth.uid() and role in ('doctor','admin')));

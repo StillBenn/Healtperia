@@ -3241,3 +3241,48 @@ body.help-body { overflow: hidden; height: 100vh; }
 }
 .card-title{ text-align:center; width:100%; }
 .card-desc{ text-align:center; width:100%; max-width:94%; margin-left:auto; margin-right:auto; }
+
+/* ============================================================
+   PANEL CHAT (patient ↔ doctor messaging)
+   ============================================================ */
+.hp-chat { display: flex; flex-direction: column; min-height: 360px; }
+.chat-loading, .chat-empty { padding: 40px 16px; text-align: center; color: var(--text-dim); }
+.chat-empty.sm { padding: 24px; }
+
+.chat-threads { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.chat-thread {
+  display: flex; align-items: center; gap: 12px; padding: 12px 8px;
+  border-bottom: 1px solid var(--line); cursor: pointer; border-radius: 10px;
+  transition: background 0.18s ease;
+}
+.chat-thread:hover { background: rgba(78,168,255,0.08); }
+.chat-thread-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.chat-thread-meta strong { color: var(--white); font-size: 14px; }
+.chat-thread-meta span { color: var(--text-muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-thread-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: 0 0 auto; }
+.chat-thread-side time { color: var(--text-dim); font-size: 11px; }
+.chat-unread { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 999px; display: grid; place-items: center; padding: 0 5px; }
+
+.chat-head { display: flex; align-items: center; gap: 10px; padding: 4px 4px 12px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+.chat-head strong { color: var(--white); font-size: 15px; }
+.chat-back { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; color: var(--accent-soft); background: rgba(78,168,255,0.1); border: 1px solid rgba(78,168,255,0.2); cursor: pointer; }
+.chat-back svg { width: 18px; height: 18px; }
+.chat-back:hover { background: rgba(78,168,255,0.2); color: #fff; }
+
+.chat-stream { flex: 1; min-height: 240px; max-height: 440px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 4px 4px 8px; scroll-behavior: smooth; }
+.chat-bubble { max-width: 78%; padding: 9px 13px; border-radius: 14px; }
+.chat-bubble p { font-size: 14px; line-height: 1.45; word-wrap: break-word; }
+.chat-bubble time { display: block; font-size: 10px; margin-top: 3px; opacity: 0.6; }
+.chat-bubble.theirs { align-self: flex-start; background: rgba(255,255,255,0.06); border: 1px solid var(--line); color: var(--text); border-bottom-left-radius: 4px; }
+.chat-bubble.mine { align-self: flex-end; background: linear-gradient(135deg, #4ea8ff, #2f86e6); color: #fff; border-bottom-right-radius: 4px; }
+.chat-bubble.mine time { color: #fff; }
+
+.chat-input { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line); margin-top: 4px; }
+.chat-input input { flex: 1; padding: 11px 14px; background: rgba(5,11,26,0.55); border: 1px solid var(--line); border-radius: 12px; color: var(--text); font: inherit; font-size: 14px; outline: none; transition: border-color 0.2s ease; }
+.chat-input input:focus { border-color: rgba(78,168,255,0.55); }
+.chat-input button { flex: 0 0 auto; width: 44px; border-radius: 12px; background: linear-gradient(135deg, #4ea8ff, #2f86e6); color: #fff; display: grid; place-items: center; cursor: pointer; transition: transform 0.15s ease; }
+.chat-input button:hover { transform: translateY(-1px); }
+.chat-input button svg { width: 18px; height: 18px; }
+
+/* doctor finder cards inside the patient panel */
+.doc-card .doc-actions { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; justify-content: center; }

@@ -244,6 +244,15 @@
     return sb.from('blog_posts').select('*, author:author_id(name)').order('created_at', { ascending: false })
       .then(function (r) { return r.data || []; });
   };
+  /* public reads (no profiles join → works for logged-out visitors under RLS) */
+  HP.listPublishedPosts = function () {
+    return sb.from('blog_posts').select('id,title,body,section,created_at').eq('status', 'published')
+      .order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
+  };
+  HP.getPost = function (id) {
+    return sb.from('blog_posts').select('id,title,body,section,created_at,status').eq('id', id).single()
+      .then(function (r) { return r.data || null; });
+  };
   HP.createPost = function (post) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
     return sb.from('blog_posts').insert({

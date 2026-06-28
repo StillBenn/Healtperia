@@ -196,36 +196,7 @@
               <button data-filter="past" data-i18n="dp.tab.past">Geçmiş</button>
               <button data-filter="cancelled" data-i18n="dp.tab.cancelled">İptal</button>
             </div>
-            <ul class="appt-list big">
-              <li data-status="upcoming">
-                <span class="appt-avatar">EY</span>
-                <div class="appt-info"><strong>Dr. Elif Yılmaz</strong><span><span data-i18n="dp.spec.cardiology">Kardiyoloji</span> · <span data-i18n="dp.mode.online">Çevrimiçi görüşme</span></span></div>
-                <div class="appt-when"><strong>28 Haz 2026</strong><span>14:30</span></div>
-                <span class="badge badge-blue" data-i18n="dp.badge.confirmed">Onaylandı</span>
-                <button class="link-btn danger" data-i18n="dp.act.cancel">İptal</button>
-              </li>
-              <li data-status="upcoming">
-                <span class="appt-avatar">MK</span>
-                <div class="appt-info"><strong>Dr. Murat Kaya</strong><span><span data-i18n="dp.spec.dermatology">Dermatoloji</span> · <span data-i18n="dp.loc.acibadem">Acıbadem Kliniği</span></span></div>
-                <div class="appt-when"><strong>03 Tem 2026</strong><span>10:00</span></div>
-                <span class="badge badge-amber" data-i18n="dp.badge.pending">Bekliyor</span>
-                <button class="link-btn danger" data-i18n="dp.act.cancel">İptal</button>
-              </li>
-              <li data-status="past">
-                <span class="appt-avatar">SA</span>
-                <div class="appt-info"><strong>Dr. Selin Aydın</strong><span><span data-i18n="dp.spec.internal">Dahiliye</span> · <span data-i18n="dp.loc.memorial">Memorial Hastanesi</span></span></div>
-                <div class="appt-when"><strong>12 May 2026</strong><span>09:15</span></div>
-                <span class="badge badge-green" data-i18n="dp.badge.completed">Tamamlandı</span>
-                <button class="link-btn" data-i18n="dp.act.detail">Detay</button>
-              </li>
-              <li data-status="cancelled">
-                <span class="appt-avatar">RT</span>
-                <div class="appt-info"><strong>Dr. Rıza Tan</strong><span><span data-i18n="dp.spec.orthopedics">Ortopedi</span> · <span data-i18n="dp.loc.liv">Liv Hospital</span></span></div>
-                <div class="appt-when"><strong>02 May 2026</strong><span>16:45</span></div>
-                <span class="badge badge-red" data-i18n="dp.badge.cancelled">İptal Edildi</span>
-                <button class="link-btn" data-i18n="dp.act.rebook">Tekrar Al</button>
-              </li>
-            </ul>
+            <ul class="appt-list big" id="patientAppts"></ul>
           </div>
         </section>
 
@@ -233,12 +204,7 @@
         <section class="panel" data-panel="messages">
           <div class="card">
             <div class="card-head"><h3 data-i18n="acc.nav.messages">Mesajlar</h3></div>
-            <ul class="msg-list">
-              <li class="unread"><span class="appt-avatar">EY</span><div class="msg-info"><strong>Dr. Elif Yılmaz</strong><span data-i18n="dp.msg1">Tahlil sonuçlarınız hazır, görüşmede değerlendireceğiz.</span></div><time data-i18n="dp.t.2h">2 sa</time></li>
-              <li class="unread"><span class="appt-avatar">DK</span><div class="msg-info"><strong data-i18n="dp.support">Healthperia Destek</strong><span data-i18n="dp.msg2">Randevu hatırlatması: 28 Haziran 14:30.</span></div><time data-i18n="dp.t.5h">5 sa</time></li>
-              <li class="unread"><span class="appt-avatar">MK</span><div class="msg-info"><strong>Dr. Murat Kaya</strong><span data-i18n="dp.msg3">Krem reçetenizi profilinize ekledim.</span></div><time data-i18n="dp.t.1d">1 gün</time></li>
-              <li><span class="appt-avatar">SA</span><div class="msg-info"><strong>Dr. Selin Aydın</strong><span data-i18n="dp.msg4">Geçmiş olsun, kontrol için bekleriz.</span></div><time data-i18n="dp.t.3d">3 gün</time></li>
-            </ul>
+            <div id="patientChat"></div>
           </div>
         </section>
 
@@ -261,13 +227,9 @@
             <div class="card-head"><h3 data-i18n="dp.nav.findDoc">Doktor Bul</h3></div>
             <div class="topbar-search inline">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-              <input type="search" placeholder="Branş veya isim ara…" data-i18n-placeholder="dp.searchDoc" />
+              <input type="search" id="docSearch" placeholder="Branş veya isim ara…" data-i18n-placeholder="dp.searchDoc" />
             </div>
-            <div class="doc-grid">
-              <article class="doc-card"><span class="appt-avatar lg">EY</span><strong>Dr. Elif Yılmaz</strong><span data-i18n="dp.spec.cardiology">Kardiyoloji</span><button class="btn-primary sm" data-i18n="dp.bookAppt">Randevu Al</button></article>
-              <article class="doc-card"><span class="appt-avatar lg">MK</span><strong>Dr. Murat Kaya</strong><span data-i18n="dp.spec.dermatology">Dermatoloji</span><button class="btn-primary sm" data-i18n="dp.bookAppt">Randevu Al</button></article>
-              <article class="doc-card"><span class="appt-avatar lg">SA</span><strong>Dr. Selin Aydın</strong><span data-i18n="dp.spec.internal">Dahiliye</span><button class="btn-primary sm" data-i18n="dp.bookAppt">Randevu Al</button></article>
-            </div>
+            <div class="doc-grid" id="patientDoctors"></div>
           </div>
         </section>
 
@@ -316,6 +278,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/hp-api.js"></script>
+  <script src="../js/hp-chat.js"></script>
   <script src="../js/dashboard.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-dash-patient.js"></script>
@@ -324,6 +287,13 @@
   (function () {
     var H = window.HP;
     var T = function (k, fb) { return window.HPI ? window.HPI.t(k, fb) : fb; };
+    function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+    function apptBadge(s){
+      var map = { pending:['badge-amber', T('dp.badge.pending','Bekliyor')], accepted:['badge-blue', T('dp.badge.confirmed','Onaylandı')], completed:['badge-green', T('dp.badge.completed','Tamamlandı')], rejected:['badge-red','Reddedildi'], cancelled:['badge-red', T('dp.badge.cancelled','İptal Edildi')] };
+      var m = map[s] || ['badge-blue', s];
+      return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+    }
+    function groupOf(s){ return s==='completed' ? 'past' : (s==='rejected'||s==='cancelled') ? 'cancelled' : 'upcoming'; }
 
     H.guard('patient').then(function (user) {
       if (!user) return;
@@ -365,9 +335,57 @@
           pw.reset(); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
         });
       });
+
+      /* ===== messaging (live) ===== */
+      if (window.HPChat) HPChat.mount(document.getElementById('patientChat'), { emptyText: 'Henüz mesajınız yok. "Doktor Bul" sekmesinden bir doktora mesaj gönderebilirsiniz.' });
+
+      /* ===== doctors (live) ===== */
+      var docGrid = document.getElementById('patientDoctors');
+      var allDocs = [];
+      function renderDocs(q) {
+        var list = allDocs.filter(function (d){ return !q || ((d.name||'') + ' ' + (d.specialty||'')).toLowerCase().indexOf(q) !== -1; });
+        docGrid.innerHTML = list.map(function (d) {
+          return '<article class="doc-card"><span class="appt-avatar lg">' + esc(Dashboard.initials(d.name)) + '</span><strong>' + esc(d.name||'') + '</strong><span>' + esc(d.specialty||'—') + '</span>' +
+            '<div class="doc-actions"><button class="btn-primary sm" data-msg="' + d.id + '" data-name="' + esc(d.name||'') + '">Mesaj At</button>' +
+            '<button class="btn-ghost sm" data-book="' + d.id + '" data-name="' + esc(d.name||'') + '">Randevu Al</button></div></article>';
+        }).join('') || '<p class="muted-line">Şu an aktif doktor bulunmuyor.</p>';
+      }
+      function renderAppts() {
+        return H.myAppointments().then(function (appts) {
+          var ul = document.getElementById('patientAppts');
+          ul.innerHTML = appts.map(function (a) {
+            var doc = a.doctor || {};
+            var d = ''; try { d = a.created_at ? new Date(a.created_at).toLocaleDateString('tr-TR') : ''; } catch (_) {}
+            return '<li data-status="' + groupOf(a.status) + '"><span class="appt-avatar">' + esc(Dashboard.initials(doc.name)) + '</span>' +
+              '<div class="appt-info"><strong>' + esc(doc.name||'Doktor') + '</strong><span>' + esc(doc.specialty||'') + (a.treatment ? ' · ' + esc(a.treatment) : '') + '</span></div>' +
+              '<div class="appt-when"><strong>' + d + '</strong></div>' + apptBadge(a.status) + '</li>';
+          }).join('') || '<li style="display:block;color:var(--text-dim);padding:18px">Henüz randevunuz yok.</li>';
+          var atabs = document.getElementById('apptTabs'); var active = atabs && atabs.querySelector('button.is-active'); if (active) active.click();
+        });
+      }
+      H.listDoctors().then(function (docs) { allDocs = docs; renderDocs(''); });
+      docGrid.addEventListener('click', function (e) {
+        var m = e.target.closest('[data-msg]'); var b = e.target.closest('[data-book]');
+        if (m && window.HPChat) { HPChat.openWith(m.dataset.msg, m.dataset.name); }
+        else if (b) {
+          var t = prompt('Hangi tedavi/konu için randevu talep ediyorsunuz? (opsiyonel)', '');
+          if (t === null) return;
+          b.disabled = true;
+          H.createAppointment({ doctorId: b.dataset.book, treatment: t }).then(function (r) {
+            b.disabled = false;
+            if (r.ok) { alert(b.dataset.name + ' için randevu talebiniz gönderildi.'); renderAppts(); }
+            else alert('Randevu oluşturulamadı.');
+          });
+        }
+      });
+      var ds = document.getElementById('docSearch');
+      if (ds) ds.addEventListener('input', function () { renderDocs(this.value.trim().toLowerCase()); });
+
+      /* ===== appointments (live) ===== */
+      renderAppts();
     });
 
-    /* appointment filter tabs (static demo content for now) */
+    /* appointment filter tabs */
     var tabs = document.getElementById('apptTabs');
     if (tabs) {
       tabs.addEventListener('click', function (e) {

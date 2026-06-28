@@ -105,7 +105,7 @@
   <!-- ============ GRID ============ -->
   <section class="blog-section blog-section-alt">
     <div class="container">
-      <div class="blog-grid">
+      <div class="blog-grid" id="blogGrid">
 
         <a href="blog-post.html" class="blog-card">
           <div class="blog-cover cover-c"><span class="blog-cat" data-i18n="blog.cat.radiology">Radyoloji</span></div>
@@ -220,7 +220,33 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg>
   </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
   <script src="../js/i18n-blog.js"></script>
   <script src="../js/main.js"></script>
+  <script>
+  /* prepend admin-published posts (from Supabase) to the blog grid */
+  (function () {
+    if (!window.HP) return;
+    var grid = document.getElementById('blogGrid');
+    if (!grid) return;
+    var covers = ['cover-c','cover-d','cover-e','cover-f','cover-g','cover-h','cover-a','cover-b'];
+    function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+    HP.listPublishedPosts().then(function (posts) {
+      if (!posts.length) return;
+      var html = posts.map(function (p, i) {
+        var date = '';
+        try { date = new Date(p.created_at).toLocaleDateString('tr-TR'); } catch (_) {}
+        var ex = (p.body || '').replace(/\s+/g, ' ').trim().slice(0, 140);
+        return '<a href="blog-post.html?id=' + p.id + '" class="blog-card">' +
+          '<div class="blog-cover ' + covers[i % covers.length] + '"><span class="blog-cat">' + esc(p.section || 'Blog') + '</span></div>' +
+          '<div class="blog-card-body"><div class="blog-meta"><span class="blog-date">' + date + '</span></div>' +
+          '<h3 class="blog-card-title">' + esc(p.title) + '</h3>' +
+          '<p class="blog-card-excerpt">' + esc(ex) + (ex.length >= 140 ? '…' : '') + '</p></div></a>';
+      }).join('');
+      grid.insertAdjacentHTML('afterbegin', html);
+    });
+  })();
+  </script>
 </body>
 </html>
