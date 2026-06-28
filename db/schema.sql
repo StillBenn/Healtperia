@@ -47,7 +47,9 @@ create or replace function public.guard_profile_update()
 returns trigger language plpgsql security definer
 set search_path = public as $$
 begin
-  if not public.is_admin() then
+  -- only guard real logged-in non-admin clients; allow server-side / SQL editor
+  -- operations (auth.uid() is null there) so admins can be promoted via SQL
+  if auth.uid() is not null and not public.is_admin() then
     new.role   := old.role;
     new.status := old.status;
   end if;
