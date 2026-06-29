@@ -23,6 +23,7 @@
   var treatments = byId(DATA.treatments);
   var countries = byId(DATA.countries);
   var cities = byId(DATA.cities);
+  var methodsById = byId(DATA.methods);
 
   /* ---------- demo doctor + price (deterministic, swap later) ---------- */
   var DOC_TITLES = ['Op. Dr.', 'Uzm. Dr.', 'Prof. Dr.', 'Doç. Dr.', 'Dr.'];
@@ -155,62 +156,99 @@
     return parts.join(', ');
   }
 
-  function renderResults() {
-    var methods = currentMethods();
+  /* favorites (heart state) + result fetch guard */
+  var favCodes = {};
+  var resToken = 0;
+  function curSym(c){ return ({ EUR:'€', USD:'$', TRY:'₺', GBP:'£' })[c] || (c ? (' ' + c) : ''); }
+  var SVG_DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M12 8v6M9 11h6"/></svg>';
+  var SVG_LOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+  var SVG_HEART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+  var SVG_EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
 
-    /* guided empty states while the cascade is incomplete */
-    if (!methods.length) {
-      resultsEl.innerHTML = '';
-      resultsEl.hidden = true;
-      countEl.textContent = '';
-      var hint = !state.countryId ? 'ti.hintCountry'
-               : !state.cityId ? 'ti.hintCity'
-               : !state.unitId ? 'ti.hintUnit'
-               : 'ti.noResults';
-      emptyEl.hidden = false;
-      emptyEl.querySelector('p').textContent = T(hint, '');
+  function renderResults() {
+    /* gated empty states until the location + unit are known */
+    if (!state.unitId) {
+      resultsEl.innerHTML = ''; resultsEl.hidden = true; countEl.textContent = '';
+      var hint = !state.countryId ? 'ti.hintCountry' : !state.cityId ? 'ti.hintCity' : 'ti.hintUnit';
+      emptyEl.hidden = false; emptyEl.querySelector('p').textContent = T(hint, '');
       return;
     }
+    if (!window.HP || !HP.listListings) { resultsEl.hidden = true; emptyEl.hidden = false; emptyEl.querySelector('p').textContent = T('ti.noResults', ''); return; }
 
-    emptyEl.hidden = true;
-    resultsEl.hidden = false;
-    countEl.textContent = methods.length + ' ' + T('ti.resultsWord', 'sonuç');
+    var token = ++resToken;
+    HP.listListings({ countryId: state.countryId, cityId: state.cityId, unitId: state.unitId, treatmentId: state.treatmentId, methodId: state.methodId })
+      .then(function (list) {
+        if (token !== resToken) return;
+        if (!list.length) {
+          resultsEl.innerHTML = ''; resultsEl.hidden = true; countEl.textContent = '';
+          emptyEl.hidden = false; emptyEl.querySelector('p').textContent = T('ti.noResults', 'Eşleşen sonuç bulunamadı.');
+          return;
+        }
+        emptyEl.hidden = true; resultsEl.hidden = false;
+        countEl.textContent = list.length + ' ' + T('ti.resultsWord', 'sonuç');
+        resultsEl.innerHTML = list.map(cardHtml).join('');
+        wireCards();
+      });
+  }
 
-    var loc = locationLabel();
-    var msgCta = T('ti.message', 'Mesaj Gönder');
-    var codeLabel = T('ti.code', 'Kod');
-    var priceLabel = T('ti.priceLabel', '');
-    var html = methods.map(function (m, i) {
-      var tr = treatments[m.treatmentId] || { name: '' };
-      var unit = units[tr.unitId] || { name: '' };
-      var pr = demoPrice(tr.id, m.id);
-      var doc = demoDoctor(m.id);
-      var code = listingCode(tr.unitId, tr.id, m.id);
-      var label = tr.name + ' · ' + m.name + (loc ? ' · ' + loc : '');
-      var msgHref = 'dashboard-patient.html?openListing=' + encodeURIComponent(code) + '&label=' + encodeURIComponent(label);
-      return '<article class="result-card" style="--i:' + (i % 12) + '">' +
-        '<div class="result-media"></div>' +
-        '<div class="result-body">' +
-          '<h3 class="result-name">' + esc(tr.name) + '</h3>' +
-          '<p class="result-method">' + esc(m.name) + '</p>' +
-          '<p class="result-doc">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M12 8v6M9 11h6"/></svg>' +
-            esc(doc) + '</p>' +
-          (loc ? '<p class="result-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' + esc(loc) + '</p>' : '') +
-          '<p class="result-code"><span>' + esc(codeLabel) + ': ' + esc(code) + '</span></p>' +
-          '<div class="result-foot">' +
-            '<span class="result-price" title="' + esc(priceLabel) + '">' + fmtMoney(pr[0]) + ' $ – ' + fmtMoney(pr[1]) + ' $</span>' +
-            '<a href="' + msgHref + '" class="result-cta result-msg">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' +
-              esc(msgCta) + '</a>' +
-          '</div>' +
+  function cardHtml(l, i) {
+    var trName = (treatments[l.treatment_id] || {}).name || l.headline || '';
+    var meName = (methodsById[l.method_id] || {}).name || '';
+    var loc = [(countries[l.country_id] || {}).name, (cities[l.city_id] || {}).name].filter(Boolean).join(', ');
+    var doc = (l.doctor && l.doctor.name) || '';
+    var price = l.price_amount != null ? fmtMoney(l.price_amount) + ' ' + curSym(l.price_currency) : '';
+    var sp = l.section_photos || {};
+    var photo = (Array.isArray(l.photos) && l.photos[0]) || (sp.process && sp.process[0]) || (sp.place && sp.place[0]) || (sp.doctor && sp.doctor[0]) || '';
+    var href = 'treatment-detail.html?id=' + encodeURIComponent(l.id);
+    var faved = !!favCodes[l.code];
+    return '<article class="result-card" style="--i:' + (i % 12) + '">' +
+      '<button class="result-fav' + (faved ? ' is-on' : '') + '" type="button" data-fav="' + esc(l.code) + '" aria-label="' + esc(T('td.fav', 'Favorilere Ekle')) + '">' + SVG_HEART + '</button>' +
+      '<div class="result-media"' + (photo ? ' style="background-image:url(' + esc(photo) + ');background-size:cover;background-position:center"' : '') + '></div>' +
+      '<div class="result-body">' +
+        '<h3 class="result-name">' + esc(trName) + '</h3>' +
+        (meName ? '<p class="result-method">' + esc(meName) + '</p>' : '') +
+        (doc ? '<p class="result-doc">' + SVG_DOC + esc(doc) + '</p>' : '') +
+        (loc ? '<p class="result-loc">' + SVG_LOC + esc(loc) + '</p>' : '') +
+        '<p class="result-code"><span>' + esc(T('ti.code', 'Kod')) + ': ' + esc(l.code) + '</span></p>' +
+        '<div class="result-foot">' +
+          (price ? '<span class="result-price">' + esc(price) + '</span>' : '<span></span>') +
+          '<a href="' + href + '" class="result-cta">' + esc(T('ti.cta', 'Detayları İncele →')) + '</a>' +
         '</div>' +
-      '</article>';
-    }).join('');
-    resultsEl.innerHTML = html;
+      '</div>' +
+    '</article>';
+  }
+
+  function wireCards() {
+    resultsEl.querySelectorAll('.result-fav').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        if (!window.HP || !HP.currentUser || !HP.currentUser()) { location.href = 'auth.html'; return; }
+        var code = b.dataset.fav;
+        if (favCodes[code]) { HP.removeFavorite('listing', code).then(function () { delete favCodes[code]; b.classList.remove('is-on'); }); }
+        else { HP.addFavorite({ kind: 'listing', refId: code, label: b.closest('.result-card').querySelector('.result-name').textContent })
+          .then(function () { favCodes[code] = 1; b.classList.add('is-on'); }); }
+      });
+    });
+  }
+
+  /* load the user's favorites (for hearts) then refresh once ready */
+  if (window.HP && HP.ready) {
+    HP.ready.then(function () {
+      if (!HP.currentUser || !HP.currentUser()) return;
+      HP.listFavorites().then(function (favs) {
+        favs.forEach(function (f) { if (f.kind === 'listing') favCodes[f.ref_id] = 1; });
+        if (state.unitId) renderResults();
+      });
+    });
   }
 
   /* ---------- popover open/close ---------- */
+  /* dim + blur the result cards behind an open dropdown popover */
+  function reflectDim() {
+    var anyOpen = cascade.querySelector('.ti-step.is-open');
+    var rs = document.querySelector('.results-section');
+    if (rs) rs.classList.toggle('ti-dimmed', !!anyOpen);
+  }
   function closeAll(except) {
     STEP_ORDER.forEach(function (k) {
       if (k === except) return;
@@ -218,6 +256,7 @@
       s.el.classList.remove('is-open');
       if (s.trigger) s.trigger.setAttribute('aria-expanded', 'false');
     });
+    reflectDim();
   }
   function openStep(key) {
     var s = steps[key]; if (!s || isLocked(key)) return;
@@ -226,6 +265,7 @@
     s.el.classList.toggle('is-open', willOpen);
     s.trigger.setAttribute('aria-expanded', String(willOpen));
     if (willOpen && s.search) { s.search.value = ''; renderStep(key); setTimeout(function () { s.search.focus(); }, 30); }
+    reflectDim();
   }
 
   /* ---------- selection ---------- */
@@ -264,8 +304,11 @@
     if (pop) pop.addEventListener('click', function (e) { e.stopPropagation(); });
   });
 
-  var resetBtn = document.getElementById('tiReset');
-  if (resetBtn) resetBtn.addEventListener('click', resetAll);
+  var searchBtn = document.getElementById('tiSearch');
+  if (searchBtn) searchBtn.addEventListener('click', function (e) {
+    e.stopPropagation(); closeAll(); renderResults();
+    var rs = document.querySelector('.results-section'); if (rs) rs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   document.addEventListener('click', function () { closeAll(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });

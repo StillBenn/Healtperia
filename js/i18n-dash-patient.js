@@ -251,4 +251,15 @@ window.HP_I18N = window.HP_I18N || {};
     'dp.f.city': 'Stad', 'dp.ph.phone': '+31 6 00000000', 'dp.ph.country': 'Nederland', 'dp.ph.city': 'Amsterdam',
     'dp.notifTitle': 'Meldingsvoorkeuren', 'dp.notif.email': 'E-mailmeldingen', 'dp.notif.appt': 'Afspraakherinneringen', 'dp.notif.promo': 'Campagnes en aankondigingen'
   });
+
+  /* ===== favorites (Favorilerim) ===== */
+  add('tr', { 'fav.nav':'Favorilerim','fav.title':'Favorilerim','fav.empty':'Henüz favoriniz yok. Tedavi ilanlarındaki kalp ile favorilere ekleyebilirsiniz.','fav.g.listing':'Tedavi İlanları','fav.g.treatment':'Tedaviler','fav.g.doctor':'Doktorlar','fav.g.hospital':'Hastaneler','fav.g.clinic':'Klinikler' });
+  add('en', { 'fav.nav':'My Favorites','fav.title':'My Favorites','fav.empty':'No favorites yet. Tap the heart on treatment listings to add them.','fav.g.listing':'Treatment Listings','fav.g.treatment':'Treatments','fav.g.doctor':'Doctors','fav.g.hospital':'Hospitals','fav.g.clinic':'Clinics' });
+  add('de', { 'fav.nav':'Meine Favoriten','fav.title':'Meine Favoriten','fav.empty':'Noch keine Favoriten. Tippen Sie auf das Herz bei Behandlungsanzeigen.','fav.g.listing':'Behandlungsanzeigen','fav.g.treatment':'Behandlungen','fav.g.doctor':'Ärzte','fav.g.hospital':'Krankenhäuser','fav.g.clinic':'Kliniken' });
+  add('ru', { 'fav.nav':'Избранное','fav.title':'Избранное','fav.empty':'Пока нет избранного. Нажмите на сердечко в объявлениях о лечении.','fav.g.listing':'Объявления о лечении','fav.g.treatment':'Лечение','fav.g.doctor':'Врачи','fav.g.hospital':'Больницы','fav.g.clinic':'Клиники' });
+  add('fr', { 'fav.nav':'Mes favoris','fav.title':'Mes favoris','fav.empty':'Aucun favori. Touchez le cœur sur les annonces de traitement.','fav.g.listing':'Annonces de traitement','fav.g.treatment':'Traitements','fav.g.doctor':'Médecins','fav.g.hospital':'Hôpitaux','fav.g.clinic':'Cliniques' });
+  add('es', { 'fav.nav':'Mis favoritos','fav.title':'Mis favoritos','fav.empty':'Aún no hay favoritos. Toca el corazón en los anuncios de tratamiento.','fav.g.listing':'Anuncios de tratamiento','fav.g.treatment':'Tratamientos','fav.g.doctor':'Médicos','fav.g.hospital':'Hospitales','fav.g.clinic':'Clínicas' });
+  add('pt', { 'fav.nav':'Meus favoritos','fav.title':'Meus favoritos','fav.empty':'Ainda não há favoritos. Toque no coração nos anúncios de tratamento.','fav.g.listing':'Anúncios de tratamento','fav.g.treatment':'Tratamentos','fav.g.doctor':'Médicos','fav.g.hospital':'Hospitais','fav.g.clinic':'Clínicas' });
+  add('ar', { 'fav.nav':'المفضلة','fav.title':'المفضلة','fav.empty':'لا توجد مفضلات بعد. اضغط على القلب في إعلانات العلاج لإضافتها.','fav.g.listing':'إعلانات العلاج','fav.g.treatment':'العلاجات','fav.g.doctor':'الأطباء','fav.g.hospital':'المستشفيات','fav.g.clinic':'العيادات' });
+  add('nl', { 'fav.nav':'Mijn favorieten','fav.title':'Mijn favorieten','fav.empty':'Nog geen favorieten. Tik op het hartje bij behandelingsadvertenties.','fav.g.listing':'Behandelingsadvertenties','fav.g.treatment':'Behandelingen','fav.g.doctor':'Artsen','fav.g.hospital':'Ziekenhuizen','fav.g.clinic':'Klinieken' });
 })(window.HP_I18N);

@@ -32,6 +32,9 @@
         <a class="side-link" data-section="patients" href="#patients">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M17 8a3.5 3.5 0 0 1 0 7"/><path d="M21.5 21c0-2.5-1.4-4.2-3.5-5"/></svg>
           <span class="side-label" data-i18n="dd.nav.patients">Hastalarım</span></a>
+        <a class="side-link" data-section="listings" href="#listings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 13h8M8 16h5"/></svg>
+          <span class="side-label" data-i18n="dl.nav">İlanlarım</span></a>
         <a class="side-link" data-section="messages" href="#messages">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge" style="display:none"></span></a>
@@ -161,6 +164,15 @@
           </div>
         </section>
 
+        <!-- LISTINGS (doctor's treatment offers) -->
+        <section class="panel" data-panel="listings">
+          <div class="card" id="listingEditorCard" hidden></div>
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="dl.title">İlanlarım</h3><button class="btn-primary sm" id="newListingBtn" data-i18n="dl.new">Yeni İlan</button></div>
+            <div id="myListingsBody"></div>
+          </div>
+        </section>
+
         <!-- MESSAGES -->
         <section class="panel" data-panel="messages">
           <div class="card">
@@ -233,6 +245,8 @@
   <script src="../js/hp-api.js"></script>
   <script src="../js/hp-chat.js"></script>
   <script src="../js/dashboard.js"></script>
+  <script src="../js/treatment-data.js"></script>
+  <script src="../js/doctor-listings.js"></script>
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-dash-doctor.js"></script>
   <script src="../js/i18n-core.js"></script>
@@ -245,6 +259,7 @@
     H.guard('doctor').then(function (user) {
       if (!user) return;
       Dashboard.init(user, { role: 'Doktor' });
+      if (window.HPListings) HPListings.init();
 
       var navSpec  = document.getElementById('navSpec');
       var profSpec = document.getElementById('profSpec');

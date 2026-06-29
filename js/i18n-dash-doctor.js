@@ -250,4 +250,15 @@ window.HP_I18N = window.HP_I18N || {};
     'dd.workPrefsTitle': 'Werkvoorkeuren', 'dd.pref.online': 'Online consulten accepteren', 'dd.pref.newReq': 'Melding bij nieuw afspraakverzoek', 'dd.pref.weekend': 'Weekendafspraken',
     'dd.reqAccepted': 'Geaccepteerd ✓', 'dd.reqRejected': 'Geweigerd'
   });
+
+  /* ===== doctor listings (İlanlarım) ===== */
+  add('tr', { 'dl.nav':'İlanlarım', 'dl.title':'İlanlarım', 'dl.new':'Yeni İlan' });
+  add('en', { 'dl.nav':'My Listings', 'dl.title':'My Listings', 'dl.new':'New Listing' });
+  add('de', { 'dl.nav':'Meine Anzeigen', 'dl.title':'Meine Anzeigen', 'dl.new':'Neue Anzeige' });
+  add('ru', { 'dl.nav':'Мои объявления', 'dl.title':'Мои объявления', 'dl.new':'Новое объявление' });
+  add('fr', { 'dl.nav':'Mes annonces', 'dl.title':'Mes annonces', 'dl.new':'Nouvelle annonce' });
+  add('es', { 'dl.nav':'Mis anuncios', 'dl.title':'Mis anuncios', 'dl.new':'Nuevo anuncio' });
+  add('pt', { 'dl.nav':'Meus anúncios', 'dl.title':'Meus anúncios', 'dl.new':'Novo anúncio' });
+  add('ar', { 'dl.nav':'إعلاناتي', 'dl.title':'إعلاناتي', 'dl.new':'إعلان جديد' });
+  add('nl', { 'dl.nav':'Mijn advertenties', 'dl.title':'Mijn advertenties', 'dl.new':'Nieuwe advertentie' });
 })(window.HP_I18N);

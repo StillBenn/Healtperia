@@ -39,6 +39,9 @@
         <a class="side-link" data-section="doctors" href="#doctors">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
           <span class="side-label" data-i18n="dp.nav.findDoc">Doktor Bul</span></a>
+        <a class="side-link" data-section="favorites" href="#favorites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="side-label" data-i18n="fav.nav">Favorilerim</span></a>
 
         <span class="sidebar-group" data-i18n="acc.group.account">Hesap</span>
         <a class="side-link" data-section="profile" href="#profile">
@@ -189,6 +192,14 @@
               <button data-filter="cancelled" data-i18n="dp.tab.cancelled">İptal</button>
             </div>
             <ul class="appt-list big" id="patientAppts"></ul>
+          </div>
+        </section>
+
+        <!-- ===== FAVORITES ===== -->
+        <section class="panel" data-panel="favorites">
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="fav.title">Favorilerim</h3></div>
+            <div id="favBody"></div>
           </div>
         </section>
 
@@ -353,6 +364,32 @@
       }
       renderAnnouncements();
 
+      /* favorites */
+      function renderFavorites() {
+        if (!H.listFavorites) return;
+        H.listFavorites().then(function (list) {
+          var box = document.getElementById('favBody'); if (!box) return;
+          if (!list.length) { box.innerHTML = '<div class="empty-state sm"><p>' + T('fav.empty', 'Henüz favoriniz yok. Tedavi ilanlarındaki kalp ile favorilere ekleyebilirsiniz.') + '</p></div>'; return; }
+          var groups = {};
+          list.forEach(function (f) { (groups[f.kind] || (groups[f.kind] = [])).push(f); });
+          var titles = { listing: T('fav.g.listing', 'Tedavi İlanları'), treatment: T('fav.g.treatment', 'Tedaviler'), doctor: T('fav.g.doctor', 'Doktorlar'), hospital: T('fav.g.hospital', 'Hastaneler'), clinic: T('fav.g.clinic', 'Klinikler') };
+          var html = '';
+          Object.keys(titles).forEach(function (k) {
+            var items = groups[k]; if (!items || !items.length) return;
+            html += '<div class="fav-group"><h4>' + esc(titles[k]) + '</h4><div class="fav-list">' + items.map(function (f) {
+              var meta = f.meta || {};
+              var sub = [meta.method, meta.loc, meta.doctor].filter(Boolean).join(' · ');
+              return '<div class="fav-card"><div class="fav-card-body"><strong>' + esc(f.label || f.ref_id) + '</strong><span>' + esc(sub) + '</span></div>' +
+                (k === 'listing' ? '<a class="fav-open" href="treatment-detail.html?code=' + encodeURIComponent(f.ref_id) + '">' + esc(T('td.crumb', 'Detay')) + ' →</a>' : '') +
+                '<button class="fav-rm" data-kind="' + esc(f.kind) + '" data-ref="' + esc(f.ref_id) + '" aria-label="Kaldır">×</button></div>';
+            }).join('') + '</div></div>';
+          });
+          box.innerHTML = html;
+          box.querySelectorAll('.fav-rm').forEach(function (b) { b.addEventListener('click', function () { H.removeFavorite(b.dataset.kind, b.dataset.ref).then(renderFavorites); }); });
+        });
+      }
+      renderFavorites();
+
       /* ===== doctors (live) ===== */
       var docGrid = document.getElementById('patientDoctors');
       var allDocs = [];
@@ -406,12 +443,12 @@
         var qs = new URLSearchParams(location.search);
         var code = qs.get('openListing'); if (!code) return;
         var label = qs.get('label') || '';
+        var docId = qs.get('doctor');
         history.replaceState(null, '', location.pathname + '#messages');
-        if (!window.HPChat || !allDocs.length) {
-          alert(T('chat.noDoctor', 'Şu an mesaj gönderilebilecek aktif doktor bulunmuyor.'));
-          return;
-        }
-        var doc = allDocs[0];
+        if (!window.HPChat) return;
+        var doc = docId ? (allDocs.filter(function (d){ return d.id === docId; })[0] || { id: docId, name: 'Doktor' })
+                        : allDocs[0];
+        if (!doc) { alert(T('chat.noDoctor', 'Şu an mesaj gönderilebilecek aktif doktor bulunmuyor.')); return; }
         HPChat.openWith(doc.id, doc.name, { listingCode: code, listingLabel: label });
       }
       H.listDoctors().then(function (docs) {

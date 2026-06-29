@@ -11,7 +11,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ti.lead':'Ülke, şehir ve uzmanlık alanına göre adım adım ilerleyin; size en uygun tedavileri ve yöntemleri keşfedin.',
     'ti.step.country':'Ülke','ti.step.city':'Şehir','ti.step.unit':'Tıbbi Birim','ti.step.treatment':'Tedavi','ti.step.method':'Yöntem',
     'ti.choose':'Seçiniz','ti.searchIn':'Ara…','ti.reset':'Sıfırla',
-    'ti.resultsHead':'Tedaviler','ti.resultsWord':'sonuç','ti.cta':'Detayları gör →','ti.noResults':'Eşleşen sonuç bulunamadı.',
+    'ti.resultsHead':'Tedaviler','ti.resultsWord':'sonuç','ti.cta':'Detayları İncele →','ti.noResults':'Eşleşen sonuç bulunamadı.',
     'ti.hintCountry':'Başlamak için bir ülke seçin.','ti.hintCity':'Devam etmek için bir şehir seçin.','ti.hintUnit':'Tedavileri görmek için bir tıbbi birim seçin.',
     'ti.priceLabel':'Tahmini fiyat aralığı'
   };
@@ -82,11 +82,11 @@ window.HP_I18N = window.HP_I18N || {};
 
   /* listing card: "Send Message" CTA + listing code label */
   var TI_EXTRA = {
-    tr:['Mesaj Gönder','Kod'], en:['Send Message','Code'], de:['Nachricht senden','Code'],
-    ru:['Написать сообщение','Код'], fr:['Envoyer un message','Code'], es:['Enviar mensaje','Código'],
-    pt:['Enviar mensagem','Código'], ar:['إرسال رسالة','الرمز'], nl:['Bericht sturen','Code']
+    tr:['Mesaj Gönder','Kod','Ara'], en:['Send Message','Code','Search'], de:['Nachricht senden','Code','Suchen'],
+    ru:['Написать сообщение','Код','Поиск'], fr:['Envoyer un message','Code','Rechercher'], es:['Enviar mensaje','Código','Buscar'],
+    pt:['Enviar mensagem','Código','Buscar'], ar:['إرسال رسالة','الرمز','بحث'], nl:['Bericht sturen','Code','Zoeken']
   };
   Object.keys(TI_EXTRA).forEach(function (l) {
-    if (I[l]) { I[l]['ti.message'] = TI_EXTRA[l][0]; I[l]['ti.code'] = TI_EXTRA[l][1]; }
+    if (I[l]) { I[l]['ti.message'] = TI_EXTRA[l][0]; I[l]['ti.code'] = TI_EXTRA[l][1]; I[l]['ti.search'] = TI_EXTRA[l][2]; }
   });
 })(window.HP_I18N);

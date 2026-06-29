@@ -400,6 +400,109 @@
       .order('created_at').limit(1).then(function (r) { return (r.data && r.data[0]) || null; });
   };
 
+  /* ---------- TREATMENT LISTINGS ---------- */
+  function mapListing(d) {
+    var m = {
+      code: d.code, status: d.status,
+      country_id: d.countryId, city_id: d.cityId, unit_id: d.unitId, treatment_id: d.treatmentId, method_id: d.methodId,
+      headline: d.headline, process: d.process, hospital_id: d.hospitalId, hotel_id: d.hotelId,
+      location_name: d.locationName, location_maps_url: d.locationMapsUrl,
+      transport_title: d.transportTitle, transport_desc: d.transportDesc, transport_image: d.transportImage,
+      advantages: d.advantages, price_amount: d.priceAmount, price_currency: d.priceCurrency,
+      price_installments: d.priceInstallments, price_monthly: d.priceMonthly, photos: d.photos,
+      section_photos: d.sectionPhotos
+    };
+    var out = {};
+    Object.keys(m).forEach(function (k) { if (m[k] !== undefined) out[k] = m[k]; });
+    if (out.photos) out.photos = out.photos.slice(0, 8);
+    return out;
+  }
+  function genListingCode() { return 'HP-' + Math.random().toString(36).slice(2, 8).toUpperCase(); }
+
+  /* finder: published listings filtered by the taxonomy cascade */
+  HP.listListings = function (f) {
+    f = f || {};
+    var q = sb.from('listings')
+      .select('*, doctor:doctor_id(name,avatar_url,specialty), hospital:hospital_id(name,city)')
+      .eq('status', 'published');
+    if (f.countryId)   q = q.eq('country_id', f.countryId);
+    if (f.cityId)      q = q.eq('city_id', f.cityId);
+    if (f.unitId)      q = q.eq('unit_id', f.unitId);
+    if (f.treatmentId) q = q.eq('treatment_id', f.treatmentId);
+    if (f.methodId)    q = q.eq('method_id', f.methodId);
+    return q.order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
+  };
+  /* detail page: full listing + doctor profile + hospital + hotel */
+  HP.getListing = function (idOrCode) {
+    var sel = '*, doctor:doctor_id(id,name,avatar_url,specialty,bio,country,city), hospital:hospital_id(*), hotel:hotel_id(*)';
+    var isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(String(idOrCode || ''));
+    var q = sb.from('listings').select(sel);
+    q = isUuid ? q.eq('id', idOrCode) : q.eq('code', idOrCode);
+    return q.limit(1).maybeSingle().then(function (r) { return r.data || null; });
+  };
+  HP.myListings = function () {
+    var p = HP._profile; if (!p) return Promise.resolve([]);
+    return sb.from('listings').select('*, hospital:hospital_id(name), hotel:hotel_id(name)')
+      .eq('doctor_id', p.id).order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
+  };
+  HP.createListing = function (d) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    var row = mapListing(d);
+    row.doctor_id = p.id;
+    row.code = d.code || genListingCode();
+    row.status = d.status || 'draft';
+    return sb.from('listings').insert(row).select().single()
+      .then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+  };
+  HP.updateListing = function (id, d) {
+    return sb.from('listings').update(mapListing(d)).eq('id', id)
+      .then(function (r) { return { ok: !r.error, error: r.error && r.error.message }; });
+  };
+  HP.deleteListing = function (id) {
+    return sb.from('listings').delete().eq('id', id).then(function (r) { return { ok: !r.error }; });
+  };
+
+  /* ---------- HOSPITALS / HOTELS (catalog) + photo upload ---------- */
+  HP.listHospitals = function () { return sb.from('hospitals').select('*').order('name').then(function (r) { return r.data || []; }); };
+  HP.listHotels    = function () { return sb.from('hotels').select('*').order('name').then(function (r) { return r.data || []; }); };
+  function createPlace(table, d) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!String((d && d.name) || '').trim()) return Promise.resolve(fail('err.account'));
+    return sb.from(table).insert({
+      name: d.name, city: d.city || null, country: d.country || null,
+      maps_url: d.mapsUrl || null, description: d.description || null, image_url: d.imageUrl || null, created_by: p.id
+    }).select().single().then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+  }
+  HP.createHospital = function (d) { return createPlace('hospitals', d); };
+  HP.createHotel    = function (d) { return createPlace('hotels', d); };
+  HP.uploadListingPhoto = function (file) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!file) return Promise.resolve(fail('err.account'));
+    var safe = ((file.name || 'photo').replace(/[^a-zA-Z0-9._-]/g, '_')).slice(-40);
+    var path = p.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + safe;
+    return sb.storage.from('listing-photos').upload(path, file, { cacheControl: '3600' }).then(function (r) {
+      if (r.error) return fail('err.account', r.error.message);
+      return ok({ url: sb.storage.from('listing-photos').getPublicUrl(path).data.publicUrl });
+    });
+  };
+
+  /* ---------- FAVORITES ---------- */
+  HP.addFavorite = function (d) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    return sb.from('favorites').upsert({ user_id: p.id, kind: d.kind, ref_id: String(d.refId), label: d.label || null, meta: d.meta || null }, { onConflict: 'user_id,kind,ref_id' })
+      .then(function (r) { return { ok: !r.error }; });
+  };
+  HP.removeFavorite = function (kind, refId) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    return sb.from('favorites').delete().eq('user_id', p.id).eq('kind', kind).eq('ref_id', String(refId))
+      .then(function (r) { return { ok: !r.error }; });
+  };
+  HP.listFavorites = function () {
+    var p = HP._profile; if (!p) return Promise.resolve([]);
+    return sb.from('favorites').select('*').eq('user_id', p.id).order('created_at', { ascending: false })
+      .then(function (r) { return r.data || []; });
+  };
+
   /* convenience labels (kept for parity with old auth.js callers) */
   HP.roleLabel = function (role) { return role === 'doctor' ? 'Doktor' : role === 'admin' ? 'Yönetici' : 'Hasta'; };
   HP.statusLabel = function (s) { return ({ active: 'Aktif', pending: 'Onay Bekliyor', suspended: 'Askıda', deleted: 'Silindi' })[s] || s; };
