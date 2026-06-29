@@ -173,3 +173,152 @@ end $$;
 -- ---------- 6) PROMOTE YOUR ADMIN ----------
 -- After you register your admin account in the app, run this once with YOUR email:
 -- update public.profiles set role='admin', status='active' where email = 'admin@healthperia.com';
+
+
+-- ============================================================
+-- 7) CHAT UPGRADE (avatars, attachments, reactions, mute/delete,
+--    reports). Re-runnable. Run this block once in the SQL Editor.
+-- ============================================================
+
+-- 7a) Avatar photo URL on profiles
+alter table public.profiles add column if not exists avatar_url text;
+
+-- 7b) Messages: attachments, listing context, reactions
+alter table public.messages add column if not exists attachment_url  text;
+alter table public.messages add column if not exists attachment_type text;   -- 'document' | 'photo'
+alter table public.messages add column if not exists attachment_name text;
+alter table public.messages add column if not exists listing_code    text;   -- e.g. HP-03-027-114
+alter table public.messages add column if not exists listing_label   text;   -- human-readable listing title
+alter table public.messages add column if not exists reactions       jsonb not null default '{}'::jsonb; -- { "<userId>": "❤️" }
+-- attachment-only messages may have an empty body
+alter table public.messages alter column body drop not null;
+-- realtime UPDATE (reactions / read flips) needs the full row in the payload
+alter table public.messages replica identity full;
+
+-- 7c) React to a message (sender OR receiver; one emoji per user; '' clears it).
+--     SECURITY DEFINER so it can update without widening the RLS update policy
+--     (which only lets the receiver flip `read`).
+create or replace function public.react_to_message(p_message_id uuid, p_emoji text)
+returns void language plpgsql security definer
+set search_path = public as $$
+declare uid uuid := auth.uid();
+begin
+  if uid is null then return; end if;
+  if not exists (
+    select 1 from public.messages m
+    where m.id = p_message_id and (m.sender_id = uid or m.receiver_id = uid)
+  ) then
+    return;  -- only a participant may react
+  end if;
+  if p_emoji is null or p_emoji = '' then
+    update public.messages set reactions = reactions - uid::text where id = p_message_id;
+  else
+    update public.messages
+      set reactions = jsonb_set(coalesce(reactions, '{}'::jsonb), array[uid::text], to_jsonb(p_emoji), true)
+      where id = p_message_id;
+  end if;
+end; $$;
+grant execute on function public.react_to_message(uuid, text) to authenticated;
+
+-- 7d) Per-user conversation state: mute + "delete chat" (soft, per user).
+--     cleared_at hides messages created on/before it FOR THIS USER ONLY; a new
+--     message makes the thread reappear (WhatsApp-style). No per-message delete.
+create table if not exists public.conversation_state (
+  user_id    uuid not null references public.profiles(id) on delete cascade,
+  peer_id    uuid not null references public.profiles(id) on delete cascade,
+  muted      boolean not null default false,
+  cleared_at timestamptz,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, peer_id)
+);
+alter table public.conversation_state enable row level security;
+drop policy if exists convstate_all on public.conversation_state;
+create policy convstate_all on public.conversation_state
+  for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- 7e) Reports (a user — typically a patient — reports another, e.g. a doctor)
+create table if not exists public.reports (
+  id          uuid primary key default gen_random_uuid(),
+  reporter_id uuid not null references public.profiles(id) on delete cascade,
+  reported_id uuid not null references public.profiles(id) on delete cascade,
+  reason      text,
+  detail      text,
+  status      text not null default 'open' check (status in ('open','reviewed','dismissed')),
+  created_at  timestamptz not null default now()
+);
+alter table public.reports enable row level security;
+drop policy if exists reports_insert       on public.reports;
+drop policy if exists reports_select        on public.reports;
+drop policy if exists reports_update_admin  on public.reports;
+create policy reports_insert on public.reports for insert to authenticated
+  with check (reporter_id = auth.uid());
+create policy reports_select on public.reports for select to authenticated
+  using (reporter_id = auth.uid() or public.is_admin());
+create policy reports_update_admin on public.reports for update to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- 7f) Storage buckets for avatars + chat uploads (public read; write to own folder)
+insert into storage.buckets (id, name, public) values ('avatars','avatars', true)
+  on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('chat-uploads','chat-uploads', true)
+  on conflict (id) do nothing;
+
+drop policy if exists avatars_read   on storage.objects;
+drop policy if exists avatars_write  on storage.objects;
+drop policy if exists avatars_update on storage.objects;
+drop policy if exists avatars_delete on storage.objects;
+create policy avatars_read on storage.objects for select to public
+  using (bucket_id = 'avatars');
+create policy avatars_write on storage.objects for insert to authenticated
+  with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy avatars_update on storage.objects for update to authenticated
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy avatars_delete on storage.objects for delete to authenticated
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists chat_read  on storage.objects;
+drop policy if exists chat_write on storage.objects;
+create policy chat_read on storage.objects for select to public
+  using (bucket_id = 'chat-uploads');
+create policy chat_write on storage.objects for insert to authenticated
+  with check (bucket_id = 'chat-uploads' and (storage.foldername(name))[1] = auth.uid()::text);
+
+
+-- ============================================================
+-- 8) BLOG IMAGES + ADMIN ANNOUNCEMENTS. Re-runnable. Run once.
+-- ============================================================
+
+-- 8a) Blog post cover image
+alter table public.blog_posts add column if not exists image_url text;
+
+-- 8b) Announcements: admin broadcasts (read-only for recipients; no replies)
+create table if not exists public.announcements (
+  id         uuid primary key default gen_random_uuid(),
+  author_id  uuid references public.profiles(id) on delete set null,
+  title      text,
+  body       text not null,
+  audience   text not null default 'all' check (audience in ('all','doctors','patients')),
+  created_at timestamptz not null default now()
+);
+alter table public.announcements enable row level security;
+drop policy if exists ann_select    on public.announcements;
+drop policy if exists ann_admin_all on public.announcements;
+-- recipients can READ announcements aimed at them; only admins can write/delete
+create policy ann_select on public.announcements for select to authenticated using (
+  public.is_admin()
+  or audience = 'all'
+  or (audience = 'doctors'  and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'doctor'))
+  or (audience = 'patients' and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'patient'))
+);
+create policy ann_admin_all on public.announcements for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- 8c) Blog images storage bucket (public read; doctor/admin write to own folder)
+insert into storage.buckets (id, name, public) values ('blog-images','blog-images', true)
+  on conflict (id) do nothing;
+drop policy if exists blog_img_read  on storage.objects;
+drop policy if exists blog_img_write on storage.objects;
+create policy blog_img_read on storage.objects for select to public
+  using (bucket_id = 'blog-images');
+create policy blog_img_write on storage.objects for insert to authenticated
+  with check (bucket_id = 'blog-images' and (storage.foldername(name))[1] = auth.uid()::text);

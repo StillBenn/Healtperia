@@ -46,14 +46,18 @@
   function openSidebar()  { document.body.classList.add('sidebar-open'); }
   function closeSidebar() { document.body.classList.remove('sidebar-open'); }
 
+  function setAvatarEl(el, name, url) {
+    if (!el) return;
+    if (url) { el.classList.add('has-photo'); el.innerHTML = '<img src="' + url + '" alt="" />'; }
+    else { el.classList.remove('has-photo'); el.textContent = initials(name); }
+  }
+
   function refreshIdentity() {
     var u = H.currentUser();
     if (!u) return;
-    var ini = initials(u.name);
-    document.querySelectorAll('[id="navAvatar"], #profAvatar').forEach(function (el) { el.textContent = ini; });
+    document.querySelectorAll('[id="navAvatar"], #profAvatar').forEach(function (el) { setAvatarEl(el, u.name, u.avatar_url); });
     var navName = document.getElementById('navName'); if (navName) navName.textContent = u.name || '';
     var welcome = document.getElementById('welcomeName'); if (welcome) welcome.textContent = u.name || '';
-    var na = document.getElementById('navAvatar'); if (na) na.textContent = ini;
   }
 
   function init(user, opts) {
@@ -63,6 +67,7 @@
 
     /* identity */
     refreshIdentity();
+    wireAvatarUpload();
     /* page crumb is translated via data-i18n in the HTML / i18n-core, so we
        no longer overwrite it here. */
 
@@ -113,10 +118,27 @@
     }
   }
 
+  /* wire the profile-photo upload control (avatar) if present */
+  function wireAvatarUpload() {
+    var inp = document.getElementById('avatarInput');
+    if (!inp) return;
+    inp.addEventListener('change', function () {
+      var f = inp.files && inp.files[0]; if (!f) return;
+      var btn = document.querySelector('.avatar-edit'); if (btn) btn.classList.add('uploading');
+      H.uploadAvatar(f).then(function (r) {
+        if (btn) btn.classList.remove('uploading');
+        inp.value = '';
+        if (r && r.ok) refreshIdentity();
+        else alert((global.HPI && HPI.t ? HPI.t('chat.uploadErr', 'Fotoğraf yüklenemedi.') : 'Fotoğraf yüklenemedi.'));
+      });
+    });
+  }
+
   global.Dashboard = {
     init: init,
     initials: initials,
     showSection: showSection,
-    refreshIdentity: refreshIdentity
+    refreshIdentity: refreshIdentity,
+    wireAvatarUpload: wireAvatarUpload
   };
 })(window);

@@ -193,8 +193,9 @@
         if (body) {
           var paras = (p.body || '').split(/\n+/).filter(function (x){ return x.trim(); });
           var date = ''; try { date = new Date(p.created_at).toLocaleDateString('tr-TR'); } catch (_) {}
-          body.innerHTML = (paras.length ? paras.map(function (t){ return '<p>' + esc(t) + '</p>'; }).join('')
-                                          : '<p>' + esc(p.body || '') + '</p>') +
+          body.innerHTML = (p.image_url ? '<img class="post-cover-img" src="' + esc(p.image_url) + '" alt="">' : '') +
+            (paras.length ? paras.map(function (t){ return '<p>' + esc(t) + '</p>'; }).join('')
+                          : '<p>' + esc(p.body || '') + '</p>') +
             '<div class="post-author"><div class="pa-meta"><span class="pa-date">' + date + '</span></div></div>';
         }
         var rel = document.querySelector('.post-related'); if (rel) rel.style.display = 'none';

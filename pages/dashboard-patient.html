@@ -146,12 +146,17 @@
             </article>
             <article class="stat-card">
               <div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
-              <div class="stat-meta"><strong id="pTotal">0</strong><span>Toplam Randevu</span></div>
+              <div class="stat-meta"><strong id="pTotal">0</strong><span data-i18n="dp.stat.total">Toplam Randevu</span></div>
             </article>
             <article class="stat-card">
               <div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
-              <div class="stat-meta"><strong id="pDocs">0</strong><span>Doktorlar</span></div>
+              <div class="stat-meta"><strong id="pDocs">0</strong><span data-i18n="dp.stat.doctors">Doktorlar</span></div>
             </article>
+          </div>
+
+          <div class="card hp-ann-card" id="patientAnnCard" hidden>
+            <div class="card-head"><h3 data-i18n="ann.title">Yönetim Duyuruları</h3></div>
+            <ul class="hp-ann-list" id="patientAnnList"></ul>
           </div>
 
           <div class="grid-2">
@@ -222,7 +227,13 @@
         <section class="panel" data-panel="profile">
           <div class="card profile-card">
             <div class="profile-hero">
-              <span class="avatar xl" id="profAvatar">AD</span>
+              <div class="avatar-edit">
+                <span class="avatar xl" id="profAvatar">AD</span>
+                <label class="avatar-upload" data-i18n-aria="chat.changePhoto" aria-label="Fotoğrafı değiştir">
+                  <input type="file" id="avatarInput" accept="image/*" hidden>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </label>
+              </div>
               <div><h3 id="profName">—</h3><p id="profEmail">—</p><span class="badge badge-blue" data-i18n="acc.role.patient">Hasta</span></div>
             </div>
             <form id="profileForm" class="form-grid">
@@ -293,7 +304,7 @@
       pf.city.value = user.city || '';
       document.getElementById('profName').textContent = user.name || '';
       document.getElementById('profEmail').textContent = user.email || '';
-      document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+      Dashboard.refreshIdentity();
 
       pf.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -322,7 +333,25 @@
       });
 
       /* ===== messaging (live) ===== */
-      if (window.HPChat) HPChat.mount(document.getElementById('patientChat'), { emptyText: 'Henüz mesajınız yok. "Doktor Bul" sekmesinden bir doktora mesaj gönderebilirsiniz.', onReadChange: refreshPatientMsg });
+      if (window.HPChat) HPChat.mount(document.getElementById('patientChat'), { excludeRole: 'admin', emptyText: 'Henüz mesajınız yok. "Doktor Bul" sekmesinden bir doktora mesaj gönderebilirsiniz.', onReadChange: refreshPatientMsg });
+
+      /* read-only admin announcements */
+      function renderAnnouncements() {
+        if (!H.listAnnouncements) return;
+        H.listAnnouncements().then(function (list) {
+          var card = document.getElementById('patientAnnCard'), ul = document.getElementById('patientAnnList');
+          if (!card || !ul) return;
+          if (!list.length) { card.hidden = true; return; }
+          card.hidden = false;
+          ul.innerHTML = list.map(function (a) {
+            var d = ''; try { d = new Date(a.created_at).toLocaleDateString('tr-TR', { day:'2-digit', month:'short', year:'numeric' }); } catch(_) {}
+            return '<li class="hp-ann"><div class="hp-ann-ico">📣</div><div class="hp-ann-body">' +
+              (a.title ? '<strong>' + esc(a.title) + '</strong>' : '') +
+              '<p>' + esc(a.body) + '</p><time>' + d + '</time></div></li>';
+          }).join('');
+        });
+      }
+      renderAnnouncements();
 
       /* ===== doctors (live) ===== */
       var docGrid = document.getElementById('patientDoctors');
@@ -361,7 +390,7 @@
       }
       function refreshPatientMsg() {
         return H.inbox().then(function (msgs) {
-          var unread = msgs.filter(function (m){ return m.receiver_id === user.id && !m.read; });
+          var unread = msgs.filter(function (m){ return m.receiver_id === user.id && !m.read && !(m.sender && m.sender.role === 'admin'); });
           var senders = {}; unread.forEach(function (m){ senders[m.sender_id] = 1; });
           var n = Object.keys(senders).length, el;
           if ((el = document.getElementById('pUnread'))) el.textContent = n;
@@ -369,7 +398,27 @@
         });
       }
       refreshPatientMsg();
-      H.listDoctors().then(function (docs) { allDocs = docs; renderDocs(''); var el = document.getElementById('pDocs'); if (el) el.textContent = docs.length; });
+
+      /* a "Mesaj Gönder" link from a treatment listing → open a chat carrying
+         the listing code/label. The doctor is a PLACEHOLDER for now (first
+         active doctor); swap in the real listing doctor when catalog data lands. */
+      function handleListingParam() {
+        var qs = new URLSearchParams(location.search);
+        var code = qs.get('openListing'); if (!code) return;
+        var label = qs.get('label') || '';
+        history.replaceState(null, '', location.pathname + '#messages');
+        if (!window.HPChat || !allDocs.length) {
+          alert(T('chat.noDoctor', 'Şu an mesaj gönderilebilecek aktif doktor bulunmuyor.'));
+          return;
+        }
+        var doc = allDocs[0];
+        HPChat.openWith(doc.id, doc.name, { listingCode: code, listingLabel: label });
+      }
+      H.listDoctors().then(function (docs) {
+        allDocs = docs; renderDocs('');
+        var el = document.getElementById('pDocs'); if (el) el.textContent = docs.length;
+        handleListingParam();
+      });
       docGrid.addEventListener('click', function (e) {
         var m = e.target.closest('[data-msg]'); var b = e.target.closest('[data-book]');
         if (m && window.HPChat) { HPChat.openWith(m.dataset.msg, m.dataset.name); }

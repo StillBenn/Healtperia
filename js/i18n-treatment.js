@@ -79,4 +79,14 @@ window.HP_I18N = window.HP_I18N || {};
     'ti.hintCountry':'Selecteer een land om te beginnen.','ti.hintCity':'Selecteer een stad om door te gaan.','ti.hintUnit':'Selecteer een medische afdeling om behandelingen te zien.',
     'ti.priceLabel':'Geschatte prijsklasse'
   };
+
+  /* listing card: "Send Message" CTA + listing code label */
+  var TI_EXTRA = {
+    tr:['Mesaj Gönder','Kod'], en:['Send Message','Code'], de:['Nachricht senden','Code'],
+    ru:['Написать сообщение','Код'], fr:['Envoyer un message','Code'], es:['Enviar mensaje','Código'],
+    pt:['Enviar mensagem','Código'], ar:['إرسال رسالة','الرمز'], nl:['Bericht sturen','Code']
+  };
+  Object.keys(TI_EXTRA).forEach(function (l) {
+    if (I[l]) { I[l]['ti.message'] = TI_EXTRA[l][0]; I[l]['ti.code'] = TI_EXTRA[l][1]; }
+  });
 })(window.HP_I18N);

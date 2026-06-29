@@ -35,6 +35,9 @@
         <a class="side-link" data-section="messages" href="#messages">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge" style="display:none"></span></a>
+        <a class="side-link" data-section="support" href="#support">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-3v-7h5zM3 19a2 2 0 0 0 2 2h3v-7H3z"/></svg>
+          <span class="side-label" data-i18n="sup.nav">Yönetime Ulaş</span><span class="side-badge alt" id="supBadge" style="display:none"></span></a>
 
         <span class="sidebar-group" data-i18n="acc.group.account">Hesap</span>
         <a class="side-link" data-section="profile" href="#profile">
@@ -116,6 +119,11 @@
             <article class="stat-card"><div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/></svg></div><div class="stat-meta"><strong id="stTotal">0</strong><span data-i18n="dd.stat.total">Toplam Hasta</span></div></article>
           </div>
 
+          <div class="card hp-ann-card" id="doctorAnnCard" hidden>
+            <div class="card-head"><h3 data-i18n="ann.title">Yönetim Duyuruları</h3></div>
+            <ul class="hp-ann-list" id="doctorAnnList"></ul>
+          </div>
+
           <div class="card">
             <div class="card-head"><h3 data-i18n="dd.todayTitle">Bugünün Programı</h3><button class="link-btn" data-jump="requests" data-i18n="dd.reviewReq">Talepleri İncele</button></div>
             <ul class="appt-list" id="todayList"></ul>
@@ -161,11 +169,26 @@
           </div>
         </section>
 
+        <!-- SUPPORT (doctor → admin) -->
+        <section class="panel" data-panel="support">
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="sup.title">Yönetime Ulaş</h3></div>
+            <p class="muted-line" data-i18n="sup.desc">İstek, öneri ve sorularınızı doğrudan yönetim ekibine iletin.</p>
+            <div id="doctorSupport"></div>
+          </div>
+        </section>
+
         <!-- PROFILE -->
         <section class="panel" data-panel="profile">
           <div class="card profile-card">
             <div class="profile-hero">
-              <span class="avatar xl" id="profAvatar">EY</span>
+              <div class="avatar-edit">
+                <span class="avatar xl" id="profAvatar">EY</span>
+                <label class="avatar-upload" data-i18n-aria="chat.changePhoto" aria-label="Fotoğrafı değiştir">
+                  <input type="file" id="avatarInput" accept="image/*" hidden>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </label>
+              </div>
               <div><h3 id="profName">—</h3><p id="profEmail">—</p><span class="badge badge-blue" id="profSpec">Doktor</span></div>
             </div>
             <form id="profileForm" class="form-grid">
@@ -239,7 +262,7 @@
       document.getElementById('profName').textContent = user.name || '';
       document.getElementById('profEmail').textContent = user.email || '';
       paintSpec();
-      document.getElementById('profAvatar').textContent = Dashboard.initials(user.name);
+      Dashboard.refreshIdentity();
       /* keep the "Doctor" fallback localized when the language changes */
       if (window.HPI && window.HPI.onChange) window.HPI.onChange(paintSpec);
 
@@ -269,17 +292,50 @@
         });
       });
 
-      /* ===== messaging (live, realtime) ===== */
-      if (window.HPChat) HPChat.mount(document.getElementById('doctorChat'), { emptyText: 'Henüz mesajınız yok. Hastalarınız size yazdığında burada görünür.', onReadChange: refreshMsgBadge });
+      /* ===== messaging (live, realtime) — patient chats only (admin excluded) ===== */
+      if (window.HPChat) HPChat.mount(document.getElementById('doctorChat'), { excludeRole: 'admin', emptyText: 'Henüz mesajınız yok. Hastalarınız size yazdığında burada görünür.', onReadChange: refreshMsgBadge });
       function refreshMsgBadge() {
         H.inbox().then(function (msgs) {
           var unread = msgs.filter(function (m){ return m.receiver_id === user.id && !m.read; });
-          var senders = {}; unread.forEach(function (m){ senders[m.sender_id] = 1; });
+          var patUnread = unread.filter(function (m){ return !(m.sender && m.sender.role === 'admin'); });
+          var admUnread = unread.filter(function (m){ return m.sender && m.sender.role === 'admin'; });
+          var senders = {}; patUnread.forEach(function (m){ senders[m.sender_id] = 1; });
           var b = document.getElementById('msgBadge'); var n = Object.keys(senders).length;
           if (b) { b.textContent = n; b.style.display = n ? '' : 'none'; }
+          var sb2 = document.getElementById('supBadge');
+          if (sb2) { sb2.textContent = admUnread.length; sb2.style.display = admUnread.length ? '' : 'none'; }
         });
       }
       refreshMsgBadge();
+
+      /* ===== support: a separate pinned chat with the platform admin ===== */
+      if (window.HPChat && H.getAdmin) {
+        H.getAdmin().then(function (admin) {
+          var box = document.getElementById('doctorSupport');
+          if (!box) return;
+          if (!admin) { box.innerHTML = '<p class="muted-line">' + T('sup.none', 'Şu an ulaşılabilir bir yönetici bulunmuyor.') + '</p>'; return; }
+          var support = HPChat.create();
+          support.mountDirect(box, admin.id, admin.name || T('sup.admin', 'Yönetim'), { emptyText: T('sup.empty', 'İstek ve dileklerinizi buradan iletebilirsiniz.'), onReadChange: refreshMsgBadge });
+        });
+      }
+
+      /* ===== read-only admin announcements ===== */
+      function renderAnnouncements() {
+        if (!H.listAnnouncements) return;
+        H.listAnnouncements().then(function (list) {
+          var card = document.getElementById('doctorAnnCard'), ul = document.getElementById('doctorAnnList');
+          if (!card || !ul) return;
+          if (!list.length) { card.hidden = true; return; }
+          card.hidden = false;
+          ul.innerHTML = list.map(function (a) {
+            var d = ''; try { d = new Date(a.created_at).toLocaleDateString('tr-TR', { day:'2-digit', month:'short', year:'numeric' }); } catch(_) {}
+            return '<li class="hp-ann"><div class="hp-ann-ico">📣</div><div class="hp-ann-body">' +
+              (a.title ? '<strong>' + esc(a.title) + '</strong>' : '') +
+              '<p>' + esc(a.body) + '</p><time>' + d + '</time></div></li>';
+          }).join('');
+        });
+      }
+      renderAnnouncements();
 
       /* ===== patients list (live) ===== */
       function renderPatients(appts) {

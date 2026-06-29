@@ -238,8 +238,10 @@
         var date = '';
         try { date = new Date(p.created_at).toLocaleDateString('tr-TR'); } catch (_) {}
         var ex = (p.body || '').replace(/\s+/g, ' ').trim().slice(0, 140);
-        return '<a href="blog-post.html?id=' + p.id + '" class="blog-card">' +
-          '<div class="blog-cover ' + covers[i % covers.length] + '"><span class="blog-cat">' + esc(p.section || 'Blog') + '</span></div>' +
+        var cover = p.image_url
+          ? '<div class="blog-cover has-img" style="background-image:url(' + esc(p.image_url) + ')"><span class="blog-cat">' + esc(p.section || 'Blog') + '</span></div>'
+          : '<div class="blog-cover ' + covers[i % covers.length] + '"><span class="blog-cat">' + esc(p.section || 'Blog') + '</span></div>';
+        return '<a href="blog-post.html?id=' + p.id + '" class="blog-card">' + cover +
           '<div class="blog-card-body"><div class="blog-meta"><span class="blog-date">' + date + '</span></div>' +
           '<h3 class="blog-card-title">' + esc(p.title) + '</h3>' +
           '<p class="blog-card-excerpt">' + esc(ex) + (ex.length >= 140 ? '…' : '') + '</p></div></a>';

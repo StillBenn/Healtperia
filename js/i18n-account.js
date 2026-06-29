@@ -254,4 +254,197 @@ window.HP_I18N = window.HP_I18N || {};
     'err.codeWrong': 'De verificatiecode is onjuist.', 'err.codeExpired': 'De code is verlopen. Vraag een nieuwe aan.',
     'msg.docPending': 'Uw account is aangemaakt. Artsenaccounts worden om veiligheidsredenen geactiveerd na goedkeuring door ons team.'
   });
+
+  /* ===== CHAT (messaging UI: attachments, reactions, mute/delete, report) ===== */
+  add('tr', {
+    'chat.yesterday': 'Dün', 'chat.today': 'Bugün', 'chat.options': 'Seçenekler',
+    'chat.mute': 'Bildirimi Kapat', 'chat.unmute': 'Bildirimi Aç', 'chat.delete': 'Sohbeti Sil',
+    'chat.deleteConfirm': 'Bu sohbet sizin için silinecek. Devam edilsin mi?',
+    'chat.back': 'Geri', 'chat.send': 'Gönder', 'chat.placeholder': 'Mesaj yazın…',
+    'chat.attach': 'Ekle', 'chat.document': 'Belge', 'chat.photo': 'Fotoğraf', 'chat.react': 'Tepki ver',
+    'chat.uploading': 'Yükleniyor…', 'chat.uploadErr': 'Dosya yüklenemedi.',
+    'chat.listing': 'Tedavi İlanı', 'chat.listingFrom': 'Bu görüşme bir tedavi ilanından başladı', 'chat.code': 'Kod',
+    'chat.reportDoctor': 'Doktoru Şikâyet Et', 'chat.reportPatient': 'Hastayı Şikâyet Et', 'chat.reportReason': 'Sebep',
+    'chat.reportR1': 'Uygunsuz davranış', 'chat.reportR2': 'Yanıltıcı / yanlış bilgi', 'chat.reportR3': 'Spam / istenmeyen mesaj', 'chat.reportR4': 'Diğer',
+    'chat.reportDetail': 'Açıklama (isteğe bağlı)', 'chat.reportPh': 'Olayı kısaca açıklayın…', 'chat.reportSend': 'Şikâyet Gönder', 'chat.cancel': 'İptal',
+    'chat.reportDoneT': 'Şikâyetiniz alındı', 'chat.reportDone': 'Ekibimiz en kısa sürede inceleyecek. Teşekkürler.', 'chat.reportErr': 'Bir hata oluştu, lütfen tekrar deneyin.',
+    'chat.close': 'Kapat', 'chat.changePhoto': 'Fotoğrafı değiştir', 'chat.noDoctor': 'Şu an mesaj gönderilebilecek aktif doktor bulunmuyor.'
+  });
+  add('en', {
+    'chat.yesterday': 'Yesterday', 'chat.today': 'Today', 'chat.options': 'Options',
+    'chat.mute': 'Mute', 'chat.unmute': 'Unmute', 'chat.delete': 'Delete chat',
+    'chat.deleteConfirm': 'This chat will be deleted for you. Continue?',
+    'chat.back': 'Back', 'chat.send': 'Send', 'chat.placeholder': 'Type a message…',
+    'chat.attach': 'Attach', 'chat.document': 'Document', 'chat.photo': 'Photo', 'chat.react': 'React',
+    'chat.uploading': 'Uploading…', 'chat.uploadErr': 'File could not be uploaded.',
+    'chat.listing': 'Treatment Listing', 'chat.listingFrom': 'This conversation started from a treatment listing', 'chat.code': 'Code',
+    'chat.reportDoctor': 'Report Doctor', 'chat.reportPatient': 'Report Patient', 'chat.reportReason': 'Reason',
+    'chat.reportR1': 'Inappropriate behaviour', 'chat.reportR2': 'Misleading / false information', 'chat.reportR3': 'Spam / unwanted messages', 'chat.reportR4': 'Other',
+    'chat.reportDetail': 'Description (optional)', 'chat.reportPh': 'Briefly describe what happened…', 'chat.reportSend': 'Send Report', 'chat.cancel': 'Cancel',
+    'chat.reportDoneT': 'Your report has been received', 'chat.reportDone': 'Our team will review it shortly. Thank you.', 'chat.reportErr': 'An error occurred, please try again.',
+    'chat.close': 'Close', 'chat.changePhoto': 'Change photo', 'chat.noDoctor': 'There is currently no active doctor to message.'
+  });
+  add('de', {
+    'chat.yesterday': 'Gestern', 'chat.today': 'Heute', 'chat.options': 'Optionen',
+    'chat.mute': 'Stummschalten', 'chat.unmute': 'Stummschaltung aufheben', 'chat.delete': 'Chat löschen',
+    'chat.deleteConfirm': 'Dieser Chat wird für Sie gelöscht. Fortfahren?',
+    'chat.back': 'Zurück', 'chat.send': 'Senden', 'chat.placeholder': 'Nachricht schreiben…',
+    'chat.attach': 'Anhängen', 'chat.document': 'Dokument', 'chat.photo': 'Foto', 'chat.react': 'Reagieren',
+    'chat.uploading': 'Wird hochgeladen…', 'chat.uploadErr': 'Datei konnte nicht hochgeladen werden.',
+    'chat.listing': 'Behandlungsanzeige', 'chat.listingFrom': 'Dieses Gespräch begann über eine Behandlungsanzeige', 'chat.code': 'Code',
+    'chat.reportDoctor': 'Arzt melden', 'chat.reportPatient': 'Patient melden', 'chat.reportReason': 'Grund',
+    'chat.reportR1': 'Unangemessenes Verhalten', 'chat.reportR2': 'Irreführende / falsche Informationen', 'chat.reportR3': 'Spam / unerwünschte Nachrichten', 'chat.reportR4': 'Sonstiges',
+    'chat.reportDetail': 'Beschreibung (optional)', 'chat.reportPh': 'Beschreiben Sie kurz, was passiert ist…', 'chat.reportSend': 'Meldung senden', 'chat.cancel': 'Abbrechen',
+    'chat.reportDoneT': 'Ihre Meldung ist eingegangen', 'chat.reportDone': 'Unser Team wird sie in Kürze prüfen. Danke.', 'chat.reportErr': 'Ein Fehler ist aufgetreten, bitte erneut versuchen.',
+    'chat.close': 'Schließen', 'chat.changePhoto': 'Foto ändern', 'chat.noDoctor': 'Derzeit ist kein aktiver Arzt zum Schreiben verfügbar.'
+  });
+  add('ru', {
+    'chat.yesterday': 'Вчера', 'chat.today': 'Сегодня', 'chat.options': 'Опции',
+    'chat.mute': 'Отключить уведомления', 'chat.unmute': 'Включить уведомления', 'chat.delete': 'Удалить чат',
+    'chat.deleteConfirm': 'Этот чат будет удалён для вас. Продолжить?',
+    'chat.back': 'Назад', 'chat.send': 'Отправить', 'chat.placeholder': 'Введите сообщение…',
+    'chat.attach': 'Прикрепить', 'chat.document': 'Документ', 'chat.photo': 'Фото', 'chat.react': 'Реакция',
+    'chat.uploading': 'Загрузка…', 'chat.uploadErr': 'Не удалось загрузить файл.',
+    'chat.listing': 'Объявление о лечении', 'chat.listingFrom': 'Этот разговор начался с объявления о лечении', 'chat.code': 'Код',
+    'chat.reportDoctor': 'Пожаловаться на врача', 'chat.reportPatient': 'Пожаловаться на пациента', 'chat.reportReason': 'Причина',
+    'chat.reportR1': 'Неподобающее поведение', 'chat.reportR2': 'Вводящая в заблуждение / ложная информация', 'chat.reportR3': 'Спам / нежелательные сообщения', 'chat.reportR4': 'Другое',
+    'chat.reportDetail': 'Описание (необязательно)', 'chat.reportPh': 'Кратко опишите, что произошло…', 'chat.reportSend': 'Отправить жалобу', 'chat.cancel': 'Отмена',
+    'chat.reportDoneT': 'Ваша жалоба получена', 'chat.reportDone': 'Наша команда скоро её рассмотрит. Спасибо.', 'chat.reportErr': 'Произошла ошибка, попробуйте снова.',
+    'chat.close': 'Закрыть', 'chat.changePhoto': 'Изменить фото', 'chat.noDoctor': 'Сейчас нет активного врача для сообщения.'
+  });
+  add('fr', {
+    'chat.yesterday': 'Hier', 'chat.today': "Aujourd'hui", 'chat.options': 'Options',
+    'chat.mute': 'Couper les notifications', 'chat.unmute': 'Activer les notifications', 'chat.delete': 'Supprimer la conversation',
+    'chat.deleteConfirm': 'Cette conversation sera supprimée pour vous. Continuer ?',
+    'chat.back': 'Retour', 'chat.send': 'Envoyer', 'chat.placeholder': 'Écrivez un message…',
+    'chat.attach': 'Joindre', 'chat.document': 'Document', 'chat.photo': 'Photo', 'chat.react': 'Réagir',
+    'chat.uploading': 'Téléversement…', 'chat.uploadErr': "Le fichier n'a pas pu être téléversé.",
+    'chat.listing': 'Annonce de traitement', 'chat.listingFrom': "Cette conversation a commencé à partir d'une annonce de traitement", 'chat.code': 'Code',
+    'chat.reportDoctor': 'Signaler le médecin', 'chat.reportPatient': 'Signaler le patient', 'chat.reportReason': 'Motif',
+    'chat.reportR1': 'Comportement inapproprié', 'chat.reportR2': 'Informations trompeuses / fausses', 'chat.reportR3': 'Spam / messages indésirables', 'chat.reportR4': 'Autre',
+    'chat.reportDetail': 'Description (facultatif)', 'chat.reportPh': "Décrivez brièvement ce qui s'est passé…", 'chat.reportSend': 'Envoyer le signalement', 'chat.cancel': 'Annuler',
+    'chat.reportDoneT': 'Votre signalement a été reçu', 'chat.reportDone': "Notre équipe l'examinera sous peu. Merci.", 'chat.reportErr': "Une erreur s'est produite, veuillez réessayer.",
+    'chat.close': 'Fermer', 'chat.changePhoto': 'Changer la photo', 'chat.noDoctor': "Aucun médecin actif n'est disponible pour le moment."
+  });
+  add('es', {
+    'chat.yesterday': 'Ayer', 'chat.today': 'Hoy', 'chat.options': 'Opciones',
+    'chat.mute': 'Silenciar', 'chat.unmute': 'Activar notificaciones', 'chat.delete': 'Eliminar chat',
+    'chat.deleteConfirm': 'Este chat se eliminará para ti. ¿Continuar?',
+    'chat.back': 'Atrás', 'chat.send': 'Enviar', 'chat.placeholder': 'Escribe un mensaje…',
+    'chat.attach': 'Adjuntar', 'chat.document': 'Documento', 'chat.photo': 'Foto', 'chat.react': 'Reaccionar',
+    'chat.uploading': 'Subiendo…', 'chat.uploadErr': 'No se pudo subir el archivo.',
+    'chat.listing': 'Anuncio de tratamiento', 'chat.listingFrom': 'Esta conversación comenzó desde un anuncio de tratamiento', 'chat.code': 'Código',
+    'chat.reportDoctor': 'Denunciar al médico', 'chat.reportPatient': 'Denunciar al paciente', 'chat.reportReason': 'Motivo',
+    'chat.reportR1': 'Comportamiento inapropiado', 'chat.reportR2': 'Información engañosa / falsa', 'chat.reportR3': 'Spam / mensajes no deseados', 'chat.reportR4': 'Otro',
+    'chat.reportDetail': 'Descripción (opcional)', 'chat.reportPh': 'Describe brevemente lo ocurrido…', 'chat.reportSend': 'Enviar denuncia', 'chat.cancel': 'Cancelar',
+    'chat.reportDoneT': 'Tu denuncia ha sido recibida', 'chat.reportDone': 'Nuestro equipo la revisará pronto. Gracias.', 'chat.reportErr': 'Ocurrió un error, inténtalo de nuevo.',
+    'chat.close': 'Cerrar', 'chat.changePhoto': 'Cambiar foto', 'chat.noDoctor': 'No hay ningún médico activo disponible para enviar mensajes.'
+  });
+  add('pt', {
+    'chat.yesterday': 'Ontem', 'chat.today': 'Hoje', 'chat.options': 'Opções',
+    'chat.mute': 'Silenciar', 'chat.unmute': 'Ativar notificações', 'chat.delete': 'Excluir conversa',
+    'chat.deleteConfirm': 'Esta conversa será excluída para você. Continuar?',
+    'chat.back': 'Voltar', 'chat.send': 'Enviar', 'chat.placeholder': 'Escreva uma mensagem…',
+    'chat.attach': 'Anexar', 'chat.document': 'Documento', 'chat.photo': 'Foto', 'chat.react': 'Reagir',
+    'chat.uploading': 'Enviando…', 'chat.uploadErr': 'Não foi possível enviar o arquivo.',
+    'chat.listing': 'Anúncio de tratamento', 'chat.listingFrom': 'Esta conversa começou a partir de um anúncio de tratamento', 'chat.code': 'Código',
+    'chat.reportDoctor': 'Denunciar médico', 'chat.reportPatient': 'Denunciar paciente', 'chat.reportReason': 'Motivo',
+    'chat.reportR1': 'Comportamento inadequado', 'chat.reportR2': 'Informações enganosas / falsas', 'chat.reportR3': 'Spam / mensagens indesejadas', 'chat.reportR4': 'Outro',
+    'chat.reportDetail': 'Descrição (opcional)', 'chat.reportPh': 'Descreva brevemente o que aconteceu…', 'chat.reportSend': 'Enviar denúncia', 'chat.cancel': 'Cancelar',
+    'chat.reportDoneT': 'Sua denúncia foi recebida', 'chat.reportDone': 'Nossa equipe irá analisá-la em breve. Obrigado.', 'chat.reportErr': 'Ocorreu um erro, tente novamente.',
+    'chat.close': 'Fechar', 'chat.changePhoto': 'Alterar foto', 'chat.noDoctor': 'No momento não há médico ativo para enviar mensagem.'
+  });
+  add('ar', {
+    'chat.yesterday': 'أمس', 'chat.today': 'اليوم', 'chat.options': 'خيارات',
+    'chat.mute': 'كتم الإشعارات', 'chat.unmute': 'تشغيل الإشعارات', 'chat.delete': 'حذف المحادثة',
+    'chat.deleteConfirm': 'سيتم حذف هذه المحادثة بالنسبة لك. هل تريد المتابعة؟',
+    'chat.back': 'رجوع', 'chat.send': 'إرسال', 'chat.placeholder': 'اكتب رسالة…',
+    'chat.attach': 'إرفاق', 'chat.document': 'مستند', 'chat.photo': 'صورة', 'chat.react': 'تفاعل',
+    'chat.uploading': 'جارٍ الرفع…', 'chat.uploadErr': 'تعذّر رفع الملف.',
+    'chat.listing': 'إعلان علاج', 'chat.listingFrom': 'بدأت هذه المحادثة من إعلان علاج', 'chat.code': 'الرمز',
+    'chat.reportDoctor': 'الإبلاغ عن الطبيب', 'chat.reportPatient': 'الإبلاغ عن المريض', 'chat.reportReason': 'السبب',
+    'chat.reportR1': 'سلوك غير لائق', 'chat.reportR2': 'معلومات مضللة / خاطئة', 'chat.reportR3': 'رسائل مزعجة / غير مرغوبة', 'chat.reportR4': 'أخرى',
+    'chat.reportDetail': 'الوصف (اختياري)', 'chat.reportPh': 'صف ما حدث باختصار…', 'chat.reportSend': 'إرسال البلاغ', 'chat.cancel': 'إلغاء',
+    'chat.reportDoneT': 'تم استلام بلاغك', 'chat.reportDone': 'سيراجعه فريقنا قريبًا. شكرًا لك.', 'chat.reportErr': 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+    'chat.close': 'إغلاق', 'chat.changePhoto': 'تغيير الصورة', 'chat.noDoctor': 'لا يوجد طبيب نشط لإرسال رسالة إليه حاليًا.'
+  });
+  add('nl', {
+    'chat.yesterday': 'Gisteren', 'chat.today': 'Vandaag', 'chat.options': 'Opties',
+    'chat.mute': 'Dempen', 'chat.unmute': 'Dempen opheffen', 'chat.delete': 'Chat verwijderen',
+    'chat.deleteConfirm': 'Deze chat wordt voor jou verwijderd. Doorgaan?',
+    'chat.back': 'Terug', 'chat.send': 'Verzenden', 'chat.placeholder': 'Typ een bericht…',
+    'chat.attach': 'Bijvoegen', 'chat.document': 'Document', 'chat.photo': 'Foto', 'chat.react': 'Reageren',
+    'chat.uploading': 'Uploaden…', 'chat.uploadErr': 'Bestand kon niet worden geüpload.',
+    'chat.listing': 'Behandelingsadvertentie', 'chat.listingFrom': 'Dit gesprek begon vanuit een behandelingsadvertentie', 'chat.code': 'Code',
+    'chat.reportDoctor': 'Arts melden', 'chat.reportPatient': 'Patiënt melden', 'chat.reportReason': 'Reden',
+    'chat.reportR1': 'Ongepast gedrag', 'chat.reportR2': 'Misleidende / onjuiste informatie', 'chat.reportR3': 'Spam / ongewenste berichten', 'chat.reportR4': 'Overig',
+    'chat.reportDetail': 'Beschrijving (optioneel)', 'chat.reportPh': 'Beschrijf kort wat er is gebeurd…', 'chat.reportSend': 'Melding verzenden', 'chat.cancel': 'Annuleren',
+    'chat.reportDoneT': 'Je melding is ontvangen', 'chat.reportDone': 'Ons team bekijkt het binnenkort. Bedankt.', 'chat.reportErr': 'Er is een fout opgetreden, probeer het opnieuw.',
+    'chat.close': 'Sluiten', 'chat.changePhoto': 'Foto wijzigen', 'chat.noDoctor': 'Er is momenteel geen actieve arts om te berichten.'
+  });
+
+  /* ===== ANNOUNCEMENTS (ann.*) + ADMIN SUPPORT (sup.*) ===== */
+  add('tr', {
+    'ann.title': 'Yönetim Duyuruları', 'ann.nav': 'Duyurular', 'ann.compose': 'Yeni Duyuru', 'ann.listTitle': 'Yayınlanan Duyurular',
+    'ann.f.title': 'Başlık (isteğe bağlı)', 'ann.ph.title': 'Duyuru başlığı', 'ann.f.audience': 'Hedef Kitle', 'ann.f.body': 'İçerik', 'ann.ph.body': 'Duyuru metni…',
+    'ann.aud.all': 'Herkes', 'ann.aud.doctors': 'Doktorlar', 'ann.aud.patients': 'Hastalar',
+    'ann.send': 'Duyuruyu Yayınla', 'ann.sent': 'Yayınlandı ✓', 'ann.empty': 'Henüz duyuru yok.', 'ann.delConfirm': 'Bu duyuruyu silmek istiyor musunuz?',
+    'sup.nav': 'Yönetime Ulaş', 'sup.title': 'Yönetime Ulaş', 'sup.desc': 'İstek, öneri ve sorularınızı doğrudan yönetim ekibine iletin.', 'sup.none': 'Şu an ulaşılabilir bir yönetici bulunmuyor.', 'sup.admin': 'Yönetim', 'sup.empty': 'İstek ve dileklerinizi buradan iletebilirsiniz.'
+  });
+  add('en', {
+    'ann.title': 'Announcements', 'ann.nav': 'Announcements', 'ann.compose': 'New Announcement', 'ann.listTitle': 'Published Announcements',
+    'ann.f.title': 'Title (optional)', 'ann.ph.title': 'Announcement title', 'ann.f.audience': 'Audience', 'ann.f.body': 'Content', 'ann.ph.body': 'Announcement text…',
+    'ann.aud.all': 'Everyone', 'ann.aud.doctors': 'Doctors', 'ann.aud.patients': 'Patients',
+    'ann.send': 'Publish Announcement', 'ann.sent': 'Published ✓', 'ann.empty': 'No announcements yet.', 'ann.delConfirm': 'Delete this announcement?',
+    'sup.nav': 'Contact Admin', 'sup.title': 'Contact Admin', 'sup.desc': 'Send your requests, suggestions and questions directly to the management team.', 'sup.none': 'No administrator is available right now.', 'sup.admin': 'Management', 'sup.empty': 'Share your requests and wishes here.'
+  });
+  add('de', {
+    'ann.title': 'Ankündigungen', 'ann.nav': 'Ankündigungen', 'ann.compose': 'Neue Ankündigung', 'ann.listTitle': 'Veröffentlichte Ankündigungen',
+    'ann.f.title': 'Titel (optional)', 'ann.ph.title': 'Titel der Ankündigung', 'ann.f.audience': 'Zielgruppe', 'ann.f.body': 'Inhalt', 'ann.ph.body': 'Ankündigungstext…',
+    'ann.aud.all': 'Alle', 'ann.aud.doctors': 'Ärzte', 'ann.aud.patients': 'Patienten',
+    'ann.send': 'Ankündigung veröffentlichen', 'ann.sent': 'Veröffentlicht ✓', 'ann.empty': 'Noch keine Ankündigungen.', 'ann.delConfirm': 'Diese Ankündigung löschen?',
+    'sup.nav': 'Verwaltung kontaktieren', 'sup.title': 'Verwaltung kontaktieren', 'sup.desc': 'Senden Sie Ihre Anliegen, Vorschläge und Fragen direkt an das Verwaltungsteam.', 'sup.none': 'Derzeit ist kein Administrator verfügbar.', 'sup.admin': 'Verwaltung', 'sup.empty': 'Teilen Sie hier Ihre Anliegen und Wünsche mit.'
+  });
+  add('ru', {
+    'ann.title': 'Объявления', 'ann.nav': 'Объявления', 'ann.compose': 'Новое объявление', 'ann.listTitle': 'Опубликованные объявления',
+    'ann.f.title': 'Заголовок (необязательно)', 'ann.ph.title': 'Заголовок объявления', 'ann.f.audience': 'Аудитория', 'ann.f.body': 'Содержание', 'ann.ph.body': 'Текст объявления…',
+    'ann.aud.all': 'Все', 'ann.aud.doctors': 'Врачи', 'ann.aud.patients': 'Пациенты',
+    'ann.send': 'Опубликовать объявление', 'ann.sent': 'Опубликовано ✓', 'ann.empty': 'Объявлений пока нет.', 'ann.delConfirm': 'Удалить это объявление?',
+    'sup.nav': 'Связаться с админом', 'sup.title': 'Связаться с админом', 'sup.desc': 'Отправляйте свои запросы, предложения и вопросы напрямую команде управления.', 'sup.none': 'Сейчас нет доступного администратора.', 'sup.admin': 'Управление', 'sup.empty': 'Оставьте здесь свои запросы и пожелания.'
+  });
+  add('fr', {
+    'ann.title': 'Annonces', 'ann.nav': 'Annonces', 'ann.compose': 'Nouvelle annonce', 'ann.listTitle': 'Annonces publiées',
+    'ann.f.title': 'Titre (facultatif)', 'ann.ph.title': "Titre de l'annonce", 'ann.f.audience': 'Public', 'ann.f.body': 'Contenu', 'ann.ph.body': "Texte de l'annonce…",
+    'ann.aud.all': 'Tout le monde', 'ann.aud.doctors': 'Médecins', 'ann.aud.patients': 'Patients',
+    'ann.send': "Publier l'annonce", 'ann.sent': 'Publié ✓', 'ann.empty': 'Aucune annonce pour le moment.', 'ann.delConfirm': 'Supprimer cette annonce ?',
+    'sup.nav': "Contacter l'administration", 'sup.title': "Contacter l'administration", 'sup.desc': "Envoyez vos demandes, suggestions et questions directement à l'équipe de gestion.", 'sup.none': "Aucun administrateur n'est disponible pour le moment.", 'sup.admin': 'Administration', 'sup.empty': 'Partagez ici vos demandes et souhaits.'
+  });
+  add('es', {
+    'ann.title': 'Anuncios', 'ann.nav': 'Anuncios', 'ann.compose': 'Nuevo anuncio', 'ann.listTitle': 'Anuncios publicados',
+    'ann.f.title': 'Título (opcional)', 'ann.ph.title': 'Título del anuncio', 'ann.f.audience': 'Audiencia', 'ann.f.body': 'Contenido', 'ann.ph.body': 'Texto del anuncio…',
+    'ann.aud.all': 'Todos', 'ann.aud.doctors': 'Médicos', 'ann.aud.patients': 'Pacientes',
+    'ann.send': 'Publicar anuncio', 'ann.sent': 'Publicado ✓', 'ann.empty': 'Aún no hay anuncios.', 'ann.delConfirm': '¿Eliminar este anuncio?',
+    'sup.nav': 'Contactar administración', 'sup.title': 'Contactar administración', 'sup.desc': 'Envía tus solicitudes, sugerencias y preguntas directamente al equipo de gestión.', 'sup.none': 'No hay ningún administrador disponible ahora.', 'sup.admin': 'Administración', 'sup.empty': 'Comparte aquí tus solicitudes y deseos.'
+  });
+  add('pt', {
+    'ann.title': 'Anúncios', 'ann.nav': 'Anúncios', 'ann.compose': 'Novo anúncio', 'ann.listTitle': 'Anúncios publicados',
+    'ann.f.title': 'Título (opcional)', 'ann.ph.title': 'Título do anúncio', 'ann.f.audience': 'Público', 'ann.f.body': 'Conteúdo', 'ann.ph.body': 'Texto do anúncio…',
+    'ann.aud.all': 'Todos', 'ann.aud.doctors': 'Médicos', 'ann.aud.patients': 'Pacientes',
+    'ann.send': 'Publicar anúncio', 'ann.sent': 'Publicado ✓', 'ann.empty': 'Ainda não há anúncios.', 'ann.delConfirm': 'Excluir este anúncio?',
+    'sup.nav': 'Contatar administração', 'sup.title': 'Contatar administração', 'sup.desc': 'Envie suas solicitações, sugestões e perguntas diretamente à equipe de gestão.', 'sup.none': 'Nenhum administrador disponível no momento.', 'sup.admin': 'Administração', 'sup.empty': 'Compartilhe aqui suas solicitações e desejos.'
+  });
+  add('ar', {
+    'ann.title': 'الإعلانات', 'ann.nav': 'الإعلانات', 'ann.compose': 'إعلان جديد', 'ann.listTitle': 'الإعلانات المنشورة',
+    'ann.f.title': 'العنوان (اختياري)', 'ann.ph.title': 'عنوان الإعلان', 'ann.f.audience': 'الجمهور', 'ann.f.body': 'المحتوى', 'ann.ph.body': 'نص الإعلان…',
+    'ann.aud.all': 'الجميع', 'ann.aud.doctors': 'الأطباء', 'ann.aud.patients': 'المرضى',
+    'ann.send': 'نشر الإعلان', 'ann.sent': 'تم النشر ✓', 'ann.empty': 'لا توجد إعلانات بعد.', 'ann.delConfirm': 'حذف هذا الإعلان؟',
+    'sup.nav': 'التواصل مع الإدارة', 'sup.title': 'التواصل مع الإدارة', 'sup.desc': 'أرسل طلباتك واقتراحاتك وأسئلتك مباشرة إلى فريق الإدارة.', 'sup.none': 'لا يوجد مسؤول متاح حاليًا.', 'sup.admin': 'الإدارة', 'sup.empty': 'شارك طلباتك ورغباتك هنا.'
+  });
+  add('nl', {
+    'ann.title': 'Aankondigingen', 'ann.nav': 'Aankondigingen', 'ann.compose': 'Nieuwe aankondiging', 'ann.listTitle': 'Gepubliceerde aankondigingen',
+    'ann.f.title': 'Titel (optioneel)', 'ann.ph.title': 'Titel van aankondiging', 'ann.f.audience': 'Doelgroep', 'ann.f.body': 'Inhoud', 'ann.ph.body': 'Aankondigingstekst…',
+    'ann.aud.all': 'Iedereen', 'ann.aud.doctors': 'Artsen', 'ann.aud.patients': 'Patiënten',
+    'ann.send': 'Aankondiging publiceren', 'ann.sent': 'Gepubliceerd ✓', 'ann.empty': 'Nog geen aankondigingen.', 'ann.delConfirm': 'Deze aankondiging verwijderen?',
+    'sup.nav': 'Beheer contacteren', 'sup.title': 'Beheer contacteren', 'sup.desc': 'Stuur uw verzoeken, suggesties en vragen rechtstreeks naar het beheerteam.', 'sup.none': 'Er is momenteel geen beheerder beschikbaar.', 'sup.admin': 'Beheer', 'sup.empty': 'Deel hier uw verzoeken en wensen.'
+  });
 })(window.HP_I18N);

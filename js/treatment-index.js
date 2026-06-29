@@ -40,6 +40,12 @@
   }
   function fmtMoney(n) { return n.toLocaleString('de-DE'); }   // dotted thousands
 
+  /* deterministic listing code (stable per unit/treatment/method) */
+  function pad(n, w) { n = String(n); while (n.length < w) n = '0' + n; return n; }
+  function listingCode(unitId, treatmentId, methodId) {
+    return 'HP-' + pad(unitId, 2) + '-' + pad(treatmentId, 3) + '-' + pad(methodId, 3);
+  }
+
   /* ---------- state ---------- */
   var state = { countryId: null, cityId: null, unitId: null, treatmentId: null, methodId: null };
   var STEP_ORDER = ['country', 'city', 'unit', 'treatment', 'method'];
@@ -171,13 +177,17 @@
     countEl.textContent = methods.length + ' ' + T('ti.resultsWord', 'sonuç');
 
     var loc = locationLabel();
-    var cta = T('ti.cta', 'Detayları gör →');
+    var msgCta = T('ti.message', 'Mesaj Gönder');
+    var codeLabel = T('ti.code', 'Kod');
     var priceLabel = T('ti.priceLabel', '');
     var html = methods.map(function (m, i) {
       var tr = treatments[m.treatmentId] || { name: '' };
       var unit = units[tr.unitId] || { name: '' };
       var pr = demoPrice(tr.id, m.id);
       var doc = demoDoctor(m.id);
+      var code = listingCode(tr.unitId, tr.id, m.id);
+      var label = tr.name + ' · ' + m.name + (loc ? ' · ' + loc : '');
+      var msgHref = 'dashboard-patient.html?openListing=' + encodeURIComponent(code) + '&label=' + encodeURIComponent(label);
       return '<article class="result-card" style="--i:' + (i % 12) + '">' +
         '<div class="result-media"></div>' +
         '<div class="result-body">' +
@@ -187,9 +197,12 @@
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M12 8v6M9 11h6"/></svg>' +
             esc(doc) + '</p>' +
           (loc ? '<p class="result-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' + esc(loc) + '</p>' : '') +
+          '<p class="result-code"><span>' + esc(codeLabel) + ': ' + esc(code) + '</span></p>' +
           '<div class="result-foot">' +
             '<span class="result-price" title="' + esc(priceLabel) + '">' + fmtMoney(pr[0]) + ' $ – ' + fmtMoney(pr[1]) + ' $</span>' +
-            '<a href="#" class="result-cta">' + esc(cta) + '</a>' +
+            '<a href="' + msgHref + '" class="result-cta result-msg">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' +
+              esc(msgCta) + '</a>' +
           '</div>' +
         '</div>' +
       '</article>';

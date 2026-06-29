@@ -167,6 +167,40 @@
       .then(function () { return ok(); });
   };
 
+  /* ---------- UPLOADS (Supabase Storage) ---------- */
+  function fileExt(file) {
+    var n = (file && file.name) || '';
+    var e = n.indexOf('.') !== -1 ? n.split('.').pop() : '';
+    return (e || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  }
+  /* upload an avatar image → set profiles.avatar_url, return the public URL */
+  HP.uploadAvatar = function (file) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!file) return Promise.resolve(fail('err.account'));
+    var path = p.id + '/avatar-' + Date.now() + '.' + fileExt(file);
+    return sb.storage.from('avatars').upload(path, file, { cacheControl: '3600', upsert: true }).then(function (r) {
+      if (r.error) return fail('err.account', r.error.message);
+      var url = sb.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+      return sb.from('profiles').update({ avatar_url: url }).eq('id', p.id).select().single().then(function (u) {
+        if (u.error) return fail('err.account', u.error.message);
+        HP._profile = u.data;
+        return ok({ url: url, user: u.data });
+      });
+    });
+  };
+  /* upload a chat attachment (document/photo) → return { url, name } */
+  HP.uploadChatFile = function (file) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!file) return Promise.resolve(fail('err.account'));
+    var safe = ((file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_')).slice(-60);
+    var path = p.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + safe;
+    return sb.storage.from('chat-uploads').upload(path, file, { cacheControl: '3600' }).then(function (r) {
+      if (r.error) return fail('err.account', r.error.message);
+      var url = sb.storage.from('chat-uploads').getPublicUrl(path).data.publicUrl;
+      return ok({ url: url, name: file.name || safe });
+    });
+  };
+
   /* ---------- ADMIN: users ---------- */
   HP.listUsers = function () {
     return sb.from('profiles').select('*').neq('status', 'deleted').order('created_at', { ascending: false })
@@ -208,22 +242,39 @@
   };
 
   /* ---------- MESSAGES ---------- */
-  HP.sendMessage = function (receiverId, body) {
+  /* opts: { attachmentUrl, attachmentType, attachmentName, listingCode, listingLabel } */
+  HP.sendMessage = function (receiverId, body, opts) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
-    if (!String(body || '').trim()) return Promise.resolve(fail('err.account'));
-    return sb.from('messages').insert({ sender_id: p.id, receiver_id: receiverId, body: body.trim() })
-      .select().single().then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+    opts = opts || {};
+    body = String(body == null ? '' : body).trim();
+    if (!body && !opts.attachmentUrl) return Promise.resolve(fail('err.account'));
+    var row = { sender_id: p.id, receiver_id: receiverId, body: body };
+    if (opts.attachmentUrl) {
+      row.attachment_url  = opts.attachmentUrl;
+      row.attachment_type = opts.attachmentType || 'document';
+      row.attachment_name = opts.attachmentName || null;
+    }
+    if (opts.listingCode) { row.listing_code = opts.listingCode; row.listing_label = opts.listingLabel || null; }
+    return sb.from('messages').insert(row).select().single()
+      .then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
   };
   HP.conversation = function (otherId) {
     var p = HP._profile; if (!p) return Promise.resolve([]);
-    return sb.from('messages').select('*')
-      .or('and(sender_id.eq.' + p.id + ',receiver_id.eq.' + otherId + '),and(sender_id.eq.' + otherId + ',receiver_id.eq.' + p.id + ')')
-      .order('created_at', { ascending: true }).then(function (r) { return r.data || []; });
+    /* respect a per-user "delete chat": hide messages on/before cleared_at */
+    return sb.from('conversation_state').select('cleared_at')
+      .eq('user_id', p.id).eq('peer_id', otherId).maybeSingle()
+      .then(function (cs) {
+        var clearedAt = cs && cs.data && cs.data.cleared_at;
+        var q = sb.from('messages').select('*')
+          .or('and(sender_id.eq.' + p.id + ',receiver_id.eq.' + otherId + '),and(sender_id.eq.' + otherId + ',receiver_id.eq.' + p.id + ')');
+        if (clearedAt) q = q.gt('created_at', clearedAt);
+        return q.order('created_at', { ascending: true }).then(function (r) { return r.data || []; });
+      });
   };
   HP.inbox = function () {
     var p = HP._profile; if (!p) return Promise.resolve([]);
     return sb.from('messages')
-      .select('*, sender:sender_id(name,role), receiver:receiver_id(name,role)')
+      .select('*, sender:sender_id(name,role,avatar_url), receiver:receiver_id(name,role,avatar_url)')
       .or('sender_id.eq.' + p.id + ',receiver_id.eq.' + p.id)
       .order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
   };
@@ -231,12 +282,59 @@
     var p = HP._profile; if (!p) return Promise.resolve();
     return sb.from('messages').update({ read: true }).eq('receiver_id', p.id).eq('sender_id', otherId);
   };
-  HP.subscribeMessages = function (cb) {
+  /* per-user thread prefs (mute + cleared_at) → { peerId: {muted, cleared_at} } */
+  HP.threadStates = function () {
+    var p = HP._profile; if (!p) return Promise.resolve({});
+    return sb.from('conversation_state').select('peer_id,muted,cleared_at').eq('user_id', p.id)
+      .then(function (r) {
+        var map = {};
+        (r.data || []).forEach(function (s) { map[s.peer_id] = { muted: s.muted, cleared_at: s.cleared_at }; });
+        return map;
+      });
+  };
+  HP.muteThread = function (peerId, muted) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    return sb.from('conversation_state')
+      .upsert({ user_id: p.id, peer_id: peerId, muted: !!muted, updated_at: new Date().toISOString() }, { onConflict: 'user_id,peer_id' })
+      .then(function (r) { return { ok: !r.error }; });
+  };
+  HP.clearConversation = function (peerId) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    return sb.from('conversation_state')
+      .upsert({ user_id: p.id, peer_id: peerId, cleared_at: new Date().toISOString(), updated_at: new Date().toISOString() }, { onConflict: 'user_id,peer_id' })
+      .then(function (r) { return { ok: !r.error }; });
+  };
+  /* emoji reaction (one per user per message; '' clears it) via SECURITY DEFINER RPC */
+  HP.reactToMessage = function (messageId, emoji) {
+    return sb.rpc('react_to_message', { p_message_id: messageId, p_emoji: emoji || '' })
+      .then(function (r) { return { ok: !r.error, error: r.error && r.error.message }; });
+  };
+  HP.subscribeMessages = function (cb, tag) {
     var p = HP._profile; if (!p) return null;
-    return sb.channel('msgs-' + p.id)
+    return sb.channel('msgs-' + p.id + (tag ? '-' + tag : ''))
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'receiver_id=eq.' + p.id }, cb)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'sender_id=eq.' + p.id }, cb)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: 'receiver_id=eq.' + p.id }, cb)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: 'sender_id=eq.' + p.id }, cb)
       .subscribe();
+  };
+
+  /* ---------- REPORTS (a user reports another, e.g. patient → doctor) ---------- */
+  HP.reportUser = function (data) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!data || !data.reportedId) return Promise.resolve(fail('err.account'));
+    return sb.from('reports').insert({
+      reporter_id: p.id, reported_id: data.reportedId,
+      reason: data.reason || null, detail: data.detail || null
+    }).then(function (r) { return r.error ? fail('err.account', r.error.message) : ok(); });
+  };
+  HP.listReports = function () {
+    return sb.from('reports')
+      .select('*, reporter:reporter_id(name,email,role), reported:reported_id(name,email,role,specialty)')
+      .order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
+  };
+  HP.setReportStatus = function (id, status) {
+    return sb.from('reports').update({ status: status }).eq('id', id).then(function (r) { return { ok: !r.error }; });
   };
 
   /* ---------- BLOG ---------- */
@@ -246,18 +344,19 @@
   };
   /* public reads (no profiles join → works for logged-out visitors under RLS) */
   HP.listPublishedPosts = function () {
-    return sb.from('blog_posts').select('id,title,body,section,created_at').eq('status', 'published')
+    return sb.from('blog_posts').select('id,title,body,section,image_url,created_at').eq('status', 'published')
       .order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
   };
   HP.getPost = function (id) {
-    return sb.from('blog_posts').select('id,title,body,section,created_at,status').eq('id', id).single()
+    return sb.from('blog_posts').select('id,title,body,section,image_url,created_at,status').eq('id', id).single()
       .then(function (r) { return r.data || null; });
   };
   HP.createPost = function (post) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
     return sb.from('blog_posts').insert({
       author_id: p.id, title: post.title, body: post.body || null,
-      section: post.section || 'Blog', status: post.status || 'draft'
+      section: post.section || 'Blog', status: post.status || 'draft',
+      image_url: post.image_url || null
     }).select().single().then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
   };
   HP.updatePost = function (id, patch) {
@@ -265,6 +364,40 @@
   };
   HP.deletePost = function (id) {
     return sb.from('blog_posts').delete().eq('id', id).then(function (r) { return { ok: !r.error }; });
+  };
+  /* upload a blog cover image → return its public URL */
+  HP.uploadBlogImage = function (file) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!file) return Promise.resolve(fail('err.account'));
+    var safe = ((file.name || 'image').replace(/[^a-zA-Z0-9._-]/g, '_')).slice(-50);
+    var path = p.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + safe;
+    return sb.storage.from('blog-images').upload(path, file, { cacheControl: '3600' }).then(function (r) {
+      if (r.error) return fail('err.account', r.error.message);
+      return ok({ url: sb.storage.from('blog-images').getPublicUrl(path).data.publicUrl });
+    });
+  };
+
+  /* ---------- ANNOUNCEMENTS (admin → broadcast, read-only for recipients) ---------- */
+  HP.createAnnouncement = function (a) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!String((a && a.body) || '').trim()) return Promise.resolve(fail('err.account'));
+    var aud = ['all', 'doctors', 'patients'].indexOf(a.audience) !== -1 ? a.audience : 'all';
+    return sb.from('announcements').insert({ author_id: p.id, title: a.title || null, body: a.body.trim(), audience: aud })
+      .select().single().then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+  };
+  /* RLS returns only the announcements the caller may see (admin → all) */
+  HP.listAnnouncements = function () {
+    return sb.from('announcements').select('*').order('created_at', { ascending: false })
+      .then(function (r) { return r.data || []; });
+  };
+  HP.deleteAnnouncement = function (id) {
+    return sb.from('announcements').delete().eq('id', id).then(function (r) { return { ok: !r.error }; });
+  };
+
+  /* the platform admin (support contact for doctors) */
+  HP.getAdmin = function () {
+    return sb.from('profiles').select('id,name,avatar_url').eq('role', 'admin').eq('status', 'active')
+      .order('created_at').limit(1).then(function (r) { return (r.data && r.data[0]) || null; });
   };
 
   /* convenience labels (kept for parity with old auth.js callers) */
