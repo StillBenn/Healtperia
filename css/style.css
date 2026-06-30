@@ -1323,6 +1323,7 @@ button {
 }
 
 .result-card {
+  position: relative;          /* favori kalbinin (.result-fav, absolute) çapası — yoksa kalp .results-section'a kaçıyor */
   display: flex;
   flex-direction: column;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
@@ -1545,11 +1546,11 @@ button {
   box-shadow: 0 32px 66px rgba(0, 0, 0, 0.66), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px) scale(0.97);
-  transform-origin: top;
-  transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s;
+  transform: translateY(14px);
+  transform-origin: bottom;
+  transition: opacity 0.24s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.24s;
 }
-.ti-step.is-open .ti-pop { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.ti-step.is-open .ti-pop { opacity: 1; visibility: visible; transform: translateY(0); }
 /* deeper (right-side) steps open their menu aligned to the right so the
    wider panel never spills past the bar's right edge */
 .ti-step[data-step="treatment"] .ti-pop,
@@ -1652,7 +1653,8 @@ button {
 
 /* ---- new finder result cards — 4 per row ---- */
 .ti-results { grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.ti-results .result-card { animation: tiCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 35ms); }
+/* fill-mode 'backwards' → giriş animasyonu bitince transform'u KİLİTLEMEZ, böylece :hover translateY lift çalışır */
+.ti-results .result-card { animation: tiCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards; animation-delay: calc(var(--i, 0) * 35ms); }
 @keyframes tiCardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
 .result-media { aspect-ratio: 16 / 11; }
@@ -3582,8 +3584,8 @@ body.td-lb-open { overflow: hidden; }
 .dx-drop-val[data-ph] { color: var(--text-dim); }
 .dx-drop-caret { width: 11px; height: 11px; flex: 0 0 auto; color: var(--text-dim); transition: transform .2s; }
 .dx-drop.is-open .dx-drop-caret { transform: rotate(180deg); }
-.dx-drop-pop { position: absolute; top: calc(100% + 12px); left: 0; min-width: 210px; max-height: 320px; overflow-y: auto; background: #0d1730; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 44px rgba(0,0,0,.5); padding: 6px; display: none; z-index: 50; }
-.dx-drop.is-open .dx-drop-pop { display: block; }
+.dx-drop-pop { position: absolute; top: calc(100% + 12px); left: 0; min-width: 210px; max-height: 320px; overflow-y: auto; background: #0d1730; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 44px rgba(0,0,0,.5); padding: 6px; z-index: 50; opacity: 0; visibility: hidden; transform: translateY(14px); transform-origin: bottom; pointer-events: none; transition: opacity .24s ease, transform .32s cubic-bezier(.22,1,.36,1), visibility .24s; }
+.dx-drop.is-open .dx-drop-pop { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
 .dx-drop-list { list-style: none; margin: 0; padding: 0; }
 .dx-opt { padding: 10px 14px; border-radius: 9px; color: var(--text); font-size: 13.5px; cursor: pointer; }
 .dx-opt:hover { background: rgba(78,168,255,.12); color: #fff; }
@@ -3617,10 +3619,11 @@ body.td-lb-open { overflow: hidden; }
 .dx-card:hover { transform: translateY(-6px); }
 /* çerçevesiz/serbest cut-out görsel — kutu yok, kartın üstünde duruyor.
    yükseklik height:100% ile KESİN sınırlı (max-height:100% grid içinde çözülmeyip taşmaya yol açıyordu) */
-.dx-card-photo { width: 100%; height: 186px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: -18px; position: relative; z-index: 2; pointer-events: none; }
+/* foto KUTUNUN ARKASINDA kalır (z-index:1), kutu önde (z-index:2) ve opak zemin foto altını kapatır */
+.dx-card-photo { width: 100%; height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: -56px; position: relative; z-index: 1; pointer-events: none; }
 .dx-card-photo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; object-position: bottom center; filter: drop-shadow(0 12px 18px rgba(0,0,0,.45)); }
 .dx-card-photo.is-ph { color: var(--accent-soft); font-size: 42px; font-weight: 800; align-items: center; }
-.dx-card-box { flex: 1; width: 100%; padding: 34px 14px 16px; border-radius: 18px; background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border: 1px solid var(--line-strong); text-align: center; position: relative; display: flex; flex-direction: column; transition: transform .35s ease, border-color .3s ease, box-shadow .35s ease; }
+.dx-card-box { flex: 1; width: 100%; padding: 30px 14px 16px; border-radius: 18px; background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.015)), #0c1733; border: 1px solid var(--line-strong); text-align: center; position: relative; z-index: 2; display: flex; flex-direction: column; transition: transform .35s ease, border-color .3s ease, box-shadow .35s ease; }
 /* birleşik kart efekti — tedavi indeksi .result-card:hover ile aynı glow/kenar */
 .dx-card:hover .dx-card-box { border-color: rgba(78,168,255,.4); box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 30px rgba(78,168,255,.25); }
 .dx-card-box strong { display: block; color: var(--white); font-size: 15.5px; line-height: 1.25; min-height: 2.5em; }
@@ -3638,7 +3641,9 @@ body.td-lb-open { overflow: hidden; }
 .dd-layout { display: grid; grid-template-columns: 1fr 300px; gap: 34px; align-items: start; }
 @media (max-width: 880px){ .dd-layout { grid-template-columns: 1fr; } }
 .dd-sec { margin-bottom: 28px; }
-.dd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.dd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 12px; padding-bottom: 10px; }
+/* Hakkımızda sayfasındaki gibi: ince, glow'lu accent gradient çizgi */
+.dd-sec-head::after { content: ""; display: block; height: 2px; margin-top: 10px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); box-shadow: 0 0 14px rgba(78, 168, 255, 0.40); }
 .dd-rich p { color: var(--text); font-size: 14px; line-height: 1.7; margin: 0 0 10px; }
 .dd-bullets { list-style: none; margin: 0; padding: 0; }
 .dd-bullets li { position: relative; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.9; }
@@ -3677,3 +3682,62 @@ body.td-lb-open { overflow: hidden; }
 .dd-listings-head { color: var(--white); font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin: 0 0 18px; }
 .dd-listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; }
 .dd-lcard { text-decoration: none; cursor: pointer; }
+
+/* ============================================================
+   PLACE DETAIL (hastane & klinik detay) — .pd-*
+   ============================================================ */
+.pd-code { text-align: center; color: var(--accent-soft); font-size: 22px; font-weight: 800; letter-spacing: 1px; margin-bottom: 28px; }
+.pd-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; align-items: start; }
+@media (max-width: 920px){ .pd-layout { grid-template-columns: 1fr; } }
+.pd-name { color: var(--white); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; letter-spacing: .5px; margin: 0 0 18px; }
+.pd-rich p { color: var(--text); font-size: 14px; line-height: 1.8; margin: 0 0 12px; }
+.pd-sec { margin: 30px 0; }
+.pd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 14px; padding-bottom: 10px; }
+.pd-sec-head::after { content: ""; display: block; height: 2px; margin-top: 10px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); box-shadow: 0 0 14px rgba(78, 168, 255, 0.40); }
+.pd-loc-line { color: var(--text); font-size: 14px; margin: 0 0 4px; }
+.pd-maps { color: var(--accent-soft); font-size: 13px; word-break: break-all; }
+.pd-bullets { list-style: none; margin: 0; padding: 0; }
+.pd-bullets li { position: relative; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 2; }
+.pd-bullets li::before { content: ""; position: absolute; left: 2px; top: 13px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.pd-cols .pd-bullets { columns: 4; column-gap: 24px; }
+@media (max-width: 980px){ .pd-cols .pd-bullets { columns: 3; } }
+@media (max-width: 640px){ .pd-cols .pd-bullets { columns: 2; } }
+/* kapasite / konfor / standartlar 3'lü blok */
+.pd-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 30px; }
+@media (max-width: 760px){ .pd-trio { grid-template-columns: 1fr; } }
+.pd-mini .pd-sec-head { font-size: 16px; }
+.pd-cap { list-style: none; margin: 0; padding: 0; }
+.pd-cap li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 13.5px; }
+.pd-cap li span { color: var(--text-muted); }
+.pd-cap li b { color: var(--white); font-weight: 700; }
+
+/* sağ sütun */
+.pd-col-right { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 18px; }
+.pd-logo { background: #fff; border-radius: 18px; min-height: 150px; display: grid; place-items: center; padding: 18px; }
+.pd-logo img { max-width: 100%; max-height: 130px; object-fit: contain; }
+.pd-logo.is-ph { color: #1c2c54; flex-direction: column; gap: 8px; }
+.pd-logo.is-ph svg { width: 46px; height: 46px; opacity: .8; }
+.pd-logo.is-ph span { font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+.pd-gallery { display: flex; flex-direction: column; gap: 14px; }
+.pd-photo { border: 0; padding: 0; width: 100%; aspect-ratio: 16/10; border-radius: 14px; background-size: cover; background-position: center; cursor: pointer; transition: transform .25s ease, box-shadow .25s ease; }
+.pd-photo:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0,0,0,.45); }
+.pd-photo.is-ph { cursor: default; background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.01)); border: 1px dashed var(--line-strong); }
+.pd-photo.is-ph:hover { transform: none; box-shadow: none; }
+.pd-stats { display: flex; justify-content: center; gap: 26px; padding-top: 6px; }
+.pd-stat { display: inline-flex; align-items: center; gap: 7px; background: none; border: none; color: var(--text-muted); font: inherit; font-size: 14px; cursor: pointer; }
+.pd-stat svg { width: 22px; height: 22px; }
+.pd-stat:hover { color: #fff; }
+.pd-stat i { font-style: normal; }
+.pd-fav.is-on { color: #ffcf5a; }
+.pd-fav.is-on svg { fill: #ffcf5a; stroke: #ffcf5a; }
+.pd-contact { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; align-self: center; background: none; border: none; color: var(--accent-soft); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+.pd-contact svg { width: 30px; height: 30px; }
+.pd-contact:hover { color: #fff; }
+
+/* lightbox */
+.pd-lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(3,7,18,.92); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; }
+.pd-lb-img { max-width: 86vw; max-height: 86vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.pd-lb-close { position: absolute; top: 18px; right: 24px; background: none; border: none; color: #fff; font-size: 40px; line-height: 1; cursor: pointer; }
+.pd-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,.08); border: 1px solid var(--line-strong); color: #fff; width: 52px; height: 52px; border-radius: 50%; font-size: 30px; cursor: pointer; }
+.pd-lb-nav.prev { left: 24px; } .pd-lb-nav.next { right: 24px; }
+.pd-lb-nav:hover { background: rgba(78,168,255,.25); }

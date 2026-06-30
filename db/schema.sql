@@ -581,3 +581,117 @@ grant select (id, role, status, name, specialty, city, country, avatar_url, bio,
 drop policy if exists profiles_select_doctor_anon on public.profiles;
 create policy profiles_select_doctor_anon on public.profiles for select to anon
   using (role = 'doctor' and status = 'active');
+
+
+-- ============================================================
+-- 13) HASTANE & KLİNİK İNDEKSİ + DETAY
+--     - hospitals: detay sayfası için zengin kolonlar
+--     - clinics: yeni tablo (klinik indeks/detay)
+--     - listings.clinic_id: klinik detayındaki "Healthperia Tedavileri"
+--     - SEED: Acıbadem hastanesi zenginleştirme + Klinik Eastern + bağlama
+--     Re-runnable. Public read (indeks/detay herkese açık), doctor/admin yazar.
+-- ============================================================
+
+-- 13a) hospitals zengin kolonlar
+alter table public.hospitals add column if not exists type      text;
+alter table public.hospitals add column if not exists units     text;   -- Tıbbi birimler (satır-satır)
+alter table public.hospitals add column if not exists capacity  text;   -- "Etiket|Değer" satırları
+alter table public.hospitals add column if not exists comfort   text;   -- Konfor (satır-satır)
+alter table public.hospitals add column if not exists standards text;   -- Standartlar (satır-satır)
+alter table public.hospitals add column if not exists logo_url  text;
+alter table public.hospitals add column if not exists photos    jsonb not null default '[]'::jsonb;
+
+-- 13b) clinics
+create table if not exists public.clinics (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  unit text,                 -- birincil Tıbbi Birim (altyazı + indeks filtresi)
+  city text, country text,
+  maps_url text, description text,
+  units text,                -- Tıbbi Birimlerimiz (satır-satır)
+  treatments text,           -- Tedavilerimiz (satır-satır)
+  logo_url text,
+  photos jsonb not null default '[]'::jsonb,
+  created_by uuid references public.profiles(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+alter table public.clinics enable row level security;
+drop policy if exists clinic_read   on public.clinics;
+drop policy if exists clinic_write  on public.clinics;
+drop policy if exists clinic_update on public.clinics;
+create policy clinic_read on public.clinics for select to anon, authenticated using (true);
+create policy clinic_write on public.clinics for insert to authenticated
+  with check (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('doctor','admin')));
+create policy clinic_update on public.clinics for update to authenticated
+  using (created_by = auth.uid() or public.is_admin()) with check (created_by = auth.uid() or public.is_admin());
+
+-- 13c) listings.clinic_id
+alter table public.listings add column if not exists clinic_id uuid references public.clinics(id) on delete set null;
+
+-- 13d) SEED — Acıbadem zenginleştirme + Klinik Eastern + bağlama
+do $$
+declare v_doc uuid; v_hosp uuid; v_clinic uuid;
+begin
+  select id into v_doc from public.profiles where email = 'doktor@healthperia.com' limit 1;
+  select id into v_hosp from public.hospitals where name = 'Acıbadem Taksim Hastanesi' limit 1;
+
+  if v_hosp is not null then
+    update public.hospitals set
+      type      = coalesce(nullif(type,''), 'Genel Hastane'),
+      units     = coalesce(nullif(units,''), $u$Genel Cerrahi
+Obezite Cerrahi
+Kardiyoloji
+Ortopedi ve Travmatoloji
+Kadın Hastalıkları ve Doğum
+Göz Hastalıkları
+Kulak Burun Boğaz
+Üroloji
+Beyin ve Sinir Cerrahisi
+Plastik ve Estetik Cerrahi$u$),
+      capacity  = coalesce(nullif(capacity,''), $c$Toplam yatak kapasitesi|56
+Yoğun bakım yatak sayısı|20
+Yenidoğan yoğun bakım yatak sayısı|16
+Ameliyathane sayısı|5
+Poliklinik oda sayısı|13$c$),
+      comfort   = coalesce(nullif(comfort,''), $k$Tek kişilik oda
+Suit Oda
+VIP oda
+Refakatçi yatağı
+Vale hizmeti
+Yabancı dil desteği$k$),
+      standards = coalesce(nullif(standards,''), $s$JCI Akreditasyonu
+ISO Belgeleri
+Sağlık Bakanlığı ruhsat bilgisi
+Kalite sertifikaları
+Uluslararası akreditasyonlar$s$)
+    where id = v_hosp;
+  end if;
+
+  -- Klinik Eastern
+  insert into public.clinics (name, unit, city, country, maps_url, description, units, treatments, created_by)
+  select 'Klinik Eastern','Ağız ve Diş Sağlığı','İstanbul','Türkiye','https://maps.app.goo.gl/svtiWqsEeBV9Vc5D8',
+    $d$Klinik Eastern; ağız ve diş sağlığı alanında, danışanlarının memnuniyetini yüksek sorumluluk bilinci ile ilke edinen modern bir kliniktir. İstanbul'un merkezinde, deneyimli uzman hekim kadrosu ve dijital diş hekimliği teknolojileriyle, estetik ve fonksiyonel çözümleri yüksek standartlarda sunar. Hijyen, konfor ve uluslararası kalite anlayışıyla yurt içi ve yurt dışından gelen hastalara güvenli bir tedavi deneyimi sağlar.$d$,
+    $u$Ağız ve Diş Sağlığı
+Ortodonti
+Çene Cerrahisi
+Periodontoloji
+Endodonti$u$,
+    $t$Ortodonti
+Diş Beyazlatma
+Gülüş Estetiği
+Diş Dolgusu
+Zirkonyum Kaplama
+Dijital Röntgen
+İmplant
+Protez Diş
+Diş Temizliği
+Kozmetik Diş Hekimliği$t$,
+    v_doc
+  where not exists (select 1 from public.clinics where name = 'Klinik Eastern');
+  select id into v_clinic from public.clinics where name = 'Klinik Eastern' limit 1;
+
+  -- diş ilanını kliniğe bağla (klinik detayında listing görünsün)
+  if v_clinic is not null then
+    update public.listings set clinic_id = v_clinic where code in ('HP-DIS01') and clinic_id is null;
+  end if;
+end $$;

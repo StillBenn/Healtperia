@@ -499,6 +499,46 @@
   }
   HP.createHospital = function (d) { return createPlace('hospitals', d); };
   HP.createHotel    = function (d) { return createPlace('hotels', d); };
+
+  /* ---------- HOSPITAL DIRECTORY (index/detail) ---------- */
+  HP.searchHospitals = function (f) {
+    f = f || {};
+    var q = sb.from('hospitals').select('id,name,type,city,country,logo_url,photos');
+    if (f.country) q = q.ilike('country', '%' + f.country + '%');
+    if (f.city)    q = q.ilike('city', '%' + f.city + '%');
+    if (f.type)    q = q.ilike('type', '%' + f.type + '%');
+    if (f.name)    q = q.ilike('name', '%' + f.name + '%');
+    return q.order('name').then(function (r) { return r.data || []; });
+  };
+  HP.getHospital = function (id) {
+    return sb.from('hospitals').select('*').eq('id', id).maybeSingle().then(function (r) { return r.data || null; });
+  };
+  HP.hospitalListings = function (hospitalId) {
+    return sb.from('listings').select('*, doctor:doctor_id(name,avatar_url,specialty), hospital:hospital_id(name,city)')
+      .eq('hospital_id', hospitalId).eq('status', 'published').order('created_at', { ascending: false })
+      .then(function (r) { return r.data || []; });
+  };
+
+  /* ---------- CLINIC DIRECTORY (index/detail) ---------- */
+  HP.listClinics  = function () { return sb.from('clinics').select('*').order('name').then(function (r) { return r.data || []; }); };
+  HP.createClinic = function (d) { return createPlace('clinics', d); };
+  HP.searchClinics = function (f) {
+    f = f || {};
+    var q = sb.from('clinics').select('id,name,unit,city,country,logo_url,photos');
+    if (f.country) q = q.ilike('country', '%' + f.country + '%');
+    if (f.city)    q = q.ilike('city', '%' + f.city + '%');
+    if (f.unit)    q = q.ilike('unit', '%' + f.unit + '%');
+    if (f.name)    q = q.ilike('name', '%' + f.name + '%');
+    return q.order('name').then(function (r) { return r.data || []; });
+  };
+  HP.getClinic = function (id) {
+    return sb.from('clinics').select('*').eq('id', id).maybeSingle().then(function (r) { return r.data || null; });
+  };
+  HP.clinicListings = function (clinicId) {
+    return sb.from('listings').select('*, doctor:doctor_id(name,avatar_url,specialty), hospital:hospital_id(name,city)')
+      .eq('clinic_id', clinicId).eq('status', 'published').order('created_at', { ascending: false })
+      .then(function (r) { return r.data || []; });
+  };
   HP.uploadListingPhoto = function (file) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
     if (!file) return Promise.resolve(fail('err.account'));

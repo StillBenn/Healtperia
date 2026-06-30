@@ -378,9 +378,14 @@
             var items = groups[k]; if (!items || !items.length) return;
             html += '<div class="fav-group"><h4>' + esc(titles[k]) + '</h4><div class="fav-list">' + items.map(function (f) {
               var meta = f.meta || {};
-              var sub = [meta.method, meta.loc, meta.doctor].filter(Boolean).join(' · ');
+              var sub = [meta.method, meta.loc, meta.doctor, meta.specialty].filter(Boolean).join(' · ');
+              var ref = encodeURIComponent(f.ref_id);
+              var href = k === 'listing' ? 'treatment-detail.html?code=' + ref
+                : k === 'doctor' ? 'doctor-detail.html?id=' + ref
+                : k === 'hospital' ? 'hospital-detail.html?id=' + ref
+                : k === 'clinic' ? 'clinic-detail.html?id=' + ref : '';
               return '<div class="fav-card"><div class="fav-card-body"><strong>' + esc(f.label || f.ref_id) + '</strong><span>' + esc(sub) + '</span></div>' +
-                (k === 'listing' ? '<a class="fav-open" href="treatment-detail.html?code=' + encodeURIComponent(f.ref_id) + '">' + esc(T('td.crumb', 'Detay')) + ' →</a>' : '') +
+                (href ? '<a class="fav-open" href="' + href + '">' + esc(T('td.crumb', 'Detay')) + ' →</a>' : '') +
                 '<button class="fav-rm" data-kind="' + esc(f.kind) + '" data-ref="' + esc(f.ref_id) + '" aria-label="Kaldır">×</button></div>';
             }).join('') + '</div></div>';
           });
