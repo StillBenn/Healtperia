@@ -68,10 +68,10 @@
     grid.innerHTML = list.map(card).join('');
   }
 
+  /* Şimdilik tüm doktorlar için tek sabit, çerçevesiz görsel (gerçek fotolar gelene dek). */
+  var DOCTOR_IMG = '../assets/images/doctor.png';
   function card(d) {
-    var photo = d.avatar_url
-      ? '<span class="dx-card-photo"><img src="' + esc(d.avatar_url) + '" alt="" loading="lazy"></span>'
-      : '<span class="dx-card-photo is-ph">' + esc(initials(d.name)) + '</span>';
+    var photo = '<span class="dx-card-photo"><img src="' + DOCTOR_IMG + '" alt=""></span>';
     var loc = [d.city, d.country].filter(Boolean).join('/');
     return '<a class="dx-card" href="doctor-detail.html?id=' + encodeURIComponent(d.id) + '">' + photo +
       '<div class="dx-card-box"><strong>' + esc(d.name || '—') + '</strong>' +

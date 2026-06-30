@@ -46,7 +46,10 @@
     if (diff === 1) return T('chat.yesterday', 'Dün');
     return d.toLocaleDateString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric' });
   }
-  function avatarHtml(name, url){
+  /* Doktorların fotosu her yerde tek sabit görsel (gerçek fotolar yüklenene dek). */
+  var DOCTOR_IMG = '../assets/images/doctor.png';
+  function avatarHtml(name, url, role){
+    if (role === 'doctor') return '<span class="hp-avatar"><img src="' + DOCTOR_IMG + '" alt=""></span>';
     if (url) return '<span class="hp-avatar"><img src="' + esc(url) + '" alt="" loading="lazy"></span>';
     return '<span class="hp-avatar is-initials">' + esc(initials(name)) + '</span>';
   }
@@ -154,7 +157,7 @@
         if (!list.length) { root.innerHTML = '<div class="chat-empty"><p>' + esc(emptyText) + '</p></div>'; return; }
         root.innerHTML = '<ul class="chat-threads">' + list.map(function (t) {
           return '<li class="chat-thread' + (t.unread ? ' is-unread' : '') + '" data-id="' + t.id + '" data-name="' + esc(t.name) + '" data-muted="' + (t.muted ? '1' : '0') + '">' +
-            avatarHtml(t.name, t.avatar) +
+            avatarHtml(t.name, t.avatar, t.role) +
             '<div class="chat-thread-meta"><strong>' + esc(t.name) + '</strong>' +
               '<span class="chat-thread-last">' + (t.listingCode ? '<i class="chat-thread-tag">' + esc(t.listingCode) + '</i> ' : '') + esc(t.last) + '</span></div>' +
             '<div class="chat-thread-side"><time>' + timeShort(t.at) + '</time>' +
@@ -258,11 +261,12 @@
       H.sb.from('profiles').select('name,avatar_url,role').eq('id', id).single().then(function (r) {
         if (!r.data || peerId !== id) return;
         peer.avatar = r.data.avatar_url || '';
+        peer.role = r.data.role || '';
         if (r.data.name) peer.name = r.data.name;
         var head = root.querySelector('.chat-head');
         if (head) {
           var av = head.querySelector('.hp-avatar');
-          if (av) av.outerHTML = avatarHtml(peer.name, peer.avatar);
+          if (av) av.outerHTML = avatarHtml(peer.name, peer.avatar, peer.role);
           var nm = head.querySelector('.chat-head-name strong'); if (nm) nm.textContent = peer.name;
         }
       });

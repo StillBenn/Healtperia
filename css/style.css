@@ -3604,22 +3604,34 @@ body.td-lb-open { overflow: hidden; }
 .dd-listings-grid .result-foot { margin-top: auto; }
 /* keep "Detayları İncele" pinned to the right on every card (wraps under the price on narrow cards) */
 .dd-listings-grid .result-foot .result-cta { margin: 0 0 0 auto; }
+/* reserve consistent vertical bands so title/method/location/code/price line up across cards */
+.dd-listings-grid .result-name { height: 2.6em; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.dd-listings-grid .result-method { height: 2.8em; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .dx-search-btn { flex: 0 0 auto; width: 54px; border-radius: 999px; background: linear-gradient(135deg,#4ea8ff,#2f86e6); color: #fff; display: grid; place-items: center; cursor: pointer; border: none; }
 .dx-search-btn svg { width: 18px; height: 18px; }
 @media (max-width: 760px){ .dx-search { flex-wrap: wrap; border-radius: 18px; } .dx-field { flex: 1 1 45%; border-right: none; } .dx-search-btn { width: 100%; height: 44px; border-radius: 12px; } }
 
-.dx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px,1fr)); gap: 30px 18px; padding-top: 24px; }
-.dx-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; }
-.dx-card-photo { width: 100%; aspect-ratio: 1/1; max-width: 180px; border-radius: 16px; overflow: hidden; display: grid; place-items: center; background: linear-gradient(180deg, rgba(78,168,255,.14), rgba(78,168,255,.02)); margin-bottom: -36px; position: relative; z-index: 2; }
-.dx-card-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.dx-card-photo.is-ph { color: var(--accent-soft); font-size: 38px; font-weight: 800; }
-.dx-card-box { width: 100%; padding: 44px 14px 14px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line); text-align: center; position: relative; transition: border-color .2s, transform .2s; }
-.dx-card:hover .dx-card-box { border-color: rgba(78,168,255,.5); transform: translateY(-3px); }
-.dx-card-box strong { display: block; color: var(--white); font-size: 14px; line-height: 1.25; }
-.dx-card-spec { display: block; color: var(--accent-soft); font-size: 12.5px; margin-top: 3px; }
-.dx-card-loc { display: block; color: var(--text-muted); font-size: 12px; margin-top: 2px; }
-.dx-card-arrow { position: absolute; right: 12px; bottom: 12px; width: 18px; height: 18px; color: var(--text-dim); }
+/* 5 kart / sıra; satırlar eşit yükseklik (grid stretch + box flex:1) */
+.dx-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px 20px; padding-top: 28px; align-items: stretch; }
+.dx-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; height: 100%; transition: transform .35s ease; }
+.dx-card:hover { transform: translateY(-6px); }
+/* çerçevesiz/serbest cut-out görsel — kutu yok, kartın üstünde duruyor.
+   yükseklik height:100% ile KESİN sınırlı (max-height:100% grid içinde çözülmeyip taşmaya yol açıyordu) */
+.dx-card-photo { width: 100%; height: 186px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: -18px; position: relative; z-index: 2; pointer-events: none; }
+.dx-card-photo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; object-position: bottom center; filter: drop-shadow(0 12px 18px rgba(0,0,0,.45)); }
+.dx-card-photo.is-ph { color: var(--accent-soft); font-size: 42px; font-weight: 800; align-items: center; }
+.dx-card-box { flex: 1; width: 100%; padding: 34px 14px 16px; border-radius: 18px; background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border: 1px solid var(--line-strong); text-align: center; position: relative; display: flex; flex-direction: column; transition: transform .35s ease, border-color .3s ease, box-shadow .35s ease; }
+/* birleşik kart efekti — tedavi indeksi .result-card:hover ile aynı glow/kenar */
+.dx-card:hover .dx-card-box { border-color: rgba(78,168,255,.4); box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 30px rgba(78,168,255,.25); }
+.dx-card-box strong { display: block; color: var(--white); font-size: 15.5px; line-height: 1.25; min-height: 2.5em; }
+.dx-card-spec { display: block; color: var(--accent-soft); font-size: 13.5px; margin-top: 4px; min-height: 1.3em; }
+.dx-card-loc { display: block; color: var(--text-muted); font-size: 12.5px; margin-top: 3px; }
+.dx-card-arrow { position: absolute; right: 14px; bottom: 14px; width: 20px; height: 20px; color: var(--text-dim); transition: color .2s ease; }
 .dx-card:hover .dx-card-arrow { color: var(--accent); }
+@media (max-width: 1200px) { .dx-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 980px)  { .dx-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 680px)  { .dx-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px)  { .dx-grid { grid-template-columns: 1fr; } }
 
 .dd-main { padding: 110px 0 60px; min-height: 60vh; }
 .dd-code { text-align: center; color: var(--accent-soft); font-size: 20px; font-weight: 800; letter-spacing: 1px; margin-bottom: 26px; }
@@ -3636,22 +3648,30 @@ body.td-lb-open { overflow: hidden; }
 
 .dd-col-right { position: sticky; top: 90px; }
 .dd-id { display: flex; flex-direction: column; align-items: center; text-align: center; }
-.dd-photo { width: 230px; height: 280px; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, rgba(78,168,255,.14), rgba(78,168,255,.02)); display: grid; place-items: center; border: 1px solid var(--line); }
-.dd-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.dd-photo.is-ph { color: var(--accent-soft); font-size: 56px; font-weight: 800; }
+/* çerçevesiz/serbest cut-out — arka plan/çerçeve yok, indeksle aynı dil */
+.dd-photo { width: 240px; height: 300px; display: flex; align-items: flex-end; justify-content: center; overflow: visible; }
+.dd-photo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; object-position: bottom center; filter: drop-shadow(0 16px 26px rgba(0,0,0,.5)); }
+.dd-photo.is-ph { color: var(--accent-soft); font-size: 56px; font-weight: 800; align-items: center; }
 .dd-name { color: var(--white); font-size: 22px; font-weight: 800; margin: 16px 0 0; }
 .dd-loc { color: var(--text-muted); font-size: 14px; margin-top: 6px; padding-bottom: 14px; border-bottom: 1px solid var(--line); width: 82%; }
-.dd-stats { display: flex; gap: 22px; margin: 16px 0 12px; }
-.dd-stat { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--text-muted); font: inherit; font-size: 14px; cursor: pointer; }
-.dd-stat svg { width: 22px; height: 22px; }
-.dd-stat:hover { color: #fff; }
-.dd-fav.is-on { color: #ffcf5a; }
-.dd-fav.is-on svg { fill: #ffcf5a; stroke: #ffcf5a; }
+/* aksiyon barı — tedavi-detay buton stiliyle aynı: üstte Paylaş + Favori, altta İletişime Geç */
+.dd-actbar { display: flex; flex-direction: column; gap: 10px; width: 82%; margin-top: 18px; }
+.dd-actrow { display: flex; gap: 10px; }
+/* iki kutu BİREBİR eşit genişlik (min-width:0 → favori min-content'i payı aşmasın) + eşit yükseklik (stretch) */
+.dd-actbar .td-act { flex: 1 1 0; min-width: 0; justify-content: center; text-align: center; position: relative; }
+.dd-actbar .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+.dd-actbar .btn-primary svg { width: 18px; height: 18px; }
+/* favori: yazı normal (ortalı) yerinde; altta küçük bir şerit — kalp SOL-ALT, sayaç SAĞ-ALT, aynı hizada */
+.dd-fav { padding-bottom: 30px; }
+.dd-fav svg { position: absolute; left: 16px; bottom: 8px; width: 20px; height: 20px; }
+.dd-favc { position: absolute; bottom: 10px; right: 14px; font-style: normal; font-size: 11px; font-weight: 700; line-height: 16px; min-width: 16px; text-align: center; color: var(--accent-soft); background: rgba(78,168,255,.16); border-radius: 999px; padding: 0 5px; }
+/* kalp: hover'da ve favorilenince kırmızı */
+.dd-fav:hover { color: #ff5a5f; border-color: rgba(255,90,95,.45); background: rgba(255,90,95,.10); }
+.dd-fav:hover svg { stroke: #ff5a5f; }
+.dd-fav.is-on { color: #ff5a5f; border-color: rgba(255,90,95,.45); }
+.dd-fav.is-on svg { fill: #ff5a5f; stroke: #ff5a5f; }
+.dd-fav.is-on .dd-favc { color: #ff5a5f; background: rgba(255,90,95,.16); }
 .dd-share.copied { color: #4caf7d; }
-.dd-favc { font-style: normal; }
-.dd-contact { display: inline-flex; flex-direction: column; align-items: center; gap: 5px; background: none; border: none; color: var(--accent-soft); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px; }
-.dd-contact svg { width: 30px; height: 30px; }
-.dd-contact:hover { color: #fff; }
 
 .dd-listings { margin-top: 42px; }
 .dd-listings-head { color: var(--white); font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin: 0 0 18px; }

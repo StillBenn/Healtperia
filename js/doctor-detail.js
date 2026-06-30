@@ -41,9 +41,10 @@
   }
   function empty(){ return '<div class="td-empty"><p>' + esc(T('dd.notFound','Doktor bulunamadı.')) + '</p><a class="btn-ghost sm" href="doctor-index.html">' + esc(T('dd.back','Doktor İndeksine dön')) + '</a></div>'; }
 
+  /* Şimdilik tüm doktorlar için tek sabit görsel (gerçek fotolar yüklenene dek) — indeksle aynı. */
+  var DOCTOR_IMG = '../assets/images/doctor.png';
   function avatarHtml(name, url){
-    if (url) return '<div class="dd-photo"><img src="' + esc(url) + '" alt="" loading="lazy"></div>';
-    return '<div class="dd-photo is-ph">' + esc(initials(name)) + '</div>';
+    return '<div class="dd-photo"><img src="' + DOCTOR_IMG + '" alt=""></div>';
   }
   function bullets(text){ return '<ul class="dd-bullets">' + String(text).split(/\n+/).filter(function (x){ return x.trim(); }).map(function (t){ return '<li>' + esc(t.replace(/^[-•\s]+/, '').trim()) + '</li>'; }).join('') + '</ul>'; }
   function paras(text){ return String(text).split(/\n{2,}|\n/).filter(function (x){ return x.trim(); }).map(function (t){ return '<p>' + esc(t.trim()) + '</p>'; }).join(''); }
@@ -67,11 +68,13 @@
         avatarHtml(d.name, d.avatar_url) +
         '<h2 class="dd-name">' + esc(d.name || '—') + '</h2>' +
         (loc ? '<div class="dd-loc">' + esc(loc) + '</div>' : '') +
-        '<div class="dd-stats">' +
-          '<button class="dd-stat dd-share" type="button" aria-label="' + esc(T('td.share','Paylaş')) + '">' + ICON.share + '</button>' +
-          '<button class="dd-stat dd-fav' + (isFav ? ' is-on' : '') + '" type="button" aria-label="' + esc(T('td.fav','Favorilere Ekle')) + '">' + ICON.crown + '<i class="dd-favc">' + favCount + '</i></button>' +
+        '<div class="dd-actbar">' +
+          '<div class="dd-actrow">' +
+            '<button class="td-act dd-share" type="button">' + ICON.share + '<span>' + esc(T('td.share','Paylaş')) + '</span></button>' +
+            '<button class="td-act dd-fav' + (isFav ? ' is-on' : '') + '" type="button">' + ICON.heart + '<span>' + esc(isFav ? T('td.favOn','Favorilerde') : T('td.fav','Favorilere Ekle')) + '</span><i class="dd-favc">' + favCount + '</i></button>' +
+          '</div>' +
+          '<button class="btn-primary dd-contact" type="button">' + ICON.msg + '<span>' + esc(T('dd.contact','İletişime Geç')) + '</span></button>' +
         '</div>' +
-        '<button class="dd-contact" type="button">' + ICON.msg + '<span>' + esc(T('dd.contact','İletişime Geç!')) + '</span></button>' +
       '</div></aside>';
 
     var bottom = listings.length
@@ -130,6 +133,7 @@
   var ICON = {
     msg:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
     share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>',
-    crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4.5 4L12 5l4.5 6L21 7l-1.7 11H4.7L3 7z"/></svg>'
+    crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4.5 4L12 5l4.5 6L21 7l-1.7 11H4.7L3 7z"/></svg>',
+    heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>'
   };
 })();
