@@ -231,10 +231,11 @@
           <div class="card">
             <div class="card-head"><h3 data-i18n="dd.workPrefsTitle">Çalışma Tercihleri</h3></div>
             <ul class="toggle-list">
-              <li><span data-i18n="dd.pref.online">Çevrimiçi görüşmeleri kabul et</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
-              <li><span data-i18n="dd.pref.newReq">Yeni randevu talebi bildirimi</span><label class="switch"><input type="checkbox" checked><span></span></label></li>
-              <li><span data-i18n="dd.pref.weekend">Hafta sonu randevuları</span><label class="switch"><input type="checkbox"><span></span></label></li>
+              <li><span data-i18n="dd.pref.online">Yeni hasta / randevu kabul et</span><label class="switch"><input type="checkbox" id="prefAcceptNew"><span></span></label></li>
+              <li><span data-i18n="dd.pref.newReq">Yeni randevu talebi bildirimi</span><label class="switch"><input type="checkbox" id="prefNotifAppt"><span></span></label></li>
+              <li><span data-i18n="dd.pref.weekend">Kampanya & duyuru bildirimleri</span><label class="switch"><input type="checkbox" id="prefNotifPromo"><span></span></label></li>
             </ul>
+            <div class="form-actions"><button class="btn-primary sm" id="prefSave" data-i18n="acc.save">Kaydet</button><span class="save-ok" id="prefSaved" hidden data-i18n="acc.saved">Kaydedildi ✓</span></div>
           </div>
         </section>
 
@@ -307,6 +308,21 @@
           pw.reset(); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
         });
       });
+
+      /* ===== work preferences ===== */
+      (function () {
+        var a = document.getElementById('prefAcceptNew'), b = document.getElementById('prefNotifAppt'), c = document.getElementById('prefNotifPromo');
+        if (a) a.checked = user.pref_accept_new !== false;
+        if (b) b.checked = user.pref_notif_appt !== false;
+        if (c) c.checked = user.pref_notif_promo === true;
+        var sv = document.getElementById('prefSave');
+        if (sv) sv.addEventListener('click', function () {
+          sv.disabled = true;
+          H.updateProfile({ pref_accept_new: a.checked, pref_notif_appt: b.checked, pref_notif_promo: c.checked }).then(function () {
+            sv.disabled = false; var ok = document.getElementById('prefSaved'); ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 2500);
+          });
+        });
+      })();
 
       /* ===== messaging (live, realtime) — patient chats only (admin excluded) ===== */
       if (window.HPChat) HPChat.mount(document.getElementById('doctorChat'), { excludeRole: 'admin', emptyText: 'Henüz mesajınız yok. Hastalarınız size yazdığında burada görünür.', onReadChange: refreshMsgBadge });

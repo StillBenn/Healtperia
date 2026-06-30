@@ -276,4 +276,15 @@ window.HP_I18N = window.HP_I18N || {};
     'au.ph.country': 'Nederland', 'au.ph.specialty': 'bijv. Cardiologie', 'au.ph.license': 'bijv. NL-CD-00000',
     'au.ph.pwNew': 'Minstens 6 tekens', 'au.ph.pwConfirm': 'Voer uw wachtwoord opnieuw in'
   });
+
+  /* ===== provider (SHS) note ===== */
+  add('tr', { 'au.providerNote':'Sağlayıcı hesapları (doktor, hastane, klinik) hasta güvenliği için ekibimiz tarafından onaylandıktan sonra aktifleşir.' });
+  add('en', { 'au.providerNote':'Provider accounts (doctor, hospital, clinic) are activated after approval by our team, for patient safety.' });
+  add('de', { 'au.providerNote':'Anbieterkonten (Arzt, Krankenhaus, Klinik) werden zur Sicherheit der Patienten nach Freigabe durch unser Team aktiviert.' });
+  add('ru', { 'au.providerNote':'Аккаунты поставщиков (врач, больница, клиника) активируются после одобрения нашей командой в целях безопасности пациентов.' });
+  add('fr', { 'au.providerNote':"Les comptes prestataires (médecin, hôpital, clinique) sont activés après approbation par notre équipe, pour la sécurité des patients." });
+  add('es', { 'au.providerNote':'Las cuentas de proveedor (médico, hospital, clínica) se activan tras la aprobación de nuestro equipo, por la seguridad del paciente.' });
+  add('pt', { 'au.providerNote':'As contas de prestador (médico, hospital, clínica) são ativadas após aprovação da nossa equipe, para a segurança do paciente.' });
+  add('ar', { 'au.providerNote':'يتم تفعيل حسابات مزوّدي الخدمة (طبيب، مستشفى، عيادة) بعد موافقة فريقنا، حفاظًا على سلامة المرضى.' });
+  add('nl', { 'au.providerNote':'Aanbiederaccounts (arts, ziekenhuis, kliniek) worden na goedkeuring door ons team geactiveerd, voor de veiligheid van patiënten.' });
 })(window.HP_I18N);

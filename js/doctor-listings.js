@@ -16,7 +16,7 @@
   function money(n){ try { return Number(n).toLocaleString('de-DE'); } catch(_){ return n; } }
   function curSym(c){ return ({EUR:'€',USD:'$',TRY:'₺',GBP:'£'})[c]||c; }
 
-  var listEl, editorEl, hospitals = [], hotels = [], editing = null, sectionPhotos = {};
+  var listEl, editorEl, hospitals = [], hotels = [], clinics = [], editing = null, sectionPhotos = {};
   var PHOTO_SECTIONS = [['process','Süreç'], ['place','Tedavi Yeri'], ['transport','Ulaşım'], ['hotel','Otel']];
 
   var Listings = window.HPListings = {};
@@ -25,7 +25,7 @@
     editorEl = document.getElementById('listingEditorCard');
     if (!listEl || !editorEl) return;
     document.getElementById('newListingBtn').addEventListener('click', function () { openEditor(null); });
-    Promise.all([H.listHospitals(), H.listHotels()]).then(function (r) { hospitals = r[0]; hotels = r[1]; });
+    Promise.all([H.listHospitals(), H.listHotels(), H.listClinics()]).then(function (r) { hospitals = r[0]; hotels = r[1]; clinics = r[2]; });
     renderList();
   };
 
@@ -37,10 +37,14 @@
         rows.map(function (l) {
           var title = nm(TRm, l.treatment_id) || l.headline || '—';
           var sub = [nm(C, l.country_id), nm(CT, l.city_id), nm(ME, l.method_id)].filter(Boolean).join(' · ');
-          var badge = l.status === 'published' ? '<span class="badge badge-green">Yayında</span>' : '<span class="badge badge-amber">Taslak</span>';
+          var badge = l.status === 'published' ? '<span class="badge badge-green">Yayında</span>'
+            : l.status === 'pending' ? '<span class="badge badge-blue">Onay Bekliyor</span>'
+            : '<span class="badge badge-amber">Taslak</span>';
           var pubBtn = l.status === 'published'
             ? '<button class="btn-mini warn" data-unpub="' + l.id + '">Yayından Kaldır</button>'
-            : '<button class="btn-mini ok" data-pub="' + l.id + '">Yayınla</button>';
+            : l.status === 'pending'
+            ? '<button class="btn-mini warn" data-unpub="' + l.id + '">Geri Çek</button>'
+            : '<button class="btn-mini ok" data-pub="' + l.id + '">Yayına Gönder</button>';
           return '<tr><td><span class="cell-user"><strong>' + esc(title) + '</strong></span><div class="muted-line sm">' + esc(sub) + '</div></td>' +
             '<td>' + esc(l.code) + '</td><td>' + badge + '</td>' +
             '<td><div class="row-actions">' + pubBtn +
@@ -49,7 +53,7 @@
         }).join('') + '</tbody></table></div>';
       listEl.querySelectorAll('[data-edit]').forEach(function (b){ b.addEventListener('click', function(){ var l = rows.filter(function(x){return x.id===b.dataset.edit;})[0]; openEditor(l); }); });
       listEl.querySelectorAll('[data-del]').forEach(function (b){ b.addEventListener('click', function(){ if (confirm('Bu ilanı silmek istiyor musunuz?')) H.deleteListing(b.dataset.del).then(renderList); }); });
-      listEl.querySelectorAll('[data-pub]').forEach(function (b){ b.addEventListener('click', function(){ H.updateListing(b.dataset.pub, { status:'published' }).then(renderList); }); });
+      listEl.querySelectorAll('[data-pub]').forEach(function (b){ b.addEventListener('click', function(){ H.updateListing(b.dataset.pub, { status:'pending' }).then(renderList); }); });
       listEl.querySelectorAll('[data-unpub]').forEach(function (b){ b.addEventListener('click', function(){ H.updateListing(b.dataset.unpub, { status:'draft' }).then(renderList); }); });
     });
   }
@@ -82,6 +86,7 @@
         '<label class="field span-2"><span class="field-label">Tedavi Süreci</span><span class="field-box"><textarea name="process" rows="6" placeholder="Süreç açıklaması… (alt başlıkları ? ile bitirin)">' + esc(v('process')) + '</textarea></span></label>' +
         '<label class="field"><span class="field-label">Hastane</span><span class="field-box"><select name="hospital">' + placeOpts(hospitals, v('hospital_id')) + '</select></span></label>' +
         '<label class="field"><span class="field-label">Otel</span><span class="field-box"><select name="hotel">' + placeOpts(hotels, v('hotel_id')) + '</select></span></label>' +
+        '<label class="field"><span class="field-label">Klinik (opsiyonel)</span><span class="field-box"><select name="clinic">' + placeOpts(clinics, v('clinic_id')) + '</select></span></label>' +
         '<label class="field"><span class="field-label">Tedavi Yeri (konum adı)</span><span class="field-box"><input name="locName" type="text" value="' + esc(v('location_name')) + '" /></span></label>' +
         '<label class="field"><span class="field-label">Google Maps Linki</span><span class="field-box"><input name="locMaps" type="url" value="' + esc(v('location_maps_url')) + '" placeholder="https://maps.app.goo.gl/…" /></span></label>' +
         '<label class="field"><span class="field-label">Ulaşım Başlığı</span><span class="field-box"><input name="trTitle" type="text" value="' + esc(v('transport_title')) + '" placeholder="Örn. Full Transfer Hizmeti" /></span></label>' +
@@ -95,7 +100,7 @@
         '<label class="field"><span class="field-label">Aylık Ödeme</span><span class="field-box"><input name="priceMonthly" type="number" step="1" value="' + esc(v('price_monthly')) + '" /></span></label>' +
         '<div class="field span-2"><span class="field-label">Bölüm Fotoğrafları (her bölüm için en fazla 4 — detay sayfasında ilgili barın yanında görünür)</span>' +
           '<div id="dlSecPhotos"></div><span class="muted-line sm" id="dlPhotoStatus"></span></div>' +
-        '<label class="field"><span class="field-label">Durum</span><span class="field-box"><select name="status"><option value="draft"' + (v('status','draft')==='draft'?' selected':'') + '>Taslak</option><option value="published"' + (v('status')==='published'?' selected':'') + '>Yayında</option></select></span></label>' +
+        '<label class="field"><span class="field-label">Durum</span><span class="field-box"><select name="status"><option value="draft"' + (v('status','draft')==='draft'?' selected':'') + '>Taslak</option><option value="pending"' + (v('status')==='pending'||v('status')==='published'?' selected':'') + '>Yayına Gönder (admin onayı)</option></select></span></label>' +
         '<div class="form-actions span-2"><button type="button" class="btn-ghost sm" id="listingCancel">İptal</button><button type="submit" class="btn-primary sm">Kaydet</button><span class="save-ok" id="listingSaved" hidden>Kaydedildi ✓</span><span class="save-err" id="listingErr" hidden></span></div>' +
       '</form>';
 
@@ -108,18 +113,19 @@
     f.country.addEventListener('change', fillCity);
     f.unit.addEventListener('change', fillTreat);
     f.treatment.addEventListener('change', fillMethod);
-    /* hospital/hotel "+ new" */
-    [['hospital', 'hospitals'], ['hotel', 'hotels']].forEach(function (pair) {
+    /* hospital/hotel/clinic "+ new" */
+    var PLACE_LABEL = { hospital: 'hastane', hotel: 'otel', clinic: 'klinik' };
+    var PLACE_ARR   = { hospital: hospitals, hotel: hotels, clinic: clinics };
+    var PLACE_FN    = { hospital: H.createHospital, hotel: H.createHotel, clinic: H.createClinic };
+    [['hospital', 'hospitals'], ['hotel', 'hotels'], ['clinic', 'clinics']].forEach(function (pair) {
       f[pair[0]].addEventListener('change', function () {
         if (f[pair[0]].value !== '__new') return;
-        var name = prompt('Yeni ' + (pair[0] === 'hospital' ? 'hastane' : 'otel') + ' adı:'); if (!name) { f[pair[0]].value = ''; return; }
+        var name = prompt('Yeni ' + PLACE_LABEL[pair[0]] + ' adı:'); if (!name) { f[pair[0]].value = ''; return; }
         var maps = prompt('Google Maps linki (opsiyonel):') || '';
         var city = prompt('Şehir (opsiyonel):') || '';
-        var fn = pair[0] === 'hospital' ? H.createHospital : H.createHotel;
-        fn({ name: name, mapsUrl: maps, city: city }).then(function (r) {
+        PLACE_FN[pair[0]]({ name: name, mapsUrl: maps, city: city }).then(function (r) {
           if (r && r.ok) {
-            if (pair[0] === 'hospital') { hospitals.push(r.data); f.hospital.innerHTML = placeOpts(hospitals, r.data.id); }
-            else { hotels.push(r.data); f.hotel.innerHTML = placeOpts(hotels, r.data.id); }
+            PLACE_ARR[pair[0]].push(r.data); f[pair[0]].innerHTML = placeOpts(PLACE_ARR[pair[0]], r.data.id);
           } else { f[pair[0]].value = ''; alert('Eklenemedi.'); }
         });
       });
@@ -170,6 +176,7 @@
       treatmentId: num(f.treatment.value), methodId: num(f.method.value),
       hospitalId: f.hospital.value && f.hospital.value !== '__new' ? f.hospital.value : null,
       hotelId: f.hotel.value && f.hotel.value !== '__new' ? f.hotel.value : null,
+      clinicId: f.clinic.value && f.clinic.value !== '__new' ? f.clinic.value : null,
       locationName: f.locName.value.trim(), locationMapsUrl: f.locMaps.value.trim(),
       transportTitle: f.trTitle.value.trim(), transportDesc: f.trDesc.value.trim(), transportImage: f.trImage.value.trim(),
       advantages: f.advantages.value.trim(),

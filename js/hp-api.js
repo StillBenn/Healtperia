@@ -59,12 +59,15 @@
 
   HP.currentUser = function () { return HP._profile; };
   HP.dashboardFor = function (role) {
-    return role === 'doctor' ? 'dashboard-doctor.html' : role === 'admin' ? 'admin.html' : 'dashboard-patient.html';
+    return role === 'doctor' ? 'dashboard-doctor.html'
+      : (role === 'hospital' || role === 'clinic') ? 'dashboard-facility.html'
+      : role === 'admin' ? 'admin.html' : 'dashboard-patient.html';
   };
 
   /* ---------- AUTH ---------- */
   HP.register = function (data) {
-    var role = data.role === 'doctor' ? 'doctor' : 'patient';
+    var PROVIDERS = ['doctor', 'hospital', 'clinic'];
+    var role = PROVIDERS.indexOf(data.role) >= 0 ? data.role : 'patient';
     var email = String(data.email || '').trim().toLowerCase();
     var pw = String(data.password || '');
     var name = String(data.name || '').trim();
@@ -87,8 +90,8 @@
 
     return sb.auth.signUp({ email: email, password: pw, options: { data: meta } }).then(function (r) {
       if (r.error) return fail(mapAuthError(r.error.message) || 'err.emailExists', r.error.message);
-      if (role === 'doctor') {
-        /* doctors wait for admin approval — don't keep them signed in */
+      if (PROVIDERS.indexOf(role) >= 0) {
+        /* doctor/hospital/clinic wait for admin approval — don't keep them signed in */
         return sb.auth.signOut().then(function () { return ok({ pending: true, key: 'msg.docPending' }); });
       }
       /* patient: trigger created an active profile; load it */
@@ -138,7 +141,8 @@
   HP.updateProfile = function (patch) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
     var clean = {};
-    ['name', 'phone', 'country', 'city', 'specialty', 'license', 'bio', 'academic'].forEach(function (f) {
+    ['name', 'phone', 'country', 'city', 'specialty', 'license', 'bio', 'academic',
+     'pref_notif_email', 'pref_notif_appt', 'pref_notif_promo', 'pref_accept_new', 'pref_work_hours'].forEach(function (f) {
       if (patch[f] !== undefined) clean[f] = patch[f];
     });
     return sb.from('profiles').update(clean).eq('id', p.id).select().single().then(function (r) {
@@ -270,6 +274,12 @@
         if (clearedAt) q = q.gt('created_at', clearedAt);
         return q.order('created_at', { ascending: true }).then(function (r) { return r.data || []; });
       });
+  };
+  /* admin: iki kullanıcı arasındaki sohbet (şikâyet incelemesi) — admin RLS ile okur */
+  HP.conversationBetween = function (aId, bId) {
+    return sb.from('messages').select('*, sender:sender_id(name,role), receiver:receiver_id(name,role)')
+      .or('and(sender_id.eq.' + aId + ',receiver_id.eq.' + bId + '),and(sender_id.eq.' + bId + ',receiver_id.eq.' + aId + ')')
+      .order('created_at', { ascending: true }).then(function (r) { return r.data || []; });
   };
   HP.inbox = function () {
     var p = HP._profile; if (!p) return Promise.resolve([]);
@@ -405,7 +415,7 @@
     var m = {
       code: d.code, status: d.status,
       country_id: d.countryId, city_id: d.cityId, unit_id: d.unitId, treatment_id: d.treatmentId, method_id: d.methodId,
-      headline: d.headline, process: d.process, hospital_id: d.hospitalId, hotel_id: d.hotelId,
+      headline: d.headline, process: d.process, hospital_id: d.hospitalId, hotel_id: d.hotelId, clinic_id: d.clinicId,
       location_name: d.locationName, location_maps_url: d.locationMapsUrl,
       transport_title: d.transportTitle, transport_desc: d.transportDesc, transport_image: d.transportImage,
       advantages: d.advantages, price_amount: d.priceAmount, price_currency: d.priceCurrency,
@@ -503,7 +513,7 @@
   /* ---------- HOSPITAL DIRECTORY (index/detail) ---------- */
   HP.searchHospitals = function (f) {
     f = f || {};
-    var q = sb.from('hospitals').select('id,name,type,city,country,logo_url,photos');
+    var q = sb.from('hospitals').select('id,name,type,city,country,logo_url,photos').eq('status', 'published');
     if (f.country) q = q.ilike('country', '%' + f.country + '%');
     if (f.city)    q = q.ilike('city', '%' + f.city + '%');
     if (f.type)    q = q.ilike('type', '%' + f.type + '%');
@@ -524,7 +534,7 @@
   HP.createClinic = function (d) { return createPlace('clinics', d); };
   HP.searchClinics = function (f) {
     f = f || {};
-    var q = sb.from('clinics').select('id,name,unit,city,country,logo_url,photos');
+    var q = sb.from('clinics').select('id,name,unit,city,country,logo_url,photos').eq('status', 'published');
     if (f.country) q = q.ilike('country', '%' + f.country + '%');
     if (f.city)    q = q.ilike('city', '%' + f.city + '%');
     if (f.unit)    q = q.ilike('unit', '%' + f.unit + '%');
@@ -538,6 +548,97 @@
     return sb.from('listings').select('*, doctor:doctor_id(name,avatar_url,specialty), hospital:hospital_id(name,city)')
       .eq('clinic_id', clinicId).eq('status', 'published').order('created_at', { ascending: false })
       .then(function (r) { return r.data || []; });
+  };
+
+  /* ---------- FACILITY MANAGEMENT (admin) ---------- */
+  function updatePlace(table, id, d) {
+    var m = { name: d.name, type: d.type, unit: d.unit, city: d.city, country: d.country,
+      maps_url: d.mapsUrl, description: d.description, units: d.units, capacity: d.capacity,
+      comfort: d.comfort, standards: d.standards, treatments: d.treatments, services: d.services,
+      logo_url: d.logoUrl, photos: d.photos };
+    var out = {}; Object.keys(m).forEach(function (k){ if (m[k] !== undefined) out[k] = m[k]; });
+    return sb.from(table).update(out).eq('id', id).then(function (r){ return { ok: !r.error, error: r.error && r.error.message }; });
+  }
+  HP.updateHospital = function (id, d) { return updatePlace('hospitals', id, d); };
+  HP.updateClinic   = function (id, d) { return updatePlace('clinics', id, d); };
+  HP.uploadPlacePhoto = function (file) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!file) return Promise.resolve(fail('err.account'));
+    var safe = ((file.name || 'photo').replace(/[^a-zA-Z0-9._-]/g, '_')).slice(-40);
+    var path = p.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + safe;
+    return sb.storage.from('place-photos').upload(path, file, { cacheControl: '3600' }).then(function (r) {
+      if (r.error) return fail('err.account', r.error.message);
+      return ok({ url: sb.storage.from('place-photos').getPublicUrl(path).data.publicUrl });
+    });
+  };
+
+  /* ---------- ADMIN APPROVALS (accounts + content) ---------- */
+  HP.listPending = function () {
+    return sb.from('profiles').select('*').eq('status', 'pending').in('role', ['doctor', 'hospital', 'clinic'])
+      .order('created_at', { ascending: true }).then(function (r) { return r.data || []; });
+  };
+  HP.listPendingListings = function () {
+    return sb.from('listings').select('*, doctor:doctor_id(name)').eq('status', 'pending')
+      .order('created_at', { ascending: true }).then(function (r) { return r.data || []; });
+  };
+  HP.approveListing = function (id) { return sb.from('listings').update({ status: 'published' }).eq('id', id).then(function (r){ return { ok: !r.error }; }); };
+  HP.rejectListing  = function (id) { return sb.from('listings').update({ status: 'draft' }).eq('id', id).then(function (r){ return { ok: !r.error }; }); };
+  HP.listPendingFacilities = function () {
+    return Promise.all([
+      sb.from('hospitals').select('id,name,city,country,type').eq('status', 'pending'),
+      sb.from('clinics').select('id,name,city,country,unit').eq('status', 'pending')
+    ]).then(function (rs) {
+      var h = (rs[0].data || []).map(function (x){ x.kind = 'hospital'; return x; });
+      var c = (rs[1].data || []).map(function (x){ x.kind = 'clinic'; return x; });
+      return h.concat(c);
+    });
+  };
+  HP.approveFacility = function (kind, id) { return sb.from(kind === 'clinic' ? 'clinics' : 'hospitals').update({ status: 'published' }).eq('id', id).then(function (r){ return { ok: !r.error }; }); };
+  HP.rejectFacility  = function (kind, id) { return sb.from(kind === 'clinic' ? 'clinics' : 'hospitals').delete().eq('id', id).then(function (r){ return { ok: !r.error }; }); };
+
+  /* ---------- FACILITY OWNER (hospital/clinic dashboard) ---------- */
+  HP.myFacility = function () {
+    var p = HP._profile; if (!p) return Promise.resolve(null);
+    var table = p.role === 'clinic' ? 'clinics' : 'hospitals';
+    return sb.from(table).select('*').eq('owner_id', p.id).limit(1).maybeSingle().then(function (r) { return r.data || null; });
+  };
+  HP.saveMyFacility = function (d) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    var table = p.role === 'clinic' ? 'clinics' : 'hospitals';
+    var m = { name: d.name, type: d.type, unit: d.unit, city: d.city, country: d.country,
+      maps_url: d.mapsUrl, description: d.description, units: d.units, capacity: d.capacity,
+      comfort: d.comfort, standards: d.standards, treatments: d.treatments,
+      logo_url: d.logoUrl, photos: d.photos, status: 'pending' };
+    var out = {}; Object.keys(m).forEach(function (k){ if (m[k] !== undefined) out[k] = m[k]; });
+    if (d.id) return sb.from(table).update(out).eq('id', d.id).select().single().then(function (r){ return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+    out.name = out.name || p.name || 'Tesis'; out.owner_id = p.id; out.created_by = p.id;
+    return sb.from(table).insert(out).select().single().then(function (r){ return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+  };
+
+  /* ---------- MEDICAL RECORDS (patient) ---------- */
+  HP.listRecords = function () {
+    var p = HP._profile; if (!p) return Promise.resolve([]);
+    return sb.from('medical_records').select('*').eq('patient_id', p.id).order('record_date', { ascending: false, nullsFirst: false })
+      .then(function (r) { return r.data || []; });
+  };
+  HP.addRecord = function (d) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    return sb.from('medical_records').insert({ patient_id: p.id, title: d.title, kind: d.kind || 'other',
+      file_url: d.fileUrl || null, note: d.note || null, record_date: d.recordDate || null })
+      .select().single().then(function (r) { return r.error ? fail('err.account', r.error.message) : ok({ data: r.data }); });
+  };
+  HP.deleteRecord = function (id) {
+    return sb.from('medical_records').delete().eq('id', id).then(function (r) { return { ok: !r.error }; });
+  };
+  HP.uploadRecordFile = function (file) {
+    var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
+    if (!file) return Promise.resolve(fail('err.account'));
+    var safe = ((file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_')).slice(-50);
+    var path = p.id + '/' + Date.now() + '-' + safe;
+    return sb.storage.from('medical-records').upload(path, file, { cacheControl: '3600' }).then(function (r) {
+      if (r.error) return fail('err.account', r.error.message);
+      return ok({ url: sb.storage.from('medical-records').getPublicUrl(path).data.publicUrl, name: file.name || safe });
+    });
   };
   HP.uploadListingPhoto = function (file) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));

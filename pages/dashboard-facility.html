@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr" translate="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="google" content="notranslate" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tesis Paneli — Healthperia</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="app-body app-doctor">
+
+  <div class="app-shell">
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-head">
+        <a href="../index.html" class="sidebar-logo" aria-label="Healthperia"><img src="../assets/images/LOGO__SLOGANLI_PNG.png" alt="Healthperia" /></a>
+        <button class="sidebar-close" id="sidebarClose" data-i18n-aria="acc.aria.closeMenu" aria-label="Menüyü kapat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <nav class="sidebar-nav" aria-label="Panel menüsü">
+        <span class="sidebar-group" data-i18n="df.group">Tesis</span>
+        <a class="side-link is-active" data-section="overview" href="#overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span class="side-label" data-i18n="acc.nav.overview">Genel Bakış</span></a>
+        <a class="side-link" data-section="facility" href="#facility">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M9 21v-5h6v5M8 4h8v4M12 11v3M10.5 12.5h3"/></svg>
+          <span class="side-label" data-i18n="df.nav.profile">Tesis Profilim</span></a>
+        <a class="side-link" data-section="messages" href="#messages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge" style="display:none"></span></a>
+        <span class="sidebar-group" data-i18n="acc.group.account">Hesap</span>
+        <a class="side-link" data-section="settings" href="#settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 0 1-4 0v-.1A1.7 1.7 0 0 0 7 19.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.7 1.7 0 0 0 4.7 8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          <span class="side-label" data-i18n="acc.nav.settings">Ayarlar</span></a>
+      </nav>
+      <button class="sidebar-logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> <span data-i18n="acc.logout">Çıkış Yap</span></button>
+    </aside>
+    <div class="app-overlay" id="appOverlay"></div>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <button class="topbar-burger" id="burger" data-i18n-aria="acc.aria.menu" aria-label="Menü"><span></span><span></span><span></span></button>
+        <div class="topbar-title"><h1 id="pageTitle">Genel Bakış</h1><p id="pageCrumb" data-i18n="df.crumb">Tesis Paneli</p></div>
+        <div class="topbar-actions">
+          <div class="lang-switch app-lang" data-lang-switch>
+            <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="acc.aria.lang" aria-label="Dil seçimi">
+              <span class="flag flag-tr" data-lang-flag aria-hidden="true"></span>
+              <span class="lang-name" data-lang-name>TR</span>
+              <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <ul class="lang-menu" role="listbox">
+              <li role="option" data-lang="tr" data-short="TR" class="selected"><span class="flag flag-tr"></span> Türkçe</li>
+              <li role="option" data-lang="en" data-short="EN"><span class="flag flag-en"></span> English</li>
+              <li role="option" data-lang="de" data-short="DE"><span class="flag flag-de"></span> Deutsch</li>
+              <li role="option" data-lang="ru" data-short="RU"><span class="flag flag-ru"></span> Русский</li>
+              <li role="option" data-lang="fr" data-short="FR"><span class="flag flag-fr"></span> Français</li>
+              <li role="option" data-lang="es" data-short="ES"><span class="flag flag-es"></span> Español</li>
+              <li role="option" data-lang="pt" data-short="PT"><span class="flag flag-pt"></span> Português</li>
+              <li role="option" data-lang="ar" data-short="AR"><span class="flag flag-ar"></span> العربية</li>
+              <li role="option" data-lang="nl" data-short="NL"><span class="flag flag-nl"></span> Nederlands</li>
+            </ul>
+          </div>
+          <div class="user-menu" id="userMenu">
+            <button class="user-trigger" id="userTrigger">
+              <span class="avatar" id="navAvatar">HP</span>
+              <span class="user-meta"><strong id="navName">—</strong><small id="navSpec" data-i18n="acc.role.hospital">Hastane</small></span>
+              <svg class="user-caret" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="user-dropdown">
+              <a href="#facility" data-section="facility" data-i18n="df.nav.profile">Tesis Profilim</a>
+              <a href="#settings" data-section="settings" data-i18n="acc.nav.settings">Ayarlar</a>
+              <hr/><button id="logoutBtn2" data-i18n="acc.logout">Çıkış Yap</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="app-content">
+        <!-- OVERVIEW -->
+        <section class="panel is-active" data-panel="overview">
+          <div class="welcome-banner doctor">
+            <div class="welcome-text">
+              <span class="welcome-eyebrow" data-i18n="df.welcome">Hoş geldiniz 🏥</span>
+              <h2 id="welcomeName">—</h2>
+              <p id="facStatusLine" data-i18n="df.intro">Tesis profilinizi düzenleyin; admin onayından sonra indekste yayınlanır.</p>
+              <div class="welcome-cta">
+                <button class="btn-primary sm" data-jump="facility" data-i18n="df.editProfile">Tesis Profilini Düzenle</button>
+                <button class="btn-ghost sm" data-jump="messages" data-i18n="acc.nav.messages">Mesajlar</button>
+              </div>
+            </div>
+          </div>
+          <div class="card"><div class="card-head"><h3 data-i18n="df.statusTitle">Yayın Durumu</h3></div>
+            <div id="facStatusCard"><div class="empty-state sm"><p>…</p></div></div>
+          </div>
+        </section>
+
+        <!-- FACILITY PROFILE -->
+        <section class="panel" data-panel="facility">
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="df.nav.profile">Tesis Profilim</h3><span id="facFormStatus"></span></div>
+            <div id="facilityForm"><div class="empty-state sm"><p>…</p></div></div>
+          </div>
+        </section>
+
+        <!-- MESSAGES -->
+        <section class="panel" data-panel="messages">
+          <div class="card"><div class="card-head"><h3 data-i18n="acc.nav.messages">Mesajlar</h3></div>
+            <div id="facilityChat"></div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="panel" data-panel="settings">
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="acc.pw.title">Şifre Değiştir</h3></div>
+            <form id="pwForm" class="form-grid">
+              <label class="field span-2"><span class="field-label" data-i18n="acc.pw.current">Mevcut Şifre</span><span class="field-box"><input name="old" type="password" required /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.pw.new">Yeni Şifre</span><span class="field-box"><input name="new" type="password" required /></span></label>
+              <label class="field"><span class="field-label" data-i18n="acc.pw.confirm">Yeni Şifre (tekrar)</span><span class="field-box"><input name="confirm" type="password" required /></span></label>
+              <div class="form-actions span-2"><button class="btn-primary sm" type="submit" data-i18n="acc.pw.update">Şifreyi Güncelle</button><span class="save-ok" id="pwSaved" hidden data-i18n="acc.pw.updated">Güncellendi ✓</span><span class="save-err" id="pwErr" hidden></span></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="dp.notifTitle">Bildirim Tercihleri</h3></div>
+            <ul class="toggle-list">
+              <li><span data-i18n="dp.notif.email">E-posta bildirimleri</span><label class="switch"><input type="checkbox" id="prefNotifEmail"><span></span></label></li>
+              <li><span data-i18n="dp.notif.appt">Mesaj bildirimleri</span><label class="switch"><input type="checkbox" id="prefNotifAppt"><span></span></label></li>
+              <li><span data-i18n="dp.notif.promo">Kampanya ve duyurular</span><label class="switch"><input type="checkbox" id="prefNotifPromo"><span></span></label></li>
+            </ul>
+            <div class="form-actions"><button class="btn-primary sm" id="prefSave" data-i18n="acc.save">Kaydet</button><span class="save-ok" id="prefSaved" hidden data-i18n="acc.saved">Kaydedildi ✓</span></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/hp-api.js"></script>
+  <script src="../js/hp-chat.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/i18n-account.js"></script>
+  <script src="../js/i18n-dash-facility.js"></script>
+  <script src="../js/i18n-core.js"></script>
+  <script src="../js/dashboard-facility.js"></script>
+</body>
+</html>

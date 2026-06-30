@@ -23,7 +23,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Platform Etkinliği',
     'ad.mon.jan': 'Oca', 'ad.mon.feb': 'Şub', 'ad.mon.mar': 'Mar', 'ad.mon.apr': 'Nis', 'ad.mon.may': 'May', 'ad.mon.jun': 'Haz',
     'ad.activitySummary': 'Aylık aktif kullanıcı <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Onay Bekleyen Doktorlar',
+    'ad.pendingTitle': 'Onay Bekleyen Başvurular',
     'ad.filter.all': 'Tümü',
     'ad.contentTitle': 'İçerik & Blog Yönetimi', 'ad.newPost': 'Yeni Yazı',
     'ad.post1': 'Yurt dışında tedavi rehberi', 'ad.post2': 'Doktor seçerken dikkat edilmesi gerekenler', 'ad.post3': 'Sağlık turizmi maliyetleri 2026',
@@ -51,7 +51,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Platform Activity',
     'ad.mon.jan': 'Jan', 'ad.mon.feb': 'Feb', 'ad.mon.mar': 'Mar', 'ad.mon.apr': 'Apr', 'ad.mon.may': 'May', 'ad.mon.jun': 'Jun',
     'ad.activitySummary': 'Monthly active users <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Doctors Awaiting Approval',
+    'ad.pendingTitle': 'Applications Awaiting Approval',
     'ad.filter.all': 'All',
     'ad.contentTitle': 'Content & Blog Management', 'ad.newPost': 'New Post',
     'ad.post1': 'Guide to treatment abroad', 'ad.post2': 'What to consider when choosing a doctor', 'ad.post3': 'Health tourism costs 2026',
@@ -79,7 +79,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Plattform-Aktivität',
     'ad.mon.jan': 'Jan', 'ad.mon.feb': 'Feb', 'ad.mon.mar': 'Mär', 'ad.mon.apr': 'Apr', 'ad.mon.may': 'Mai', 'ad.mon.jun': 'Jun',
     'ad.activitySummary': 'Monatlich aktive Nutzer <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Ärzte, die auf Freigabe warten',
+    'ad.pendingTitle': 'Anträge, die auf Freigabe warten',
     'ad.filter.all': 'Alle',
     'ad.contentTitle': 'Inhalts- & Blogverwaltung', 'ad.newPost': 'Neuer Beitrag',
     'ad.post1': 'Leitfaden zur Behandlung im Ausland', 'ad.post2': 'Worauf bei der Arztwahl zu achten ist', 'ad.post3': 'Kosten des Gesundheitstourismus 2026',
@@ -107,7 +107,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Активность платформы',
     'ad.mon.jan': 'Янв', 'ad.mon.feb': 'Фев', 'ad.mon.mar': 'Мар', 'ad.mon.apr': 'Апр', 'ad.mon.may': 'Май', 'ad.mon.jun': 'Июн',
     'ad.activitySummary': 'Ежемесячные активные пользователи <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Врачи, ожидающие одобрения',
+    'ad.pendingTitle': 'Заявки, ожидающие одобрения',
     'ad.filter.all': 'Все',
     'ad.contentTitle': 'Управление контентом и блогом', 'ad.newPost': 'Новая запись',
     'ad.post1': 'Руководство по лечению за рубежом', 'ad.post2': 'На что обратить внимание при выборе врача', 'ad.post3': 'Стоимость медицинского туризма 2026',
@@ -135,7 +135,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Activité de la plateforme',
     'ad.mon.jan': 'Jan', 'ad.mon.feb': 'Fév', 'ad.mon.mar': 'Mar', 'ad.mon.apr': 'Avr', 'ad.mon.may': 'Mai', 'ad.mon.jun': 'Juin',
     'ad.activitySummary': 'Utilisateurs actifs mensuels <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Médecins en attente d’approbation',
+    'ad.pendingTitle': 'Demandes en attente d’approbation',
     'ad.filter.all': 'Tous',
     'ad.contentTitle': 'Gestion du contenu & du blog', 'ad.newPost': 'Nouvel article',
     'ad.post1': 'Guide du traitement à l’étranger', 'ad.post2': 'Points à considérer pour choisir un médecin', 'ad.post3': 'Coûts du tourisme médical 2026',
@@ -163,7 +163,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Actividad de la plataforma',
     'ad.mon.jan': 'Ene', 'ad.mon.feb': 'Feb', 'ad.mon.mar': 'Mar', 'ad.mon.apr': 'Abr', 'ad.mon.may': 'May', 'ad.mon.jun': 'Jun',
     'ad.activitySummary': 'Usuarios activos mensuales <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Médicos pendientes de aprobación',
+    'ad.pendingTitle': 'Solicitudes pendientes de aprobación',
     'ad.filter.all': 'Todos',
     'ad.contentTitle': 'Gestión de contenido y blog', 'ad.newPost': 'Nueva publicación',
     'ad.post1': 'Guía para tratamiento en el extranjero', 'ad.post2': 'Qué tener en cuenta al elegir un médico', 'ad.post3': 'Costes del turismo médico 2026',
@@ -191,7 +191,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Atividade da plataforma',
     'ad.mon.jan': 'Jan', 'ad.mon.feb': 'Fev', 'ad.mon.mar': 'Mar', 'ad.mon.apr': 'Abr', 'ad.mon.may': 'Mai', 'ad.mon.jun': 'Jun',
     'ad.activitySummary': 'Usuários ativos mensais <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Médicos aguardando aprovação',
+    'ad.pendingTitle': 'Solicitações aguardando aprovação',
     'ad.filter.all': 'Todos',
     'ad.contentTitle': 'Gestão de conteúdo e blog', 'ad.newPost': 'Nova publicação',
     'ad.post1': 'Guia de tratamento no exterior', 'ad.post2': 'O que considerar ao escolher um médico', 'ad.post3': 'Custos do turismo de saúde 2026',
@@ -219,7 +219,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'نشاط المنصة',
     'ad.mon.jan': 'ينا', 'ad.mon.feb': 'فبر', 'ad.mon.mar': 'مار', 'ad.mon.apr': 'أبر', 'ad.mon.may': 'ماي', 'ad.mon.jun': 'يون',
     'ad.activitySummary': 'المستخدمون النشطون شهريًا <span class="up">+18%</span>',
-    'ad.pendingTitle': 'الأطباء بانتظار الموافقة',
+    'ad.pendingTitle': 'الطلبات بانتظار الموافقة',
     'ad.filter.all': 'الكل',
     'ad.contentTitle': 'إدارة المحتوى والمدونة', 'ad.newPost': 'منشور جديد',
     'ad.post1': 'دليل العلاج في الخارج', 'ad.post2': 'ما يجب مراعاته عند اختيار الطبيب', 'ad.post3': 'تكاليف السياحة الصحية 2026',
@@ -247,7 +247,7 @@ window.HP_I18N = window.HP_I18N || {};
     'ad.activityTitle': 'Platformactiviteit',
     'ad.mon.jan': 'Jan', 'ad.mon.feb': 'Feb', 'ad.mon.mar': 'Mrt', 'ad.mon.apr': 'Apr', 'ad.mon.may': 'Mei', 'ad.mon.jun': 'Jun',
     'ad.activitySummary': 'Maandelijks actieve gebruikers <span class="up">+18%</span>',
-    'ad.pendingTitle': 'Artsen die wachten op goedkeuring',
+    'ad.pendingTitle': 'Aanvragen die wachten op goedkeuring',
     'ad.filter.all': 'Alle',
     'ad.contentTitle': 'Content- & blogbeheer', 'ad.newPost': 'Nieuw bericht',
     'ad.post1': 'Gids voor behandeling in het buitenland', 'ad.post2': 'Waar te letten bij het kiezen van een arts', 'ad.post3': 'Kosten van gezondheidstoerisme 2026',
@@ -282,4 +282,29 @@ window.HP_I18N = window.HP_I18N || {};
   add('pt', { 'ad.nav.messages': 'Solicitações de médicos', 'ad.emptyMsgs': 'Ainda não há mensagens. As mensagens dos médicos aparecerão aqui.' });
   add('ar', { 'ad.nav.messages': 'طلبات الأطباء', 'ad.emptyMsgs': 'لا توجد رسائل بعد. ستظهر رسائل الأطباء هنا.' });
   add('nl', { 'ad.nav.messages': 'Artsverzoeken', 'ad.emptyMsgs': 'Nog geen berichten. Berichten van artsen verschijnen hier.' });
+  add('tr', { 'ad.nav.facilities':'Tesisler' }); add('en', { 'ad.nav.facilities':'Facilities' }); add('de', { 'ad.nav.facilities':'Einrichtungen' });
+  add('ru', { 'ad.nav.facilities':'Объекты' }); add('fr', { 'ad.nav.facilities':'Établissements' }); add('es', { 'ad.nav.facilities':'Instalaciones' });
+  add('pt', { 'ad.nav.facilities':'Instalações' }); add('ar', { 'ad.nav.facilities':'المنشآت' }); add('nl', { 'ad.nav.facilities':'Faciliteiten' });
+
+  /* ===== content approvals ===== */
+  add('tr', { 'ad.nav.approvals':'İçerik Onayları','ad.appr.listings':'Bekleyen İlanlar','ad.appr.facilities':'Bekleyen Tesisler','ad.appr.noListings':'Onay bekleyen ilan yok.','ad.appr.noFacilities':'Onay bekleyen tesis yok.','ad.appr.view':'İncele','ad.appr.code':'Kod','ad.appr.confirmReject':'Bu tesisi reddedip silmek istiyor musunuz?' });
+  add('en', { 'ad.nav.approvals':'Content Approvals','ad.appr.listings':'Pending Listings','ad.appr.facilities':'Pending Facilities','ad.appr.noListings':'No listings awaiting approval.','ad.appr.noFacilities':'No facilities awaiting approval.','ad.appr.view':'View','ad.appr.code':'Code','ad.appr.confirmReject':'Reject and delete this facility?' });
+  add('de', { 'ad.nav.approvals':'Inhaltsfreigaben','ad.appr.listings':'Ausstehende Anzeigen','ad.appr.facilities':'Ausstehende Einrichtungen','ad.appr.noListings':'Keine Anzeigen zur Freigabe.','ad.appr.noFacilities':'Keine Einrichtungen zur Freigabe.','ad.appr.view':'Ansehen','ad.appr.code':'Code','ad.appr.confirmReject':'Diese Einrichtung ablehnen und löschen?' });
+  add('ru', { 'ad.nav.approvals':'Модерация контента','ad.appr.listings':'Объявления на проверке','ad.appr.facilities':'Объекты на проверке','ad.appr.noListings':'Нет объявлений на проверке.','ad.appr.noFacilities':'Нет объектов на проверке.','ad.appr.view':'Открыть','ad.appr.code':'Код','ad.appr.confirmReject':'Отклонить и удалить этот объект?' });
+  add('fr', { 'ad.nav.approvals':'Validation du contenu','ad.appr.listings':'Annonces en attente','ad.appr.facilities':'Établissements en attente','ad.appr.noListings':'Aucune annonce en attente.','ad.appr.noFacilities':'Aucun établissement en attente.','ad.appr.view':'Voir','ad.appr.code':'Code','ad.appr.confirmReject':'Refuser et supprimer cet établissement ?' });
+  add('es', { 'ad.nav.approvals':'Aprobación de contenido','ad.appr.listings':'Anuncios pendientes','ad.appr.facilities':'Instalaciones pendientes','ad.appr.noListings':'No hay anuncios pendientes.','ad.appr.noFacilities':'No hay instalaciones pendientes.','ad.appr.view':'Ver','ad.appr.code':'Código','ad.appr.confirmReject':'¿Rechazar y eliminar esta instalación?' });
+  add('pt', { 'ad.nav.approvals':'Aprovação de conteúdo','ad.appr.listings':'Anúncios pendentes','ad.appr.facilities':'Instalações pendentes','ad.appr.noListings':'Nenhum anúncio pendente.','ad.appr.noFacilities':'Nenhuma instalação pendente.','ad.appr.view':'Ver','ad.appr.code':'Código','ad.appr.confirmReject':'Rejeitar e excluir esta instalação?' });
+  add('ar', { 'ad.nav.approvals':'موافقات المحتوى','ad.appr.listings':'إعلانات قيد الموافقة','ad.appr.facilities':'منشآت قيد الموافقة','ad.appr.noListings':'لا توجد إعلانات بانتظار الموافقة.','ad.appr.noFacilities':'لا توجد منشآت بانتظار الموافقة.','ad.appr.view':'عرض','ad.appr.code':'الرمز','ad.appr.confirmReject':'رفض وحذف هذه المنشأة؟' });
+  add('nl', { 'ad.nav.approvals':'Inhoudsgoedkeuringen','ad.appr.listings':'Wachtende advertenties','ad.appr.facilities':'Wachtende faciliteiten','ad.appr.noListings':'Geen advertenties ter goedkeuring.','ad.appr.noFacilities':'Geen faciliteiten ter goedkeuring.','ad.appr.view':'Bekijken','ad.appr.code':'Code','ad.appr.confirmReject':'Deze faciliteit weigeren en verwijderen?' });
+
+  /* ===== report conversation review ===== */
+  add('tr', { 'ad.reportView':'İncele','ad.reportLoading':'Yükleniyor…','ad.reportNoMsgs':'Bu iki kullanıcı arasında mesaj yok.','ad.reportOpenFile':'Dosyayı aç' });
+  add('en', { 'ad.reportView':'Review','ad.reportLoading':'Loading…','ad.reportNoMsgs':'No messages between these two users.','ad.reportOpenFile':'Open file' });
+  add('de', { 'ad.reportView':'Prüfen','ad.reportLoading':'Wird geladen…','ad.reportNoMsgs':'Keine Nachrichten zwischen diesen beiden Nutzern.','ad.reportOpenFile':'Datei öffnen' });
+  add('ru', { 'ad.reportView':'Просмотр','ad.reportLoading':'Загрузка…','ad.reportNoMsgs':'Между этими двумя пользователями нет сообщений.','ad.reportOpenFile':'Открыть файл' });
+  add('fr', { 'ad.reportView':'Examiner','ad.reportLoading':'Chargement…','ad.reportNoMsgs':'Aucun message entre ces deux utilisateurs.','ad.reportOpenFile':'Ouvrir le fichier' });
+  add('es', { 'ad.reportView':'Revisar','ad.reportLoading':'Cargando…','ad.reportNoMsgs':'No hay mensajes entre estos dos usuarios.','ad.reportOpenFile':'Abrir archivo' });
+  add('pt', { 'ad.reportView':'Analisar','ad.reportLoading':'Carregando…','ad.reportNoMsgs':'Não há mensagens entre estes dois usuários.','ad.reportOpenFile':'Abrir arquivo' });
+  add('ar', { 'ad.reportView':'مراجعة','ad.reportLoading':'جارٍ التحميل…','ad.reportNoMsgs':'لا توجد رسائل بين هذين المستخدمين.','ad.reportOpenFile':'فتح الملف' });
+  add('nl', { 'ad.reportView':'Bekijken','ad.reportLoading':'Laden…','ad.reportNoMsgs':'Geen berichten tussen deze twee gebruikers.','ad.reportOpenFile':'Bestand openen' });
 })(window.HP_I18N);

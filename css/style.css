@@ -3741,3 +3741,56 @@ body.td-lb-open { overflow: hidden; }
 .pd-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,.08); border: 1px solid var(--line-strong); color: #fff; width: 52px; height: 52px; border-radius: 50%; font-size: 30px; cursor: pointer; }
 .pd-lb-nav.prev { left: 24px; } .pd-lb-nav.next { right: 24px; }
 .pd-lb-nav:hover { background: rgba(78,168,255,.25); }
+
+/* ===== medical records (patient) ===== */
+.rec-list { display: flex; flex-direction: column; gap: 10px; }
+.rec-card { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+.rec-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rec-card-body strong { color: var(--white); font-size: 14px; }
+.rec-card-body span { color: var(--text-muted); font-size: 12.5px; }
+.rec-card-body em { color: var(--text-dim); font-size: 12.5px; font-style: normal; }
+.rec-open { color: var(--accent-soft); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.rec-open:hover { color: #fff; }
+.rec-rm { width: 28px; height: 28px; flex: 0 0 auto; border-radius: 8px; background: rgba(255,90,95,.12); border: 1px solid rgba(255,90,95,.3); color: #ff8a8f; font-size: 18px; line-height: 1; cursor: pointer; }
+.rec-rm:hover { background: rgba(255,90,95,.22); color: #fff; }
+.ti-empty.sm { padding: 22px 0; }
+
+/* legal pages note + content tweaks */
+.legal-note { font-size: 12.5px; color: var(--accent-soft); background: rgba(78,168,255,.08); border: 1px solid rgba(78,168,255,.22); border-radius: 10px; padding: 10px 14px; max-width: 720px; margin: 0 auto; }
+.about-page .about-block h2 { font-size: 17px; }
+.about-page .about-block p a { color: var(--accent-soft); }
+
+/* ===== admin facilities ===== */
+.fac-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.fac-tab { padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--text-muted); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.fac-tab.is-active { background: rgba(78,168,255,.16); color: #fff; border-color: rgba(78,168,255,.4); }
+.btn-ghost.xs { padding: 6px 12px; font-size: 12.5px; border-radius: 9px; }
+.fac-up { cursor: pointer; display: inline-flex; align-items: center; margin-top: 8px; }
+.fac-logo, .fac-photos { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0; min-height: 4px; }
+.fac-thumb { position: relative; width: 72px; height: 56px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.fac-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.fac-rm { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(5,11,26,.7); border: none; color: #fff; font-size: 13px; line-height: 1; cursor: pointer; }
+
+/* ===== auth: provider (SHS) sub-choice chips ===== */
+.provider-chips { display: flex; gap: 8px; margin: -6px 0 16px; }
+.prov-chip { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 8px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); color: var(--text-muted); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s ease; }
+.prov-chip svg { width: 17px; height: 17px; }
+.prov-chip:hover { color: #fff; border-color: rgba(78,168,255,.35); }
+.prov-chip.is-active { background: rgba(78,168,255,.16); border-color: rgba(78,168,255,.5); color: #fff; box-shadow: 0 0 16px rgba(78,168,255,.18); }
+@media (max-width: 420px){ .prov-chip span { display: none; } .prov-chip { padding: 10px; } }
+
+/* ===== admin: report conversation modal ===== */
+.report-chat-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(3,7,18,.78); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+.rcm-box { width: 100%; max-width: 560px; max-height: 80vh; display: flex; flex-direction: column; background: #0d1730; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.55); overflow: hidden; }
+.rcm-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line); color: var(--white); }
+.rcm-close { background: none; border: none; color: var(--text-muted); font-size: 26px; line-height: 1; cursor: pointer; }
+.rcm-close:hover { color: #fff; }
+.rcm-body { flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.rcm-msg { display: flex; flex-direction: column; gap: 3px; max-width: 80%; }
+.rcm-msg.left { align-self: flex-start; align-items: flex-start; }
+.rcm-msg.right { align-self: flex-end; align-items: flex-end; }
+.rcm-who { font-size: 11px; color: var(--text-dim); padding: 0 4px; }
+.rcm-bubble { padding: 9px 13px; border-radius: 14px; font-size: 13.5px; color: var(--text); background: rgba(255,255,255,.05); border: 1px solid var(--line); }
+.rcm-msg.right .rcm-bubble { background: rgba(78,168,255,.16); border-color: rgba(78,168,255,.3); color: #fff; }
+.rcm-att { display: block; margin-top: 4px; font-size: 12px; color: var(--accent-soft); }
+.rcm-msg time { font-size: 10.5px; color: var(--text-dim); padding: 0 4px; }

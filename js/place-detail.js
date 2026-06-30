@@ -90,11 +90,13 @@
 
     var right = '<aside class="pd-col-right">' + logo +
       '<div class="pd-gallery">' + gallery + '</div>' +
-      '<div class="pd-stats">' +
-        '<button class="pd-stat pd-share" type="button" aria-label="' + esc(T(P.share,'Paylaş')) + '">' + ICON.share + '<i>' + favShareNum() + '</i></button>' +
-        '<button class="pd-stat pd-fav' + (isFav ? ' is-on' : '') + '" type="button" aria-label="' + esc(T(P.fav,'Favorilere Ekle')) + '">' + ICON.crown + '<i class="pd-favc">' + favCount + '</i></button>' +
+      '<div class="dd-actbar">' +
+        '<div class="dd-actrow">' +
+          '<button class="td-act pd-share" type="button">' + ICON.share + '<span>' + esc(T(P.share,'Paylaş')) + '</span></button>' +
+          '<button class="td-act dd-fav pd-fav' + (isFav ? ' is-on' : '') + '" type="button">' + ICON.heart + '<span>' + esc(isFav ? T('td.favOn','Favorilerde') : T(P.fav,'Favorilere Ekle')) + '</span><i class="dd-favc">' + favCount + '</i></button>' +
+        '</div>' +
+        '<button class="btn-primary pd-contact" type="button">' + ICON.msg + '<span>' + esc(T(P.contact,'İletişime Geç')) + '</span></button>' +
       '</div>' +
-      '<button class="pd-contact" type="button">' + ICON.msg + '<span>' + esc(T(P.contact,'İletişime Geç!')) + '</span></button>' +
     '</aside>';
 
     var bottom = listings.length
@@ -112,7 +114,6 @@
     var rows = lines(text).map(function (l){ var p = l.split('|'); return '<li><span>' + esc((p[0]||'').trim()) + '</span><b>' + esc((p[1]||'').trim()) + '</b></li>'; }).join('');
     return '<div class="pd-mini"><h3 class="pd-sec-head">' + esc(title) + '</h3><ul class="pd-cap">' + rows + '</ul></div>';
   }
-  function favShareNum(){ return ''; }
 
   function listingCard(l){
     var trName = nm(TRm, l.treatment_id) || l.headline || '';
@@ -158,7 +159,8 @@
     else { H.addFavorite({ kind: KIND, refId: place.id, label: place.name, meta: { loc: [place.country, place.city].filter(Boolean).join(', ') } })
       .then(function (){ isFav = true; favCount += 1; paintFav(fav); }); }
   }
-  function paintFav(fav){ if (!fav) return; fav.classList.toggle('is-on', isFav); var c = fav.querySelector('.pd-favc'); if (c) c.textContent = favCount; }
+  function paintFav(fav){ if (!fav) return; fav.classList.toggle('is-on', isFav); var c = fav.querySelector('.dd-favc'); if (c) c.textContent = favCount;
+    var sp = fav.querySelector('span'); if (sp) sp.textContent = isFav ? T('td.favOn','Favorilerde') : T(P.fav,'Favorilere Ekle'); }
 
   /* ---------- lightbox ---------- */
   function openLightbox(photos, start){
@@ -185,6 +187,7 @@
     msg:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
     share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>',
     crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4.5 4L12 5l4.5 6L21 7l-1.7 11H4.7L3 7z"/></svg>',
+    heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
     loc:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
     user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>',
     building:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 21v-4h6v4M8 7h2M14 7h2M8 11h2M14 11h2"/></svg>'

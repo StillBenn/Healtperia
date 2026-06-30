@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="google" content="notranslate" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hastane — Healthperia</title>
+  <meta name="description" content="Healthperia Gizlilik Politikası — kişisel verilerin korunması." />
+  <title>Gizlilik Politikası — Healthperia</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
@@ -45,32 +46,43 @@
     </div>
   </header>
 
-  <main class="dd-main">
-    <div class="container">
-      <div class="page-breadcrumb td-crumb">
-        <a href="../index.html" data-i18n="nav.home">Anasayfa</a> <span>/</span>
-        <a href="hospital-index.html" data-i18n="card.hospital.title">Hastane İndeksi</a> <span>/</span>
-        <span data-i18n="hi.crumb">Hastane</span>
+  <section class="page-hero about-page-hero">
+    <div class="page-hero-inner">
+      <div class="page-breadcrumb">
+        <a href="../index.html" data-i18n="nav.home">Anasayfa</a> <span>/</span> <span data-i18n="footer.privacy">Gizlilik</span>
       </div>
-      <div id="hdRoot"><div class="td-loading">…</div></div>
+      <h1 class="page-title" data-i18n="footer.privacy">Gizlilik Politikası</h1>
     </div>
-  </main>
+  </section>
+
+  <section class="about-page">
+    <div class="container about-stack">
+      <article class="about-block"><p class="legal-note">Bu metin örnek/yer tutucu niteliğindedir; nihai KVKK/GDPR uyumlu metin yetkili danışmanlarca hazırlandığında güncellenecektir.</p></article>
+      <article class="about-block">
+        <h2>1. TOPLADIĞIMIZ VERİLER</h2>
+        <p>Hesap oluşturduğunuzda ad, e-posta, telefon ve ülke/şehir gibi bilgileri; platformu kullandığınızda ise mesaj, randevu ve favori gibi etkinlik verilerini işleriz. Tıbbi kayıtlarınız yalnızca sizin erişiminize açıktır.</p>
+      </article>
+      <article class="about-block">
+        <h2>2. VERİLERİ NASIL KULLANIRIZ</h2>
+        <p>Verileriniz; hizmeti sunmak, doktor-hasta iletişimini sağlamak, güvenliği korumak ve yasal yükümlülükleri yerine getirmek için kullanılır. Verilerinizi tedaviden gelir elde etmek için satmayız.</p>
+      </article>
+      <article class="about-block">
+        <h2>3. SAKLAMA VE GÜVENLİK</h2>
+        <p>Veriler güvenli altyapı (Supabase) üzerinde, satır düzeyinde güvenlik (RLS) politikalarıyla korunur. Tıbbi kayıt dosyaları yalnızca sahibi olan kullanıcının erişebildiği özel alanlarda tutulur.</p>
+      </article>
+      <article class="about-block">
+        <h2>4. HAKLARINIZ</h2>
+        <p>Kişisel verilerinize erişme, düzeltme ve silme hakkına sahipsiniz. Hesabınızdaki bilgileri profil sayfanızdan güncelleyebilir, tıbbi kayıtlarınızı dilediğiniz zaman silebilirsiniz.</p>
+      </article>
+      <article class="about-block">
+        <h2>5. İLETİŞİM</h2>
+        <p>Gizlilikle ilgili talepleriniz için <a href="mailto:info@healthperia.com">info@healthperia.com</a> adresinden bize ulaşabilirsiniz.</p>
+      </article>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container footer-mini">
-      <div class="footer-top">
-        <div class="foot-block question">
-          <span class="foot-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7v.5"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg></span>
-          <span class="foot-text" data-i18n="footer.question">Bir sorunuz mu var?</span>
-        </div>
-        <div class="foot-block follow">
-          <span class="foot-text" data-i18n="footer.follow">Bizi takip edin</span>
-          <ul class="foot-socials">
-            <li><a href="https://instagram.com/healthperia" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></li>
-            <li><a href="https://x.com/healthperia" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.8l-5.34-6.83L4.3 22H1.04l8.02-9.16L1.5 2H8.4l4.83 6.22L18.244 2z"/></svg></a></li>
-          </ul>
-        </div>
-      </div>
       <a class="foot-email" href="mailto:info@healthperia.com">info@healthperia.com</a>
       <hr class="foot-divider" />
       <div class="footer-bottom-mini">
@@ -83,13 +95,6 @@
 
   <button class="scroll-top" id="scrollTop" type="button" aria-label="Sayfanın başına dön"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg></button>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../js/hp-api.js"></script>
-  <script src="../js/treatment-data.js"></script>
-  <script src="../js/i18n-treatment.js"></script>
-  <script src="../js/i18n-hospital.js"></script>
   <script src="../js/main.js"></script>
-  <script src="../js/hp-share.js"></script>
-  <script src="../js/place-detail.js"></script>
 </body>
 </html>

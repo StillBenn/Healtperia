@@ -98,6 +98,9 @@
     }
   }
 
+  /* birim adını aktif dile çevir (varsa); diğer seviyeler TR kalır */
+  function dispName(key, o) { return (key === 'unit' && window.HP_unitName) ? window.HP_unitName(o.name) : o.name; }
+
   function renderStep(key) {
     var s = steps[key]; if (!s) return;
     var locked = isLocked(key);
@@ -110,16 +113,17 @@
 
     /* trigger value text */
     s.el.classList.toggle('is-filled', !!sel);
-    s.value.textContent = sel ? sel.name : T('ti.choose', 'Seçiniz');
+    s.value.textContent = sel ? dispName(key, sel) : T('ti.choose', 'Seçiniz');
     fitValue(s.value);
 
     /* list items */
     var q = (s.search && s.search.value || '').trim().toLocaleLowerCase('tr');
     var html = '';
     opts.forEach(function (o) {
-      if (q && o.name.toLocaleLowerCase('tr').indexOf(q) === -1) return;
+      var dn = dispName(key, o);
+      if (q && dn.toLocaleLowerCase('tr').indexOf(q) === -1) return;
       html += '<li role="option" class="ti-opt' + (o.id === selId ? ' is-selected' : '') +
-        '" data-id="' + o.id + '"><span>' + esc(o.name) + '</span>' +
+        '" data-id="' + o.id + '"><span>' + esc(dn) + '</span>' +
         '<svg class="ti-opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></li>';
     });
     s.list.innerHTML = html;

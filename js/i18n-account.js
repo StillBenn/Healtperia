@@ -447,4 +447,15 @@ window.HP_I18N = window.HP_I18N || {};
     'ann.send': 'Aankondiging publiceren', 'ann.sent': 'Gepubliceerd ✓', 'ann.empty': 'Nog geen aankondigingen.', 'ann.delConfirm': 'Deze aankondiging verwijderen?',
     'sup.nav': 'Beheer contacteren', 'sup.title': 'Beheer contacteren', 'sup.desc': 'Stuur uw verzoeken, suggesties en vragen rechtstreeks naar het beheerteam.', 'sup.none': 'Er is momenteel geen beheerder beschikbaar.', 'sup.admin': 'Beheer', 'sup.empty': 'Deel hier uw verzoeken en wensen.'
   });
+
+  /* ===== SHS (sağlık sağlayıcı) rolleri ===== */
+  add('tr', { 'acc.role.provider':'Sağlık Sağlayıcı', 'acc.role.hospital':'Hastane', 'acc.role.clinic':'Klinik' });
+  add('en', { 'acc.role.provider':'Health Provider', 'acc.role.hospital':'Hospital', 'acc.role.clinic':'Clinic' });
+  add('de', { 'acc.role.provider':'Gesundheitsanbieter', 'acc.role.hospital':'Krankenhaus', 'acc.role.clinic':'Klinik' });
+  add('ru', { 'acc.role.provider':'Поставщик услуг', 'acc.role.hospital':'Больница', 'acc.role.clinic':'Клиника' });
+  add('fr', { 'acc.role.provider':'Prestataire de santé', 'acc.role.hospital':'Hôpital', 'acc.role.clinic':'Clinique' });
+  add('es', { 'acc.role.provider':'Proveedor de salud', 'acc.role.hospital':'Hospital', 'acc.role.clinic':'Clínica' });
+  add('pt', { 'acc.role.provider':'Prestador de saúde', 'acc.role.hospital':'Hospital', 'acc.role.clinic':'Clínica' });
+  add('ar', { 'acc.role.provider':'مزود الخدمة الصحية', 'acc.role.hospital':'مستشفى', 'acc.role.clinic':'عيادة' });
+  add('nl', { 'acc.role.provider':'Zorgaanbieder', 'acc.role.hospital':'Ziekenhuis', 'acc.role.clinic':'Kliniek' });
 })(window.HP_I18N);

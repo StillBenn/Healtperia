@@ -41,6 +41,12 @@
         <a class="side-link" data-section="content" href="#content">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           <span class="side-label" data-i18n="ad.nav.content">İçerik & Blog</span></a>
+        <a class="side-link" data-section="facilities" href="#facilities">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M9 21v-5h6v5M8 4h8v4M12 11v3M10.5 12.5h3"/></svg>
+          <span class="side-label" data-i18n="ad.nav.facilities">Tesisler</span></a>
+        <a class="side-link" data-section="approvals" href="#approvals">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span class="side-label" data-i18n="ad.nav.approvals">İçerik Onayları</span><span class="side-badge" id="approvalsBadge" style="display:none">0</span></a>
         <a class="side-link" data-section="reports" href="#reports">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9l-7.5 13A1.5 1.5 0 0 0 4.1 19h15.8a1.5 1.5 0 0 0 1.3-2.1l-7.5-13a1.5 1.5 0 0 0-2.6 0z"/><path d="M12 9v4M12 17h.01"/></svg>
           <span class="side-label" data-i18n="ad.nav.reports">Şikâyetler</span><span class="side-badge" id="reportsBadge">0</span></a>
@@ -205,6 +211,16 @@
           </div>
         </section>
 
+        <!-- FACILITIES (tesis yönetimi: hastane / klinik) -->
+        <section class="panel" data-panel="facilities">
+          <div id="facilitiesRoot"></div>
+        </section>
+
+        <!-- İÇERİK ONAYLARI (bekleyen ilanlar + bekleyen tesisler) -->
+        <section class="panel" data-panel="approvals">
+          <div id="approvalsRoot"></div>
+        </section>
+
         <!-- REPORTS -->
         <section class="panel" data-panel="reports">
           <div class="card">
@@ -274,6 +290,8 @@
   <script src="../js/i18n-account.js"></script>
   <script src="../js/i18n-admin.js"></script>
   <script src="../js/i18n-core.js"></script>
+  <script src="../js/admin-facilities.js"></script>
+  <script src="../js/admin-approvals.js"></script>
   <script>
   (function () {
     var H = window.HP;
@@ -303,7 +321,8 @@
       return H.listUsers().then(function (users) {
         var docs = users.filter(function (u){ return u.role === 'doctor'; });
         var pats = users.filter(function (u){ return u.role === 'patient'; });
-        var pending = docs.filter(function (u){ return u.status === 'pending'; });
+        var PROV = ['doctor', 'hospital', 'clinic'];
+        var pending = users.filter(function (u){ return u.status === 'pending' && PROV.indexOf(u.role) >= 0; });
 
         document.getElementById('stTotal').textContent = users.length;
         document.getElementById('stDocs').textContent = docs.length;
@@ -324,8 +343,11 @@
           pl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><p>' + T('ad.emptyPending', 'Onay bekleyen başvuru yok.') + '</p></div>';
         } else {
           pl.innerHTML = '<ul class="req-list">' + pending.map(function (u) {
+            var meta = u.role === 'doctor'
+              ? (u.specialty || T('ad.noSpecialty', 'Uzmanlık belirtilmedi')) + ' · ' + T('ad.licenseLabel', 'Lisans') + ': ' + (u.license || '—')
+              : roleLabel(u.role);
             return '<li data-id="' + u.id + '">' + avatar(u.name, u.role) +
-              '<div class="appt-info"><strong>' + (u.name||'') + '</strong><span>' + (u.specialty || T('ad.noSpecialty', 'Uzmanlık belirtilmedi')) + ' · ' + T('ad.licenseLabel', 'Lisans') + ': ' + (u.license || '—') + ' · ' + u.email + '</span></div>' +
+              '<div class="appt-info"><strong>' + (u.name||'') + '</strong><span><span class="badge badge-blue" style="margin-right:6px">' + roleLabel(u.role) + '</span>' + meta + ' · ' + u.email + '</span></div>' +
               '<div class="req-actions"><button class="btn-mini ok" data-approve="' + u.id + '">' + T('ad.approve', 'Onayla') + '</button><button class="btn-mini no" data-reject="' + u.id + '">' + T('ad.reject', 'Reddet') + '</button></div></li>';
           }).join('') + '</ul>';
         }
@@ -510,9 +532,13 @@
           body.innerHTML = reports.map(function (r) {
             var st = { open:'badge-amber', reviewed:'badge-green', dismissed:'badge-red' }[r.status] || 'badge-blue';
             var detail = r.detail ? '<div class="muted-line sm">' + escapeHtml(r.detail) + '</div>' : '';
-            var actions = r.status === 'open'
+            var rn = who(r.reporter, T('ad.unknownUser', 'Bilinmiyor')), dn = who(r.reported, T('ad.unknownUser', 'Bilinmiyor'));
+            var viewBtn = (r.reporter_id && r.reported_id)
+              ? '<button class="btn-mini" data-reportchat data-a="' + r.reporter_id + '" data-b="' + r.reported_id + '" data-an="' + escapeHtml(rn) + '" data-bn="' + escapeHtml(dn) + '">' + T('ad.reportView', 'İncele') + '</button>'
+              : '';
+            var actions = viewBtn + (r.status === 'open'
               ? '<button class="btn-mini ok" data-reportset="reviewed" data-id="' + r.id + '">' + T('ad.reportReviewed', 'İncelendi') + '</button><button class="btn-mini no" data-reportset="dismissed" data-id="' + r.id + '">' + T('ad.reportDismiss', 'Reddet') + '</button>'
-              : '<button class="btn-mini warn" data-reportset="open" data-id="' + r.id + '">' + T('ad.reportReopen', 'Yeniden Aç') + '</button>';
+              : '<button class="btn-mini warn" data-reportset="open" data-id="' + r.id + '">' + T('ad.reportReopen', 'Yeniden Aç') + '</button>');
             return '<tr><td><span class="cell-user">' + avatar(r.reporter && r.reporter.name) + ' ' + escapeHtml(who(r.reporter, T('ad.unknownUser', 'Bilinmiyor'))) + '</span></td>' +
               '<td>' + escapeHtml(who(r.reported, T('ad.unknownUser', 'Bilinmiyor'))) + '</td>' +
               '<td>' + escapeHtml(r.reason || '—') + detail + '</td>' +
@@ -523,9 +549,36 @@
         });
       }
       document.querySelector('#reportsTable').addEventListener('click', function (e) {
+        var chat = e.target.closest('[data-reportchat]');
+        if (chat) { openReportChat(chat.dataset.a, chat.dataset.b, chat.dataset.an, chat.dataset.bn); return; }
         var b = e.target.closest('[data-reportset]'); if (!b) return;
         H.setReportStatus(b.dataset.id, b.dataset.reportset).then(renderReports);
       });
+
+      /* şikâyet incelemesi: iki kişi arasındaki sohbeti modalda göster (salt-okunur) */
+      function openReportChat(aId, bId, aName, bName) {
+        document.querySelectorAll('.report-chat-modal').forEach(function (n){ n.remove(); });
+        var m = document.createElement('div'); m.className = 'report-chat-modal';
+        m.innerHTML = '<div class="rcm-box"><div class="rcm-head"><strong>' + escapeHtml(aName) + ' ↔ ' + escapeHtml(bName) + '</strong>' +
+          '<button class="rcm-close" aria-label="Kapat">&times;</button></div>' +
+          '<div class="rcm-body" id="rcmBody"><div class="empty-state sm"><p>' + T('ad.reportLoading', 'Yükleniyor…') + '</p></div></div></div>';
+        document.body.appendChild(m);
+        m.addEventListener('click', function (e){ if (e.target === m || e.target.closest('.rcm-close')) m.remove(); });
+        H.conversationBetween(aId, bId).then(function (msgs) {
+          var body = m.querySelector('#rcmBody'); if (!body) return;
+          if (!msgs.length) { body.innerHTML = '<div class="empty-state sm"><p>' + T('ad.reportNoMsgs', 'Bu iki kullanıcı arasında mesaj yok.') + '</p></div>'; return; }
+          body.innerHTML = msgs.map(function (mm) {
+            var mine = mm.sender_id === aId;                 // reporter = sol
+            var sender = (mm.sender && mm.sender.name) || (mine ? aName : bName);
+            var txt = mm.body || (mm.attachment_type === 'photo' ? '📷 ' + T('chat.photo','Fotoğraf') : mm.attachment_type ? '📄 ' + T('chat.document','Belge') : '');
+            return '<div class="rcm-msg ' + (mine ? 'left' : 'right') + '"><span class="rcm-who">' + escapeHtml(sender) + '</span>' +
+              '<div class="rcm-bubble">' + escapeHtml(txt) +
+              (mm.attachment_url ? '<a href="' + escapeHtml(mm.attachment_url) + '" target="_blank" rel="noopener" class="rcm-att">' + T('ad.reportOpenFile','Dosyayı aç') + '</a>' : '') + '</div>' +
+              '<time>' + fmtDate(mm.created_at) + '</time></div>';
+          }).join('');
+          body.scrollTop = body.scrollHeight;
+        });
+      }
       renderReports();
       if (window.HPI && window.HPI.onChange) window.HPI.onChange(renderReports);
 

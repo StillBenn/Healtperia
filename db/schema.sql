@@ -695,3 +695,154 @@ Kozmetik Diş Hekimliği$t$,
     update public.listings set clinic_id = v_clinic where code in ('HP-DIS01') and clinic_id is null;
   end if;
 end $$;
+
+
+-- ============================================================
+-- 14) TIBBİ KAYITLAR + PROFİL TERCİHLERİ + TESİS FOTO BUCKET
+--     Re-runnable. Hasta kendi kayıtlarını yönetir.
+-- ============================================================
+
+-- 14b) medical_records (hastanın tıbbi kayıtları)
+create table if not exists public.medical_records (
+  id uuid primary key default gen_random_uuid(),
+  patient_id uuid not null references public.profiles(id) on delete cascade,
+  title text not null,
+  kind text default 'other' check (kind in ('report','prescription','image','lab','other')),
+  file_url text, note text,
+  record_date date,
+  created_at timestamptz not null default now()
+);
+alter table public.medical_records enable row level security;
+drop policy if exists mr_select on public.medical_records;
+drop policy if exists mr_insert on public.medical_records;
+drop policy if exists mr_delete on public.medical_records;
+create policy mr_select on public.medical_records for select to authenticated
+  using (patient_id = auth.uid() or public.is_admin());
+create policy mr_insert on public.medical_records for insert to authenticated
+  with check (patient_id = auth.uid());
+create policy mr_delete on public.medical_records for delete to authenticated
+  using (patient_id = auth.uid() or public.is_admin());
+
+-- 14c) profiles tercih kolonları
+alter table public.profiles add column if not exists pref_notif_email bool default true;
+alter table public.profiles add column if not exists pref_notif_appt  bool default true;
+alter table public.profiles add column if not exists pref_notif_promo bool default false;
+alter table public.profiles add column if not exists pref_accept_new  bool default true;   -- doktor: yeni hasta kabul
+alter table public.profiles add column if not exists pref_work_hours  text;                -- doktor: çalışma saatleri
+
+-- 14d) storage buckets (acente/tesis logo+foto + tıbbi kayıt dosyaları)
+insert into storage.buckets (id, name, public) values ('place-photos','place-photos', true)
+  on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('medical-records','medical-records', true)
+  on conflict (id) do nothing;
+-- place-photos: herkes okur, doktor/admin yazar
+drop policy if exists place_photos_read on storage.objects;
+drop policy if exists place_photos_write on storage.objects;
+create policy place_photos_read on storage.objects for select to anon, authenticated using (bucket_id = 'place-photos');
+create policy place_photos_write on storage.objects for insert to authenticated
+  with check (bucket_id = 'place-photos' and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('doctor','admin')));
+-- medical-records: hasta kendi klasörüne (path = <uid>/...) yazar/okur
+drop policy if exists mr_files_read on storage.objects;
+drop policy if exists mr_files_write on storage.objects;
+drop policy if exists mr_files_delete on storage.objects;
+create policy mr_files_read on storage.objects for select to authenticated
+  using (bucket_id = 'medical-records' and (split_part(name,'/',1) = auth.uid()::text or public.is_admin()));
+create policy mr_files_write on storage.objects for insert to authenticated
+  with check (bucket_id = 'medical-records' and split_part(name,'/',1) = auth.uid()::text);
+create policy mr_files_delete on storage.objects for delete to authenticated
+  using (bucket_id = 'medical-records' and split_part(name,'/',1) = auth.uid()::text);
+
+-- 14e) SEED — demo hastaya örnek tıbbi kayıtlar
+do $$
+declare v_patient uuid;
+begin
+  select id into v_patient from public.profiles where email = 'hasta@healthperia.com' limit 1;
+  if v_patient is not null and not exists (select 1 from public.medical_records where patient_id = v_patient) then
+    insert into public.medical_records (patient_id, title, kind, note, record_date) values
+      (v_patient, 'Kan Tahlili Sonucu (örnek)', 'lab', 'Demo kayıt — gerçek dosya sonra eklenecek.', current_date - 30),
+      (v_patient, 'Reçete (örnek)', 'prescription', 'Demo kayıt.', current_date - 12);
+  end if;
+end $$;
+
+
+-- ============================================================
+-- 15) SAĞLAYICI HESAPLARI (hospital/clinic) + ADMIN ONAY KAPISI
+--     - profiles.role += hospital, clinic  (kayıt → pending → admin onay)
+--     - hospitals/clinics: owner_id + status (pending|published)
+--     - listings.status += pending  (doktor "Yayına Gönder" → admin onay)
+--     Re-runnable.
+-- ============================================================
+
+-- 15a) yeni roller
+alter table public.profiles drop constraint if exists profiles_role_check;
+alter table public.profiles add constraint profiles_role_check
+  check (role in ('patient','doctor','hospital','clinic','admin'));
+
+-- 15b) handle_new_user: hospital/clinic de pending
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer
+set search_path = public as $$
+declare r text := coalesce(new.raw_user_meta_data->>'role','patient');
+begin
+  if r not in ('patient','doctor','hospital','clinic') then r := 'patient'; end if;  -- asla self-admin
+  insert into public.profiles (id, role, status, name, email, phone, country, specialty, license)
+  values (
+    new.id, r,
+    case when r in ('doctor','hospital','clinic') then 'pending' else 'active' end,
+    new.raw_user_meta_data->>'name', new.email,
+    new.raw_user_meta_data->>'phone', new.raw_user_meta_data->>'country',
+    new.raw_user_meta_data->>'specialty', new.raw_user_meta_data->>'license'
+  );
+  return new;
+end; $$;
+
+-- 15c) hospitals/clinics: sahip + yayın durumu
+alter table public.hospitals add column if not exists owner_id uuid references public.profiles(id) on delete set null;
+alter table public.hospitals add column if not exists status text not null default 'published' check (status in ('pending','published'));
+alter table public.clinics   add column if not exists owner_id uuid references public.profiles(id) on delete set null;
+alter table public.clinics   add column if not exists status text not null default 'published' check (status in ('pending','published'));
+
+-- RLS: anon yalnız published; sahip kendi (pending dahil); admin hepsi
+drop policy if exists hosp_read on public.hospitals;
+create policy hosp_read on public.hospitals for select to anon, authenticated
+  using (status = 'published' or owner_id = auth.uid() or public.is_admin());
+-- insert: doktor/admin (eski) VEYA hastane hesabı kendi tesisini (owner_id=self)
+drop policy if exists hosp_write on public.hospitals;
+create policy hosp_write on public.hospitals for insert to authenticated
+  with check (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('doctor','admin'))
+    or (owner_id = auth.uid() and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'hospital'))
+  );
+drop policy if exists hosp_update on public.hospitals;
+create policy hosp_update on public.hospitals for update to authenticated
+  using (owner_id = auth.uid() or created_by = auth.uid() or public.is_admin())
+  with check (owner_id = auth.uid() or created_by = auth.uid() or public.is_admin());
+drop policy if exists hosp_delete on public.hospitals;
+create policy hosp_delete on public.hospitals for delete to authenticated
+  using (owner_id = auth.uid() or public.is_admin());
+
+drop policy if exists clinic_read on public.clinics;
+create policy clinic_read on public.clinics for select to anon, authenticated
+  using (status = 'published' or owner_id = auth.uid() or public.is_admin());
+drop policy if exists clinic_write on public.clinics;
+create policy clinic_write on public.clinics for insert to authenticated
+  with check (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('doctor','admin'))
+    or (owner_id = auth.uid() and exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'clinic'))
+  );
+drop policy if exists clinic_update on public.clinics;
+create policy clinic_update on public.clinics for update to authenticated
+  using (owner_id = auth.uid() or created_by = auth.uid() or public.is_admin())
+  with check (owner_id = auth.uid() or created_by = auth.uid() or public.is_admin());
+drop policy if exists clinic_delete on public.clinics;
+create policy clinic_delete on public.clinics for delete to authenticated
+  using (owner_id = auth.uid() or public.is_admin());
+
+-- 15d) listings: pending durumu (doktor yayına gönderir → admin onay)
+alter table public.listings drop constraint if exists listings_status_check;
+alter table public.listings add constraint listings_status_check
+  check (status in ('draft','pending','published'));
+
+-- 15e) mevcut demo tesisler yayında kalsın (default zaten 'published')
+update public.hospitals set status = 'published' where status is null;
+update public.clinics   set status = 'published' where status is null;
