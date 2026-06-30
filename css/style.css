@@ -3602,6 +3602,8 @@ body.td-lb-open { overflow: hidden; }
 .dd-listings-grid .result-media { aspect-ratio: 16/10; }
 .dd-listings-grid .result-body { flex: 1; display: flex; flex-direction: column; }
 .dd-listings-grid .result-foot { margin-top: auto; }
+/* keep "Detayları İncele" pinned to the right on every card (wraps under the price on narrow cards) */
+.dd-listings-grid .result-foot .result-cta { margin: 0 0 0 auto; }
 .dx-search-btn { flex: 0 0 auto; width: 54px; border-radius: 999px; background: linear-gradient(135deg,#4ea8ff,#2f86e6); color: #fff; display: grid; place-items: center; cursor: pointer; border: none; }
 .dx-search-btn svg { width: 18px; height: 18px; }
 @media (max-width: 760px){ .dx-search { flex-wrap: wrap; border-radius: 18px; } .dx-field { flex: 1 1 45%; border-right: none; } .dx-search-btn { width: 100%; height: 44px; border-radius: 12px; } }
