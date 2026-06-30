@@ -3567,3 +3567,91 @@ body.td-lb-open { overflow: hidden; }
 .dl-secblock-head span { color: var(--text-dim); font-weight: 400; }
 .dl-addtile { width: 96px; height: 72px; border-radius: 10px; border: 1px dashed rgba(78,168,255,.4); background: rgba(78,168,255,.06); color: var(--accent-soft); display: grid; place-items: center; font-size: 24px; cursor: pointer; flex: 0 0 auto; }
 .dl-addtile:hover { background: rgba(78,168,255,.12); }
+
+/* ============================================================
+   DOCTOR INDEX (dx-*) + DOCTOR PROFILE (dd-*)
+   ============================================================ */
+.dx-search { position: relative; display: flex; align-items: stretch; gap: 0; max-width: 1000px; margin: 20px auto 0; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 999px; padding: 6px; }
+.dx-field { flex: 1; display: flex; align-items: center; border-right: 1px solid var(--line); position: relative; }
+.dx-field:last-of-type { border-right: none; }
+.dx-field input { width: 100%; background: none; border: none; color: var(--text); font: inherit; font-size: 14px; padding: 11px 20px; outline: none; }
+.dx-field input::placeholder { color: var(--text-dim); }
+/* cascade dropdowns inside the bar */
+.dx-drop { padding: 0; }
+.dx-drop-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: none; border: none; color: var(--text); font: inherit; font-size: 14px; padding: 11px 20px; cursor: pointer; }
+.dx-drop-val[data-ph] { color: var(--text-dim); }
+.dx-drop-caret { width: 11px; height: 11px; flex: 0 0 auto; color: var(--text-dim); transition: transform .2s; }
+.dx-drop.is-open .dx-drop-caret { transform: rotate(180deg); }
+.dx-drop-pop { position: absolute; top: calc(100% + 12px); left: 0; min-width: 210px; max-height: 320px; overflow-y: auto; background: #0d1730; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 44px rgba(0,0,0,.5); padding: 6px; display: none; z-index: 50; }
+.dx-drop.is-open .dx-drop-pop { display: block; }
+.dx-drop-list { list-style: none; margin: 0; padding: 0; }
+.dx-opt { padding: 10px 14px; border-radius: 9px; color: var(--text); font-size: 13.5px; cursor: pointer; }
+.dx-opt:hover { background: rgba(78,168,255,.12); color: #fff; }
+.dx-opt.is-selected { color: var(--accent-soft); background: rgba(78,168,255,.08); }
+/* let the dropdown escape the hero (not clipped) + sit above results */
+.dx-hero { overflow: visible; position: relative; z-index: 30; }
+.dx-search { z-index: 31; }
+.dx-drop-pop { z-index: 90; }
+.results-section { position: relative; z-index: 1; }
+/* blur + dim results while a filter dropdown is open (like the finder) */
+.dx-grid { transition: opacity .2s ease; }
+.results-section.ti-dimmed .dx-grid { opacity: .4; pointer-events: none; }
+
+/* doctor profile listing cards — uniform corporate layout */
+.dd-listings-grid .result-card { display: flex; flex-direction: column; height: 100%; }
+.dd-listings-grid .result-media { aspect-ratio: 16/10; }
+.dd-listings-grid .result-body { flex: 1; display: flex; flex-direction: column; }
+.dd-listings-grid .result-foot { margin-top: auto; }
+.dx-search-btn { flex: 0 0 auto; width: 54px; border-radius: 999px; background: linear-gradient(135deg,#4ea8ff,#2f86e6); color: #fff; display: grid; place-items: center; cursor: pointer; border: none; }
+.dx-search-btn svg { width: 18px; height: 18px; }
+@media (max-width: 760px){ .dx-search { flex-wrap: wrap; border-radius: 18px; } .dx-field { flex: 1 1 45%; border-right: none; } .dx-search-btn { width: 100%; height: 44px; border-radius: 12px; } }
+
+.dx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px,1fr)); gap: 30px 18px; padding-top: 24px; }
+.dx-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; }
+.dx-card-photo { width: 100%; aspect-ratio: 1/1; max-width: 180px; border-radius: 16px; overflow: hidden; display: grid; place-items: center; background: linear-gradient(180deg, rgba(78,168,255,.14), rgba(78,168,255,.02)); margin-bottom: -36px; position: relative; z-index: 2; }
+.dx-card-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.dx-card-photo.is-ph { color: var(--accent-soft); font-size: 38px; font-weight: 800; }
+.dx-card-box { width: 100%; padding: 44px 14px 14px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line); text-align: center; position: relative; transition: border-color .2s, transform .2s; }
+.dx-card:hover .dx-card-box { border-color: rgba(78,168,255,.5); transform: translateY(-3px); }
+.dx-card-box strong { display: block; color: var(--white); font-size: 14px; line-height: 1.25; }
+.dx-card-spec { display: block; color: var(--accent-soft); font-size: 12.5px; margin-top: 3px; }
+.dx-card-loc { display: block; color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+.dx-card-arrow { position: absolute; right: 12px; bottom: 12px; width: 18px; height: 18px; color: var(--text-dim); }
+.dx-card:hover .dx-card-arrow { color: var(--accent); }
+
+.dd-main { padding: 110px 0 60px; min-height: 60vh; }
+.dd-code { text-align: center; color: var(--accent-soft); font-size: 20px; font-weight: 800; letter-spacing: 1px; margin-bottom: 26px; }
+.dd-layout { display: grid; grid-template-columns: 1fr 300px; gap: 34px; align-items: start; }
+@media (max-width: 880px){ .dd-layout { grid-template-columns: 1fr; } }
+.dd-sec { margin-bottom: 28px; }
+.dd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.dd-rich p { color: var(--text); font-size: 14px; line-height: 1.7; margin: 0 0 10px; }
+.dd-bullets { list-style: none; margin: 0; padding: 0; }
+.dd-bullets li { position: relative; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.9; }
+.dd-bullets li::before { content: ""; position: absolute; left: 2px; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.dd-treat-cols .dd-bullets { columns: 3; column-gap: 26px; }
+@media (max-width: 700px){ .dd-treat-cols .dd-bullets { columns: 2; } }
+
+.dd-col-right { position: sticky; top: 90px; }
+.dd-id { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.dd-photo { width: 230px; height: 280px; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, rgba(78,168,255,.14), rgba(78,168,255,.02)); display: grid; place-items: center; border: 1px solid var(--line); }
+.dd-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.dd-photo.is-ph { color: var(--accent-soft); font-size: 56px; font-weight: 800; }
+.dd-name { color: var(--white); font-size: 22px; font-weight: 800; margin: 16px 0 0; }
+.dd-loc { color: var(--text-muted); font-size: 14px; margin-top: 6px; padding-bottom: 14px; border-bottom: 1px solid var(--line); width: 82%; }
+.dd-stats { display: flex; gap: 22px; margin: 16px 0 12px; }
+.dd-stat { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--text-muted); font: inherit; font-size: 14px; cursor: pointer; }
+.dd-stat svg { width: 22px; height: 22px; }
+.dd-stat:hover { color: #fff; }
+.dd-fav.is-on { color: #ffcf5a; }
+.dd-fav.is-on svg { fill: #ffcf5a; stroke: #ffcf5a; }
+.dd-share.copied { color: #4caf7d; }
+.dd-favc { font-style: normal; }
+.dd-contact { display: inline-flex; flex-direction: column; align-items: center; gap: 5px; background: none; border: none; color: var(--accent-soft); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px; }
+.dd-contact svg { width: 30px; height: 30px; }
+.dd-contact:hover { color: #fff; }
+
+.dd-listings { margin-top: 42px; }
+.dd-listings-head { color: var(--white); font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin: 0 0 18px; }
+.dd-listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; }
+.dd-lcard { text-decoration: none; cursor: pointer; }

@@ -441,6 +441,12 @@
          active doctor); swap in the real listing doctor when catalog data lands. */
       function handleListingParam() {
         var qs = new URLSearchParams(location.search);
+        var md = qs.get('msgDoctor');
+        if (md) {   // direct message a doctor (from the doctor profile page)
+          history.replaceState(null, '', location.pathname + '#messages');
+          if (window.HPChat) HPChat.openWith(md, qs.get('name') || 'Doktor');
+          return;
+        }
         var code = qs.get('openListing'); if (!code) return;
         var label = qs.get('label') || '';
         var docId = qs.get('doctor');

@@ -82,11 +82,11 @@ window.HP_I18N = window.HP_I18N || {};
 
   /* listing card: "Send Message" CTA + listing code label */
   var TI_EXTRA = {
-    tr:['Mesaj Gönder','Kod','Ara'], en:['Send Message','Code','Search'], de:['Nachricht senden','Code','Suchen'],
-    ru:['Написать сообщение','Код','Поиск'], fr:['Envoyer un message','Code','Rechercher'], es:['Enviar mensaje','Código','Buscar'],
-    pt:['Enviar mensagem','Código','Buscar'], ar:['إرسال رسالة','الرمز','بحث'], nl:['Bericht sturen','Code','Zoeken']
+    tr:['Mesaj Gönder','Kod','Ara','Hepsi'], en:['Send Message','Code','Search','All'], de:['Nachricht senden','Code','Suchen','Alle'],
+    ru:['Написать сообщение','Код','Поиск','Все'], fr:['Envoyer un message','Code','Rechercher','Tous'], es:['Enviar mensaje','Código','Buscar','Todos'],
+    pt:['Enviar mensagem','Código','Buscar','Todos'], ar:['إرسال رسالة','الرمز','بحث','الكل'], nl:['Bericht sturen','Code','Zoeken','Alle']
   };
   Object.keys(TI_EXTRA).forEach(function (l) {
-    if (I[l]) { I[l]['ti.message'] = TI_EXTRA[l][0]; I[l]['ti.code'] = TI_EXTRA[l][1]; I[l]['ti.search'] = TI_EXTRA[l][2]; }
+    if (I[l]) { I[l]['ti.message'] = TI_EXTRA[l][0]; I[l]['ti.code'] = TI_EXTRA[l][1]; I[l]['ti.search'] = TI_EXTRA[l][2]; I[l]['ti.all'] = TI_EXTRA[l][3]; }
   });
 })(window.HP_I18N);

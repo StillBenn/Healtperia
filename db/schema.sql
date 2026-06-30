@@ -545,3 +545,39 @@ Tüm kesiler burun içinden yapılır; dışarıda iz kalmaz, iyileşme süreci 
       2800, 'EUR', 4, 700);
   end if;
 end $$;
+
+
+-- ============================================================
+-- 11) DOCTOR PROFILE: academic info + public (anon-readable) view
+--     The doctor index/profile are PUBLIC pages; this view exposes
+--     ONLY safe doctor columns (no email/phone/license) to anon.
+-- ============================================================
+alter table public.profiles add column if not exists academic text;
+
+create or replace view public.public_doctors as
+  select id, name, specialty, city, country, avatar_url, bio, academic
+  from public.profiles
+  where role = 'doctor' and status = 'active';
+grant select on public.public_doctors to anon, authenticated;
+
+
+-- ============================================================
+-- 12) SECURITY: resolve the advisor "Security Definer View" finding.
+--     Recreate public_doctors as SECURITY INVOKER (respects the
+--     caller's RLS) and give anon COLUMN-scoped read on active
+--     doctor rows only (no email/phone/license ever exposed).
+-- ============================================================
+drop view if exists public.public_doctors;
+create view public.public_doctors with (security_invoker = true) as
+  select id, name, specialty, city, country, avatar_url, bio, academic
+  from public.profiles
+  where role = 'doctor' and status = 'active';
+grant select on public.public_doctors to anon, authenticated;
+
+-- anon may read ONLY these safe columns, and only doctor/active rows
+revoke select on public.profiles from anon;
+grant select (id, role, status, name, specialty, city, country, avatar_url, bio, academic)
+  on public.profiles to anon;
+drop policy if exists profiles_select_doctor_anon on public.profiles;
+create policy profiles_select_doctor_anon on public.profiles for select to anon
+  using (role = 'doctor' and status = 'active');

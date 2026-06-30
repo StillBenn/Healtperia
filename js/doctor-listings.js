@@ -17,7 +17,7 @@
   function curSym(c){ return ({EUR:'€',USD:'$',TRY:'₺',GBP:'£'})[c]||c; }
 
   var listEl, editorEl, hospitals = [], hotels = [], editing = null, sectionPhotos = {};
-  var PHOTO_SECTIONS = [['process','Süreç'], ['doctor','Doktor'], ['place','Tedavi Yeri'], ['transport','Ulaşım'], ['hotel','Otel']];
+  var PHOTO_SECTIONS = [['process','Süreç'], ['place','Tedavi Yeri'], ['transport','Ulaşım'], ['hotel','Otel']];
 
   var Listings = window.HPListings = {};
   Listings.init = function () {

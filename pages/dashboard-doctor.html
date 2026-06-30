@@ -211,6 +211,7 @@
               <label class="field"><span class="field-label" data-i18n="acc.f.phone">Telefon</span><span class="field-box"><input name="phone" type="tel" /></span></label>
               <label class="field"><span class="field-label" data-i18n="acc.f.country">Ülke</span><span class="field-box"><input name="country" type="text" /></span></label>
               <label class="field span-2"><span class="field-label" data-i18n="dd.f.bio">Hakkımda</span><span class="field-box"><textarea name="bio" rows="3" placeholder="Hastalarınıza kendinizi tanıtın…" data-i18n-placeholder="dd.ph.bio"></textarea></span></label>
+              <label class="field span-2"><span class="field-label" data-i18n="dd.f.academic">Akademik Bilgi (her satır bir madde)</span><span class="field-box"><textarea name="academic" rows="3" placeholder="Örn. Ege Üniversitesi Tıp Fakültesi&#10;Kardiyoloji İhtisası" data-i18n-placeholder="dd.ph.academic"></textarea></span></label>
               <div class="form-actions span-2"><button class="btn-primary sm" type="submit" data-i18n="acc.save">Değişiklikleri Kaydet</button><span class="save-ok" id="profSaved" hidden data-i18n="acc.saved">Kaydedildi ✓</span></div>
             </form>
           </div>
@@ -273,7 +274,7 @@
       }
       pf.name.value = user.name || ''; pf.email.value = user.email || '';
       pf.specialty.value = user.specialty || ''; pf.license.value = user.license || '';
-      pf.phone.value = user.phone || ''; pf.country.value = user.country || ''; pf.bio.value = user.bio || '';
+      pf.phone.value = user.phone || ''; pf.country.value = user.country || ''; pf.bio.value = user.bio || ''; if (pf.academic) pf.academic.value = user.academic || '';
       document.getElementById('profName').textContent = user.name || '';
       document.getElementById('profEmail').textContent = user.email || '';
       paintSpec();
@@ -284,7 +285,7 @@
       pf.addEventListener('submit', function (e) {
         e.preventDefault();
         var btn = pf.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
-        H.updateProfile({ name: pf.name.value, specialty: pf.specialty.value, license: pf.license.value, phone: pf.phone.value, country: pf.country.value, bio: pf.bio.value }).then(function () {
+        H.updateProfile({ name: pf.name.value, specialty: pf.specialty.value, license: pf.license.value, phone: pf.phone.value, country: pf.country.value, bio: pf.bio.value, academic: pf.academic ? pf.academic.value : undefined }).then(function () {
           if (btn) btn.disabled = false;
           Dashboard.refreshIdentity();
           document.getElementById('profName').textContent = pf.name.value;

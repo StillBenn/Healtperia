@@ -69,8 +69,8 @@
       case 'country':   return DATA.countries;
       case 'city':      return state.countryId ? DATA.cities.filter(function (c) { return c.countryId === state.countryId; }) : [];
       case 'unit':      return state.cityId ? DATA.units : [];
-      case 'treatment': return state.unitId ? DATA.treatments.filter(function (t) { return t.unitId === state.unitId; }) : [];
-      case 'method':    return state.treatmentId ? DATA.methods.filter(function (m) { return m.treatmentId === state.treatmentId; }) : [];
+      case 'treatment': return state.unitId ? [{ id: -1, name: T('ti.all', 'Hepsi') }].concat(DATA.treatments.filter(function (t) { return t.unitId === state.unitId; })) : [];
+      case 'method':    return state.treatmentId ? [{ id: -1, name: T('ti.all', 'Hepsi') }].concat(state.treatmentId > 0 ? DATA.methods.filter(function (m) { return m.treatmentId === state.treatmentId; }) : []) : [];
     }
     return [];
   }
@@ -219,6 +219,14 @@
   }
 
   function wireCards() {
+    /* whole card is clickable → detail (heart and links excluded) */
+    resultsEl.querySelectorAll('.result-card').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('.result-fav') || e.target.closest('a')) return;
+        var link = card.querySelector('.result-cta');
+        if (link && link.getAttribute('href')) location.href = link.getAttribute('href');
+      });
+    });
     resultsEl.querySelectorAll('.result-fav').forEach(function (b) {
       b.addEventListener('click', function (e) {
         e.preventDefault(); e.stopPropagation();

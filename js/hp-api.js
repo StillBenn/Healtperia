@@ -138,7 +138,7 @@
   HP.updateProfile = function (patch) {
     var p = HP._profile; if (!p) return Promise.resolve(fail('err.session'));
     var clean = {};
-    ['name', 'phone', 'country', 'city', 'specialty', 'license', 'bio'].forEach(function (f) {
+    ['name', 'phone', 'country', 'city', 'specialty', 'license', 'bio', 'academic'].forEach(function (f) {
       if (patch[f] !== undefined) clean[f] = patch[f];
     });
     return sb.from('profiles').update(clean).eq('id', p.id).select().single().then(function (r) {
@@ -425,12 +425,36 @@
     var q = sb.from('listings')
       .select('*, doctor:doctor_id(name,avatar_url,specialty), hospital:hospital_id(name,city)')
       .eq('status', 'published');
-    if (f.countryId)   q = q.eq('country_id', f.countryId);
-    if (f.cityId)      q = q.eq('city_id', f.cityId);
-    if (f.unitId)      q = q.eq('unit_id', f.unitId);
-    if (f.treatmentId) q = q.eq('treatment_id', f.treatmentId);
-    if (f.methodId)    q = q.eq('method_id', f.methodId);
+    if (f.doctorId)            q = q.eq('doctor_id', f.doctorId);
+    if (f.countryId)           q = q.eq('country_id', f.countryId);
+    if (f.cityId)              q = q.eq('city_id', f.cityId);
+    if (f.unitId)              q = q.eq('unit_id', f.unitId);
+    if (f.treatmentId && f.treatmentId > 0) q = q.eq('treatment_id', f.treatmentId);   // -1 = "Hepsi"
+    if (f.methodId && f.methodId > 0)       q = q.eq('method_id', f.methodId);
     return q.order('created_at', { ascending: false }).then(function (r) { return r.data || []; });
+  };
+  /* doctor directory (filtered) + single doctor + a doctor's published listings */
+  HP.searchDoctors = function (f) {
+    f = f || {};
+    var q = sb.from('public_doctors').select('id,name,specialty,city,country,avatar_url,bio');
+    if (f.country) q = q.ilike('country', '%' + f.country + '%');
+    if (f.city)    q = q.ilike('city', '%' + f.city + '%');
+    if (f.specialty) q = q.ilike('specialty', '%' + f.specialty + '%');
+    if (f.name)    q = q.ilike('name', '%' + f.name + '%');
+    return q.order('name').then(function (r) { return r.data || []; });
+  };
+  HP.getDoctor = function (id) {
+    return sb.from('public_doctors').select('id,name,specialty,city,country,avatar_url,bio,academic')
+      .eq('id', id).maybeSingle().then(function (r) { return r.data || null; });
+  };
+  HP.doctorListings = function (doctorId) {
+    return sb.from('listings').select('*, hospital:hospital_id(name,city)')
+      .eq('doctor_id', doctorId).eq('status', 'published').order('created_at', { ascending: false })
+      .then(function (r) { return r.data || []; });
+  };
+  HP.favoriteCount = function (kind, refId) {
+    return sb.from('favorites').select('*', { count: 'exact', head: true }).eq('kind', kind).eq('ref_id', String(refId))
+      .then(function (r) { return r.count || 0; });
   };
   /* detail page: full listing + doctor profile + hospital + hotel */
   HP.getListing = function (idOrCode) {
