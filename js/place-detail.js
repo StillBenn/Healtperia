@@ -81,15 +81,15 @@
 
     /* sağ sütun */
     var photos = arr(d.photos);
+    /* foto yoksa placeholder gösterme — galeri hiç render edilmez */
     var gallery = photos.length
-      ? photos.slice(0, 6).map(function (u, i){ return '<button class="pd-photo" type="button" data-i="' + i + '" style="background-image:url(' + esc(u) + ')"></button>'; }).join('')
-      : '<div class="pd-photo is-ph"></div><div class="pd-photo is-ph"></div><div class="pd-photo is-ph"></div>';
+      ? '<div class="pd-gallery">' + photos.slice(0, 6).map(function (u, i){ return '<button class="pd-photo" type="button" data-i="' + i + '" style="background-image:url(' + esc(u) + ')"></button>'; }).join('') + '</div>'
+      : '';
     var logo = d.logo_url
       ? '<div class="pd-logo"><img src="' + esc(d.logo_url) + '" alt=""></div>'
       : '<div class="pd-logo is-ph">' + ICON.building + '<span>' + esc(d.name || 'Logo') + '</span></div>';
 
-    var right = '<aside class="pd-col-right">' + logo +
-      '<div class="pd-gallery">' + gallery + '</div>' +
+    var right = '<aside class="pd-col-right">' + logo + gallery +
       '<div class="dd-actbar">' +
         '<div class="dd-actrow">' +
           '<button class="td-act pd-share" type="button">' + ICON.share + '<span>' + esc(T(P.share,'Paylaş')) + '</span></button>' +
@@ -115,12 +115,20 @@
     return '<div class="pd-mini"><h3 class="pd-sec-head">' + esc(title) + '</h3><ul class="pd-cap">' + rows + '</ul></div>';
   }
 
+  function priceRange(l){
+    var sym = curSym(l.price_currency);
+    if (l.price_min != null && l.price_max != null) return money(l.price_min) + ' – ' + money(l.price_max) + ' ' + sym;
+    if (l.price_min != null) return money(l.price_min) + ' ' + sym;
+    if (l.price_max != null) return money(l.price_max) + ' ' + sym;
+    if (l.price_amount != null) return money(l.price_amount) + ' ' + sym;
+    return '';
+  }
   function listingCard(l){
     var trName = nm(TRm, l.treatment_id) || l.headline || '';
     var meName = nm(ME, l.method_id) || '';
     var doc = (l.doctor && l.doctor.name) || '';
     var loc = [nm(C, l.country_id), nm(CT, l.city_id)].filter(Boolean).join(', ');
-    var price = l.price_amount != null ? money(l.price_amount) + ' ' + curSym(l.price_currency) : '';
+    var price = priceRange(l);
     var sp = l.section_photos || {};
     var photo = (Array.isArray(l.photos) && l.photos[0]) || (sp.process && sp.process[0]) || (sp.place && sp.place[0]) || '';
     return '<a class="result-card dd-lcard" href="treatment-detail.html?id=' + encodeURIComponent(l.id) + '">' +
@@ -130,7 +138,6 @@
         (meName ? '<p class="result-method">' + esc(meName) + '</p>' : '') +
         (doc ? '<p class="result-doc">' + ICON.user + esc(doc) + '</p>' : '') +
         (loc ? '<p class="result-loc">' + ICON.loc + esc(loc) + '</p>' : '') +
-        '<p class="result-code"><span>' + esc(T('ti.code','Kod')) + ': ' + esc(l.code) + '</span></p>' +
         '<div class="result-foot">' + (price ? '<span class="result-price">' + esc(price) + '</span>' : '<span></span>') +
           '<span class="result-cta">' + esc(T('ti.cta','Detayları İncele →')) + '</span></div>' +
       '</div></a>';
@@ -167,13 +174,20 @@
     if (!photos.length) return;
     var i = start || 0;
     var lb = document.createElement('div'); lb.className = 'pd-lightbox';
+    var thumbs = photos.length > 1
+      ? '<div class="pd-lb-thumbs">' + photos.map(function (u, k){ return '<button class="pd-lb-thumb" type="button" data-i="' + k + '"><img src="' + esc(u) + '" alt=""></button>'; }).join('') + '</div>'
+      : '';
     lb.innerHTML = '<button class="pd-lb-close" aria-label="Kapat">&times;</button>' +
       '<button class="pd-lb-nav prev" aria-label="Önceki">&#8249;</button>' +
-      '<img class="pd-lb-img" src="' + esc(photos[i]) + '" alt="">' +
+      '<div class="pd-lb-stage"><img class="pd-lb-img" src="' + esc(photos[i]) + '" alt="">' + thumbs + '</div>' +
       '<button class="pd-lb-nav next" aria-label="Sonraki">&#8250;</button>';
     document.body.appendChild(lb);
     var img = lb.querySelector('.pd-lb-img');
-    function go(n){ i = (n + photos.length) % photos.length; img.src = photos[i]; }
+    var thumbEls = [].slice.call(lb.querySelectorAll('.pd-lb-thumb'));
+    function go(n){ i = (n + photos.length) % photos.length; img.src = photos[i];
+      thumbEls.forEach(function (t, k){ t.classList.toggle('is-active', k === i); }); }
+    thumbEls.forEach(function (t){ t.addEventListener('click', function (e){ e.stopPropagation(); go(parseInt(t.dataset.i, 10)); }); });
+    go(i);
     lb.querySelector('.prev').addEventListener('click', function (e){ e.stopPropagation(); go(i - 1); });
     lb.querySelector('.next').addEventListener('click', function (e){ e.stopPropagation(); go(i + 1); });
     function close(){ lb.remove(); document.removeEventListener('keydown', onKey); }

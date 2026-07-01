@@ -19,6 +19,7 @@
 
   var SVG_LOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
   var SVG_HEART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+  var CHECK = '<svg class="dx-opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 
   var FIELD = { country: 'country', city: 'city', unit: 'unit' };
   var LABEL = { country: 'cli.country', city: 'cli.city', unit: 'cli.unit' };
@@ -47,11 +48,13 @@
   function buildDrop(key) {
     var step = bar.querySelector('.dx-drop[data-key="' + key + '"]'); if (!step) return;
     var val = step.querySelector('.dx-drop-val'), list = step.querySelector('.dx-drop-list');
+    var searchEl = step.querySelector('.dx-drop-search input');
     if (state[key]) { val.textContent = state[key]; val.removeAttribute('data-ph'); }
     else { val.textContent = T(LABEL[key], val.textContent); val.setAttribute('data-ph', ''); }
-    var opts = optionsFor(key);
-    list.innerHTML = '<li class="dx-opt' + (!state[key] ? ' is-selected' : '') + '" data-val="">' + esc(T('cli.all', 'Hepsi')) + '</li>' +
-      opts.map(function (o) { return '<li class="dx-opt' + (lower(o) === lower(state[key]) ? ' is-selected' : '') + '" data-val="' + esc(o) + '">' + esc(o) + '</li>'; }).join('');
+    var q = (searchEl && searchEl.value || '').trim().toLocaleLowerCase('tr');
+    var opts = optionsFor(key).filter(function (o) { return !q || lower(o).indexOf(q) !== -1; });
+    list.innerHTML = '<li class="dx-opt' + (!state[key] ? ' is-selected' : '') + '" data-val=""><span>' + esc(T('cli.all', 'Hepsi')) + '</span>' + CHECK + '</li>' +
+      opts.map(function (o) { return '<li class="dx-opt' + (lower(o) === lower(state[key]) ? ' is-selected' : '') + '" data-val="' + esc(o) + '"><span>' + esc(o) + '</span>' + CHECK + '</li>'; }).join('');
   }
 
   function apply() {
@@ -124,12 +127,17 @@
   }
   bar.querySelectorAll('.dx-drop').forEach(function (step) {
     var key = step.dataset.key;
+    var searchEl = step.querySelector('.dx-drop-search input');
     step.querySelector('.dx-drop-trigger').addEventListener('click', function (e) {
       e.stopPropagation();
       var open = !step.classList.contains('is-open'); closeAll(step);
       step.classList.toggle('is-open', open); this.setAttribute('aria-expanded', String(open));
+      if (open && searchEl) { searchEl.value = ''; buildDrop(key); setTimeout(function () { searchEl.focus(); }, 30); }
       reflectDim();
     });
+    var pop = step.querySelector('.dx-drop-pop');
+    if (pop) pop.addEventListener('click', function (e) { e.stopPropagation(); });
+    if (searchEl) searchEl.addEventListener('input', function () { buildDrop(key); });
     step.querySelector('.dx-drop-list').addEventListener('click', function (e) {
       var li = e.target.closest('.dx-opt'); if (!li) return;
       state[key] = li.dataset.val || '';

@@ -40,6 +40,9 @@
     price:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7"/><path d="M16 12h4M16 16h4M9 9h.01"/></svg>'
   };
 
+  /* Şimdilik tüm doktorlar için tek sabit, çerçevesiz görsel (gerçek fotolar gelene dek). */
+  var DOCTOR_IMG = '../assets/images/doctor.png';
+
   function qs(name){ return new URLSearchParams(location.search).get(name); }
   var listingRef = qs('id') || qs('code');
   var listing = null, isFav = false, me = null, photoSets = {};
@@ -107,8 +110,9 @@
     var secs = [];
     if (l.process) secs.push(sec('process', SVG.process, T('td.s.process','Tedavi Süreci'), '<div class="td-rich">' + processHtml(l.process) + '</div>', arr(sp.process), true));
     if (doc.name || doc.bio) secs.push(sec('doctor', SVG.doctor, T('td.s.doctor','Doktor Bilgisi'),
-      '<div class="td-doc">' + avatarHtml(doc.name, doc.avatar_url) + '<div class="td-doc-meta"><strong>' + esc(doc.name || '') + '</strong>' +
-        (doc.specialty ? '<span class="td-doc-spec">' + esc(doc.specialty) + '</span>' : '') + '</div></div>' +
+      '<div class="td-doc"><div class="td-doc-meta"><strong>' + esc(doc.name || '') + '</strong>' +
+        (doc.specialty ? '<span class="td-doc-spec">' + esc(doc.specialty) + '</span>' : '') + '</div>' +
+        '<span class="td-doc-photo"><img src="' + DOCTOR_IMG + '" alt=""></span></div>' +
         (doc.bio ? '<div class="td-rich">' + paras(doc.bio) + '</div>' : ''),
       [], false));
     var hospName = (l.hospital && l.hospital.name) || l.location_name;
@@ -120,8 +124,8 @@
       placeBody(l.transport_title, null, l.transport_desc), mergeImgs(sp.transport, l.transport_image), true));
     if (l.hotel && l.hotel.name) secs.push(sec('hotel', SVG.hotel, T('td.s.hotel','Otel Bilgisi'),
       placeBody(l.hotel.name, l.hotel.maps_url, l.hotel.description), mergeImgs(sp.hotel, l.hotel.image_url), true));
-    if (l.advantages) secs.push(sec('adv', SVG.adv, T('td.s.adv','Ek Avantajlar'), '<div class="td-rich">' + paras(l.advantages) + '</div>', [], false));
-    if (l.price_amount != null) secs.push(sec('price', SVG.price, T('td.s.price','Fiyat Bilgisi'), priceHtml(l), [], false));
+    if (l.advantages) secs.push(sec('adv', SVG.adv, T('td.s.adv','Ek Avantajlar'), '<div class="td-rich">' + paras(l.advantages) + '</div>', arr(sp.adv), true));
+    if (l.price_min != null || l.price_max != null || l.price_amount != null) secs.push(sec('price', SVG.price, T('td.s.price','Fiyat Bilgisi'), priceHtml(l), [], false));
 
     root.innerHTML = summary + '<div class="td-acc-list">' + secs.map(function (s, i){ return s.replace('{{open}}', i === 0 ? ' is-open' : ''); }).join('') + '</div>';
     wire();
@@ -130,21 +134,18 @@
   /* builds one accordion section; photos column hides with the body */
   function sec(key, icon, title, contentHtml, photos, canHavePhotos){
     photoSets[key] = photos;
-    var photoCol = canHavePhotos ? photoColHtml(key, photos) : '';
+    /* foto yoksa placeholder gösterme — bölüm tek kolon (sadece metin) olur */
+    var hasPhotos = canHavePhotos && photos && photos.length;
+    var photoCol = hasPhotos ? photoColHtml(key, photos) : '';
     return '<section class="td-acc{{open}}" data-key="' + key + '">' +
       '<button class="td-acc-head" type="button"><span class="td-acc-ic">' + icon + '</span><span class="td-acc-title">' + esc(title) + '</span>' + SVG.chev + '</button>' +
-      '<div class="td-acc-body"><div class="td-sec' + (canHavePhotos ? ' has-photos' : '') + '">' +
+      '<div class="td-acc-body"><div class="td-sec' + (hasPhotos ? ' has-photos' : '') + '">' +
         '<div class="td-sec-text">' + contentHtml + '</div>' + photoCol +
       '</div></div></section>';
   }
   function photoColHtml(key, photos){
-    if (photos.length) {
-      return '<div class="td-sec-photos">' + photos.map(function (u, i){
-        return '<button class="td-ph" type="button" data-set="' + key + '" data-i="' + i + '"><img src="' + esc(u) + '" alt="" loading="lazy"></button>'; }).join('') + '</div>';
-    }
-    /* empty → premium decorative placeholders so the layout is visible */
-    return '<div class="td-sec-photos is-ph">' + '<div class="td-ph-tile">' + SVG.image + '</div><div class="td-ph-tile">' + SVG.image + '</div>' +
-      '<small>' + esc(T('td.noPhotos','Doktor henüz fotoğraf eklememiş.')) + '</small></div>';
+    return '<div class="td-sec-photos">' + photos.map(function (u, i){
+      return '<button class="td-ph" type="button" data-set="' + key + '" data-i="' + i + '"><img src="' + esc(u) + '" alt="" loading="lazy"></button>'; }).join('') + '</div>';
   }
   function mergeImgs(sectionArr, single){
     var out = arr(sectionArr).slice();
@@ -158,9 +159,15 @@
       (desc ? '<div class="td-rich">' + paras(desc) + '</div>' : '');
   }
   function priceHtml(l){
-    var rows = [[T('td.price.amount','Fiyat'), money(l.price_amount) + ' ' + curSym(l.price_currency)]];
-    if (l.price_installments) rows.push([T('td.price.installments','Taksit Sayısı'), l.price_installments]);
-    if (l.price_monthly != null) rows.push([T('td.price.monthly','Aylık Ödeme'), money(l.price_monthly) + ' ' + curSym(l.price_currency)]);
+    var sym = curSym(l.price_currency), range;
+    if (l.price_min != null && l.price_max != null) range = money(l.price_min) + ' – ' + money(l.price_max) + ' ' + sym;
+    else if (l.price_min != null) range = money(l.price_min) + ' ' + sym;
+    else if (l.price_max != null) range = money(l.price_max) + ' ' + sym;
+    else range = money(l.price_amount) + ' ' + sym;
+    var rows = [
+      [T('td.price.range','Fiyat Aralığı'), range],
+      [T('td.price.installment','Taksit İmkânı'), l.installment_available ? T('td.price.yes','Var') : T('td.price.no','Yok')]
+    ];
     return '<div class="td-price">' + rows.map(function (r){ return '<div class="td-price-row"><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>'; }).join('') + '</div>';
   }
 
@@ -199,13 +206,19 @@
     photos = arr(photos); if (!photos.length) return;
     var idx = i || 0;
     var ov = document.createElement('div'); ov.className = 'td-lb-overlay';
+    var thumbs = photos.length > 1
+      ? '<div class="td-lb-thumbs">' + photos.map(function (u, k){ return '<button class="td-lb-thumb" type="button" data-i="' + k + '"><img src="' + esc(u) + '" alt=""></button>'; }).join('') + '</div>'
+      : '';
     ov.innerHTML = '<button class="td-lb-x" type="button" aria-label="' + esc(T('chat.close','Kapat')) + '">×</button>' +
       (photos.length > 1 ? '<button class="td-lb-nav prev" type="button" aria-label="prev">‹</button>' : '') +
-      '<img class="td-lb-img" src="" alt="" />' +
+      '<div class="td-lb-stage"><img class="td-lb-img" src="" alt="" />' + thumbs + '</div>' +
       (photos.length > 1 ? '<button class="td-lb-nav next" type="button" aria-label="next">›</button>' : '');
     document.body.appendChild(ov); document.body.classList.add('td-lb-open');
     var img = ov.querySelector('.td-lb-img');
-    function show(n){ idx = (n + photos.length) % photos.length; img.src = photos[idx]; }
+    var thumbEls = [].slice.call(ov.querySelectorAll('.td-lb-thumb'));
+    function show(n){ idx = (n + photos.length) % photos.length; img.src = photos[idx];
+      thumbEls.forEach(function (t, k){ t.classList.toggle('is-active', k === idx); }); }
+    thumbEls.forEach(function (t){ t.addEventListener('click', function (){ show(parseInt(t.dataset.i, 10)); }); });
     show(idx);
     function close(){ ov.remove(); document.body.classList.remove('td-lb-open'); document.removeEventListener('keydown', key); }
     function key(e){ if (e.key === 'Escape') close(); else if (e.key === 'ArrowRight') show(idx + 1); else if (e.key === 'ArrowLeft') show(idx - 1); }

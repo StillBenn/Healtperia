@@ -17,7 +17,7 @@
   function curSym(c){ return ({EUR:'€',USD:'$',TRY:'₺',GBP:'£'})[c]||c; }
 
   var listEl, editorEl, hospitals = [], hotels = [], clinics = [], editing = null, sectionPhotos = {};
-  var PHOTO_SECTIONS = [['process','Süreç'], ['place','Tedavi Yeri'], ['transport','Ulaşım'], ['hotel','Otel']];
+  var PHOTO_SECTIONS = [['process','Süreç'], ['place','Tedavi Yeri'], ['transport','Ulaşım'], ['hotel','Otel'], ['adv','Ek Avantajlar']];
 
   var Listings = window.HPListings = {};
   Listings.init = function () {
@@ -93,11 +93,11 @@
         '<label class="field"><span class="field-label">Ulaşım Görseli (URL)</span><span class="field-box"><input name="trImage" type="url" value="' + esc(v('transport_image')) + '" /></span></label>' +
         '<label class="field span-2"><span class="field-label">Ulaşım Açıklaması</span><span class="field-box"><textarea name="trDesc" rows="3">' + esc(v('transport_desc')) + '</textarea></span></label>' +
         '<label class="field span-2"><span class="field-label">Ek Avantajlar</span><span class="field-box"><textarea name="advantages" rows="2">' + esc(v('advantages')) + '</textarea></span></label>' +
-        '<label class="field"><span class="field-label">Fiyat</span><span class="field-box"><input name="priceAmount" type="number" step="1" value="' + esc(v('price_amount')) + '" /></span></label>' +
+        '<label class="field"><span class="field-label">En Düşük Fiyat</span><span class="field-box"><input name="priceMin" type="number" step="1" value="' + esc(v('price_min')) + '" placeholder="Örn. 4000" /></span></label>' +
+        '<label class="field"><span class="field-label">En Yüksek Fiyat</span><span class="field-box"><input name="priceMax" type="number" step="1" value="' + esc(v('price_max')) + '" placeholder="Örn. 5000" /></span></label>' +
         '<label class="field"><span class="field-label">Para Birimi</span><span class="field-box"><select name="priceCurrency">' +
           ['EUR','USD','TRY','GBP'].map(function(c){ return '<option value="'+c+'"'+((v('price_currency','EUR'))===c?' selected':'')+'>'+c+'</option>'; }).join('') + '</select></span></label>' +
-        '<label class="field"><span class="field-label">Taksit Sayısı</span><span class="field-box"><input name="priceInstallments" type="number" step="1" value="' + esc(v('price_installments')) + '" /></span></label>' +
-        '<label class="field"><span class="field-label">Aylık Ödeme</span><span class="field-box"><input name="priceMonthly" type="number" step="1" value="' + esc(v('price_monthly')) + '" /></span></label>' +
+        '<label class="field"><span class="field-label">Taksit İmkânı</span><span class="field-box"><select name="installmentAvailable"><option value="false"' + (v('installment_available') ? '' : ' selected') + '>Yok</option><option value="true"' + (v('installment_available') ? ' selected' : '') + '>Var</option></select></span></label>' +
         '<div class="field span-2"><span class="field-label">Bölüm Fotoğrafları (her bölüm için en fazla 4 — detay sayfasında ilgili barın yanında görünür)</span>' +
           '<div id="dlSecPhotos"></div><span class="muted-line sm" id="dlPhotoStatus"></span></div>' +
         '<label class="field"><span class="field-label">Durum</span><span class="field-box"><select name="status"><option value="draft"' + (v('status','draft')==='draft'?' selected':'') + '>Taslak</option><option value="pending"' + (v('status')==='pending'||v('status')==='published'?' selected':'') + '>Yayına Gönder (admin onayı)</option></select></span></label>' +
@@ -180,8 +180,9 @@
       locationName: f.locName.value.trim(), locationMapsUrl: f.locMaps.value.trim(),
       transportTitle: f.trTitle.value.trim(), transportDesc: f.trDesc.value.trim(), transportImage: f.trImage.value.trim(),
       advantages: f.advantages.value.trim(),
-      priceAmount: num(f.priceAmount.value), priceCurrency: f.priceCurrency.value,
-      priceInstallments: num(f.priceInstallments.value), priceMonthly: num(f.priceMonthly.value),
+      priceCurrency: f.priceCurrency.value,
+      priceMin: num(f.priceMin.value), priceMax: num(f.priceMax.value),
+      installmentAvailable: f.installmentAvailable.value === 'true',
       sectionPhotos: sectionPhotos, status: f.status.value
     };
     var err = document.getElementById('listingErr'); err.hidden = true;

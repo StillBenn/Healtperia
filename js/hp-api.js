@@ -418,9 +418,9 @@
       headline: d.headline, process: d.process, hospital_id: d.hospitalId, hotel_id: d.hotelId, clinic_id: d.clinicId,
       location_name: d.locationName, location_maps_url: d.locationMapsUrl,
       transport_title: d.transportTitle, transport_desc: d.transportDesc, transport_image: d.transportImage,
-      advantages: d.advantages, price_amount: d.priceAmount, price_currency: d.priceCurrency,
-      price_installments: d.priceInstallments, price_monthly: d.priceMonthly, photos: d.photos,
-      section_photos: d.sectionPhotos
+      advantages: d.advantages, price_currency: d.priceCurrency,
+      price_min: d.priceMin, price_max: d.priceMax, installment_available: d.installmentAvailable,
+      photos: d.photos, section_photos: d.sectionPhotos
     };
     var out = {};
     Object.keys(m).forEach(function (k) { if (m[k] !== undefined) out[k] = m[k]; });

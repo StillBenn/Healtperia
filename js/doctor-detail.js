@@ -89,11 +89,19 @@
 
   function sec(title, body){ return '<section class="dd-sec"><h3 class="dd-sec-head">' + esc(title) + '</h3>' + body + '</section>'; }
 
+  function priceRange(l){
+    var sym = curSym(l.price_currency);
+    if (l.price_min != null && l.price_max != null) return money(l.price_min) + ' – ' + money(l.price_max) + ' ' + sym;
+    if (l.price_min != null) return money(l.price_min) + ' ' + sym;
+    if (l.price_max != null) return money(l.price_max) + ' ' + sym;
+    if (l.price_amount != null) return money(l.price_amount) + ' ' + sym;
+    return '';
+  }
   function listingCard(l){
     var trName = nm(TRm, l.treatment_id) || l.headline || '';
     var meName = nm(ME, l.method_id) || '';
     var loc = [nm(C, l.country_id), nm(CT, l.city_id)].filter(Boolean).join(', ');
-    var price = l.price_amount != null ? money(l.price_amount) + ' ' + curSym(l.price_currency) : '';
+    var price = priceRange(l);
     var sp = l.section_photos || {};
     var photo = (sp.process && sp.process[0]) || (sp.place && sp.place[0]) || '';
     return '<a class="result-card dd-lcard" href="treatment-detail.html?id=' + encodeURIComponent(l.id) + '">' +
@@ -102,7 +110,6 @@
         '<h3 class="result-name">' + esc(trName) + '</h3>' +
         (meName ? '<p class="result-method">' + esc(meName) + '</p>' : '') +
         (loc ? '<p class="result-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' + esc(loc) + '</p>' : '') +
-        '<p class="result-code"><span>' + esc(T('ti.code','Kod')) + ': ' + esc(l.code) + '</span></p>' +
         '<div class="result-foot">' + (price ? '<span class="result-price">' + esc(price) + '</span>' : '<span></span>') +
           '<span class="result-cta">' + esc(T('ti.cta','Detayları İncele →')) + '</span></div>' +
       '</div></a>';

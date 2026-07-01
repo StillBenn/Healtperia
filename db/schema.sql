@@ -846,3 +846,21 @@ alter table public.listings add constraint listings_status_check
 -- 15e) mevcut demo tesisler yayında kalsın (default zaten 'published')
 update public.hospitals set status = 'published' where status is null;
 update public.clinics   set status = 'published' where status is null;
+
+-- ============================================================
+-- BÖLÜM 16 — Fiyat modeli: min–max aralık + taksit imkânı (var/yok)
+-- Tek fiyat (price_amount) → fiyat aralığı (price_min/price_max);
+-- taksit sayısı → installment_available (bool); aylık ödeme kaldırıldı.
+-- Eski kolonlar (price_amount/price_installments/price_monthly) geriye-uyum
+-- için durur; uygulama artık bunları kullanmaz. Re-runnable.
+-- ============================================================
+alter table public.listings
+  add column if not exists price_min numeric,
+  add column if not exists price_max numeric,
+  add column if not exists installment_available boolean default false;
+
+-- mevcut/demo ilanlar için eski tek fiyatı bir aralığa taşı
+update public.listings
+  set price_min = price_amount,
+      price_max = round(price_amount * 1.2)
+  where price_min is null and price_amount is not null;

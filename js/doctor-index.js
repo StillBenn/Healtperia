@@ -21,6 +21,7 @@
   function uniqSorted(a){ var seen = {}, out = []; a.forEach(function (x){ if (x && !seen[lower(x)]) { seen[lower(x)] = 1; out.push(x); } }); return out.sort(function (x, y){ return lower(x) < lower(y) ? -1 : 1; }); }
 
   var ARROW = '<svg class="dx-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+  var CHECK = '<svg class="dx-opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
   var LABELS = { country: 'dx.country', city: 'dx.city', specialty: 'dx.specialty' };
   var FIELD  = { country: 'country', city: 'city', specialty: 'specialty' };
 
@@ -45,13 +46,15 @@
   function buildDrop(key) {
     var step = bar.querySelector('.dx-drop[data-key="' + key + '"]'); if (!step) return;
     var val = step.querySelector('.dx-drop-val'), list = step.querySelector('.dx-drop-list');
+    var searchEl = step.querySelector('.dx-drop-search input');
     /* trigger text: selection or placeholder */
     if (state[key]) { val.textContent = state[key]; val.removeAttribute('data-ph'); }
     else { val.textContent = T(LABELS[key], val.textContent); val.setAttribute('data-ph', ''); }
-    /* list: "Tümü" + options */
-    var opts = optionsFor(key);
-    list.innerHTML = '<li class="dx-opt' + (!state[key] ? ' is-selected' : '') + '" data-val="">' + esc(T('ti.all', 'Hepsi')) + '</li>' +
-      opts.map(function (o) { return '<li class="dx-opt' + (lower(o) === lower(state[key]) ? ' is-selected' : '') + '" data-val="' + esc(o) + '">' + esc(o) + '</li>'; }).join('');
+    /* list: "Hepsi" (always) + options filtered by the in-menu search */
+    var q = (searchEl && searchEl.value || '').trim().toLocaleLowerCase('tr');
+    var opts = optionsFor(key).filter(function (o) { return !q || lower(o).indexOf(q) !== -1; });
+    list.innerHTML = '<li class="dx-opt' + (!state[key] ? ' is-selected' : '') + '" data-val=""><span>' + esc(T('ti.all', 'Hepsi')) + '</span>' + CHECK + '</li>' +
+      opts.map(function (o) { return '<li class="dx-opt' + (lower(o) === lower(state[key]) ? ' is-selected' : '') + '" data-val="' + esc(o) + '"><span>' + esc(o) + '</span>' + CHECK + '</li>'; }).join('');
   }
 
   function apply() {
@@ -98,12 +101,18 @@
   }
   bar.querySelectorAll('.dx-drop').forEach(function (step) {
     var key = step.dataset.key;
+    var searchEl = step.querySelector('.dx-drop-search input');
     step.querySelector('.dx-drop-trigger').addEventListener('click', function (e) {
       e.stopPropagation();
       var open = !step.classList.contains('is-open'); closeAll(step);
       step.classList.toggle('is-open', open); this.setAttribute('aria-expanded', String(open));
+      if (open && searchEl) { searchEl.value = ''; buildDrop(key); setTimeout(function () { searchEl.focus(); }, 30); }
       reflectDim();
     });
+    /* menü içi tıklamalar (arama kutusu dahil) dışarı kapatıcıya sızmasın */
+    var pop = step.querySelector('.dx-drop-pop');
+    if (pop) pop.addEventListener('click', function (e) { e.stopPropagation(); });
+    if (searchEl) searchEl.addEventListener('input', function () { buildDrop(key); });
     step.querySelector('.dx-drop-list').addEventListener('click', function (e) {
       var li = e.target.closest('.dx-opt'); if (!li) return;
       state[key] = li.dataset.val || '';

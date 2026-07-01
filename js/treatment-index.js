@@ -195,12 +195,21 @@
       });
   }
 
+  /* fiyat aralığı: min – max <sembol> (eski tek fiyat verisine geriye-uyum) */
+  function priceRange(l) {
+    var sym = curSym(l.price_currency);
+    if (l.price_min != null && l.price_max != null) return fmtMoney(l.price_min) + ' – ' + fmtMoney(l.price_max) + ' ' + sym;
+    if (l.price_min != null) return fmtMoney(l.price_min) + ' ' + sym;
+    if (l.price_max != null) return fmtMoney(l.price_max) + ' ' + sym;
+    if (l.price_amount != null) return fmtMoney(l.price_amount) + ' ' + sym;
+    return '';
+  }
   function cardHtml(l, i) {
     var trName = (treatments[l.treatment_id] || {}).name || l.headline || '';
     var meName = (methodsById[l.method_id] || {}).name || '';
     var loc = [(countries[l.country_id] || {}).name, (cities[l.city_id] || {}).name].filter(Boolean).join(', ');
     var doc = (l.doctor && l.doctor.name) || '';
-    var price = l.price_amount != null ? fmtMoney(l.price_amount) + ' ' + curSym(l.price_currency) : '';
+    var price = priceRange(l);
     var sp = l.section_photos || {};
     var photo = (Array.isArray(l.photos) && l.photos[0]) || (sp.process && sp.process[0]) || (sp.place && sp.place[0]) || (sp.doctor && sp.doctor[0]) || '';
     var href = 'treatment-detail.html?id=' + encodeURIComponent(l.id);
@@ -213,7 +222,6 @@
         (meName ? '<p class="result-method">' + esc(meName) + '</p>' : '') +
         (doc ? '<p class="result-doc">' + SVG_DOC + esc(doc) + '</p>' : '') +
         (loc ? '<p class="result-loc">' + SVG_LOC + esc(loc) + '</p>' : '') +
-        '<p class="result-code"><span>' + esc(T('ti.code', 'Kod')) + ': ' + esc(l.code) + '</span></p>' +
         '<div class="result-foot">' +
           (price ? '<span class="result-price">' + esc(price) + '</span>' : '<span></span>') +
           '<a href="' + href + '" class="result-cta">' + esc(T('ti.cta', 'Detayları İncele →')) + '</a>' +
