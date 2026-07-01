@@ -104,7 +104,10 @@
     return sb.auth.signUp({ email: email, password: pw, options: { data: meta } }).then(function (r) {
       if (r.error) return fail(mapAuthError(r.error.message) || 'err.emailExists', r.error.message);
       if (PROVIDERS.indexOf(role) >= 0) {
-        /* doctor/hospital/clinic wait for admin approval — don't keep them signed in */
+        /* doctor/hospital/clinic wait for admin approval — don't keep them signed in.
+           A facility appears in listings/selectors only after admin publishes its
+           profile (RLS: anon/authenticated see status='published' only), so nothing
+           unapproved is ever listed. */
         return sb.auth.signOut().then(function () { return ok({ pending: true, key: 'msg.docPending' }); });
       }
       /* patient: trigger created an active profile; load it */

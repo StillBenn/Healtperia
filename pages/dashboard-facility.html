@@ -5,7 +5,7 @@
   <meta name="google" content="notranslate" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tesis Paneli — Healthperia</title>
-  <link rel="stylesheet" href="../css/style.css?v=10" />
+  <link rel="stylesheet" href="../css/style.css?v=11" />
 </head>
 <body class="app-body app-doctor">
 
@@ -43,6 +43,7 @@
         <button class="topbar-burger" id="burger" data-i18n-aria="acc.aria.menu" aria-label="Menü"><span></span><span></span><span></span></button>
         <div class="topbar-title"><h1 id="pageTitle">Genel Bakış</h1><p id="pageCrumb" data-i18n="df.crumb">Tesis Paneli</p></div>
         <div class="topbar-actions">
+          <button class="icon-btn" data-i18n-aria="acc.aria.notifications" aria-label="Bildirimler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
           <div class="lang-switch app-lang" data-lang-switch>
             <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria="acc.aria.lang" aria-label="Dil seçimi">
               <span class="flag flag-tr" data-lang-flag aria-hidden="true"></span>
@@ -89,7 +90,16 @@
                 <button class="btn-ghost sm" data-jump="messages" data-i18n="acc.nav.messages">Mesajlar</button>
               </div>
             </div>
+            <div class="welcome-art" aria-hidden="true"><svg viewBox="0 0 120 120"><rect x="30" y="32" width="60" height="72" rx="5" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2"/><path d="M60 44v22M49 55h22" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M44 104V86h32v18" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2"/><path d="M40 32V22h40v10" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2"/></svg></div>
           </div>
+
+          <div class="stat-grid">
+            <article class="stat-card"><div class="stat-ico c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M12 8v6M9 11h6"/></svg></div><div class="stat-meta"><strong id="stFacDocs">0</strong><span data-i18n="df.stat.docs">Toplam Doktor</span></div></article>
+            <article class="stat-card"><div class="stat-ico c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="stat-meta"><strong id="stFacApproved">0</strong><span data-i18n="df.stat.approved">Onaylı Doktor</span></div></article>
+            <article class="stat-card"><div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div class="stat-meta"><strong id="stFacPending">0</strong><span data-i18n="df.stat.pending">Onay Bekleyen</span></div></article>
+            <article class="stat-card"><div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><div class="stat-meta"><strong id="stFacUnread">0</strong><span data-i18n="df.stat.unread">Okunmamış Mesaj</span></div></article>
+          </div>
+
           <div class="card"><div class="card-head"><h3 data-i18n="df.statusTitle">Yayın Durumu</h3></div>
             <div id="facStatusCard"><div class="empty-state sm"><p>…</p></div></div>
           </div>

@@ -61,7 +61,7 @@
       var cards = [
         ['ad.ov.hospitals', 'Hastaneler', s.hospitals], ['ad.ov.clinics', 'Klinikler', s.clinics],
         ['ad.ov.listings', 'Yayında İlan', s.listings_published], ['ad.ov.listingsPending', 'Bekleyen İlan', s.listings_pending],
-        ['ad.ov.facilities', 'Tesis Kaydı', s.facilities], ['ad.ov.messages', 'Toplam Mesaj', s.messages],
+        ['ad.ov.facilities', 'Tesis Kaydı', s.facilities],
         ['ad.ov.reports', 'Açık Şikâyet', s.reports_open], ['ad.ov.admins', 'Admin', s.admins]
       ];
       box.innerHTML = cards.map(function (c) {

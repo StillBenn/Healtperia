@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Healthperia hesabınıza giriş yapın veya hasta ya da doktor olarak ücretsiz kayıt olun." />
   <title>Giriş Yap / Kayıt Ol — Healthperia</title>
-  <link rel="stylesheet" href="../css/style.css?v=10" />
+  <link rel="stylesheet" href="../css/style.css?v=11" />
 </head>
 <body class="auth-body">
 
@@ -557,7 +557,10 @@
     if (params.get('mode') === 'register' || location.hash === '#register') { setMode('register'); }
     if (params.get('admin') === '1' || location.hash === '#admin') { setAdminMode(true); }
 
-    /* kayıt formundaki tesis seçicisini doldur (hastaneler + klinikler) */
+    /* kayıt formundaki tesis seçicisini doldur (hastaneler + klinikler).
+       listHospitals/listClinics anon RLS altında YALNIZ status='published' (admin
+       onaylı) tesisleri döndürür → onaylanmamış hesaplar seçicide görünmez; onaylanan
+       tesisler otomatik listelenir. */
     if (H && H.listHospitals && H.listClinics) {
       var escOpt = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
       Promise.all([H.listHospitals(), H.listClinics()]).then(function (rs) {

@@ -657,6 +657,44 @@
   }
 
   /* ============================================================
+     Signed-in header state
+     If a valid Supabase session exists (read lightweight from
+     localStorage — no SDK needed on public pages), the "Hesabım"
+     pill becomes the user's name + a person glyph, signalling the
+     account is open. It keeps linking to auth.html, which already
+     redirects a logged-in visitor to their dashboard. The name is
+     clamped (ellipsis) so any length never collides with the lang
+     switch. data-i18n is dropped so applyTranslations won't undo it.
+     ============================================================ */
+  (function () {
+    const PROJECT_REF = 'hrnqllnrobtxcjsspasy';
+    let user = null;
+    try {
+      const raw = localStorage.getItem('sb-' + PROJECT_REF + '-auth-token');
+      if (raw) {
+        const s = JSON.parse(raw);
+        const notExpired = !s.expires_at || (s.expires_at * 1000 > Date.now());
+        if (s && s.user && notExpired) user = s.user;
+      }
+    } catch (_) { user = null; }
+    if (!user) return;
+
+    const meta = user.user_metadata || {};
+    const name = (meta.name && String(meta.name).trim()) || user.email || '';
+    if (!name) return;
+
+    const PERSON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.4 3.1-5.5 7-5.5s7 2.1 7 5.5"/></svg>';
+    document.querySelectorAll('.nav-cta').forEach((cta) => {
+      cta.removeAttribute('data-i18n');
+      cta.classList.add('is-authed');
+      cta.setAttribute('aria-label', name);
+      cta.setAttribute('title', name);
+      cta.innerHTML = '<span class="nav-cta-ic" aria-hidden="true">' + PERSON_SVG + '</span><span class="nav-cta-name"></span>';
+      cta.querySelector('.nav-cta-name').textContent = name;
+    });
+  })();
+
+  /* ============================================================
      Premium smooth scrolling
      ============================================================ */
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

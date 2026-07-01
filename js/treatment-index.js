@@ -299,9 +299,7 @@
     }
     closeAll();
     renderAll();
-    /* auto-open the next step if it just unlocked and isn't chosen yet */
-    var next = STEP_ORDER[idx + 1];
-    if (next && !isLocked(next)) openStep(next);
+    /* no auto-open: selecting a criterion just closes its dropdown (matches doctor index) */
   }
 
   function resetAll() {

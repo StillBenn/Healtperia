@@ -95,13 +95,38 @@
     });
   }
 
+  var ICO_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+  var ICO_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+
   function paintStatus() {
     var card = document.getElementById('facStatusCard');
-    if (card) card.innerHTML = facility
-      ? '<p>' + esc(T('df.curStatus','Mevcut durum')) + ': ' + statusBadge(facility.status) + '</p>' +
-        (facility.status === 'pending' ? '<p class="muted-line sm">' + esc(T('df.pendingHint','Profiliniz admin onayını bekliyor.')) + '</p>' : '<p class="muted-line sm">' + esc(T('df.publishedHint','Profiliniz indekste yayında.')) + '</p>')
-      : '<div class="empty-state sm"><p>' + esc(T('df.noFacility','Henüz tesis profiliniz yok. "Tesis Profilim"den oluşturun.')) + '</p></div>';
+    if (card) {
+      if (facility) {
+        var pub = facility.status === 'published';
+        card.innerHTML = '<div class="fac-status-hero ' + (pub ? 'is-live' : 'is-pending') + '">' +
+          '<div class="fac-status-ico">' + (pub ? ICO_CHECK : ICO_CLOCK) + '</div>' +
+          '<div class="fac-status-txt"><strong>' + esc(pub ? T('df.status.published','Yayında') : T('df.status.pending','Onay Bekliyor')) + '</strong>' +
+          '<span>' + esc(pub ? T('df.publishedHint','Profiliniz indekste yayında.') : T('df.pendingHint','Profiliniz admin onayını bekliyor.')) + '</span></div>' +
+          (pub ? '' : '<button class="btn-ghost sm" data-jump="facility">' + esc(T('df.editProfile','Tesis Profilini Düzenle')) + '</button>') +
+        '</div>';
+      } else {
+        card.innerHTML = '<div class="empty-state sm"><p>' + esc(T('df.noFacility','Henüz tesis profiliniz yok. "Tesis Profilim"den oluşturun.')) + '</p>' +
+          '<button class="btn-primary sm fac-empty-cta" data-jump="facility">' + esc(T('df.createProfile','Tesis Profili Oluştur')) + '</button></div>';
+      }
+    }
     var fs = document.getElementById('facFormStatus'); if (fs && facility) fs.innerHTML = statusBadge(facility.status);
+  }
+
+  /* ---------- Overview stat cards ---------- */
+  function setStat(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+  function renderStats() {
+    Promise.all([H.myFacilityDoctors(), H.inbox()]).then(function (r) {
+      var docs = r[0] || [], msgs = r[1] || [];
+      setStat('stFacDocs', docs.length);
+      setStat('stFacApproved', docs.filter(function (d){ return d.facility_status === 'approved'; }).length);
+      setStat('stFacPending', docs.filter(function (d){ return d.facility_status === 'pending'; }).length);
+      setStat('stFacUnread', msgs.filter(function (m){ return m.receiver_id === me.id && !m.read && !(m.sender && m.sender.role === 'admin'); }).length);
+    });
   }
 
   /* ---------- Doktorlarım: tesisi seçen doktorlar + mesaj sayaçları (içerik YOK) ---------- */
@@ -133,8 +158,8 @@
           return '<tr><td><span class="cell-user"><strong>' + esc(d.name || '—') + '</strong></span><div class="muted-line sm">' + esc([d.specialty, [d.city, d.country].filter(Boolean).join(', ')].filter(Boolean).join(' · ')) + '</div></td>' +
             '<td>' + b + '</td><td>' + msgs + '</td><td><div class="row-actions">' + act + '</div></td></tr>';
         }).join('') + '</tbody></table></div>';
-      box.querySelectorAll('[data-appr]').forEach(function (x){ x.addEventListener('click', function(){ H.facilitySetDoctorStatus(x.dataset.appr, 'approved').then(renderDoctors); }); });
-      box.querySelectorAll('[data-rej]').forEach(function (x){ x.addEventListener('click', function(){ H.facilitySetDoctorStatus(x.dataset.rej, 'rejected').then(renderDoctors); }); });
+      box.querySelectorAll('[data-appr]').forEach(function (x){ x.addEventListener('click', function(){ H.facilitySetDoctorStatus(x.dataset.appr, 'approved').then(function(){ renderDoctors(); renderStats(); }); }); });
+      box.querySelectorAll('[data-rej]').forEach(function (x){ x.addEventListener('click', function(){ H.facilitySetDoctorStatus(x.dataset.rej, 'rejected').then(function(){ renderDoctors(); renderStats(); }); }); });
     });
   }
 
@@ -152,6 +177,7 @@
     });
 
     renderDoctors();
+    renderStats();
 
     /* messaging */
     if (window.HPChat) HPChat.mount(document.getElementById('facilityChat'), { excludeRole: 'admin', emptyText: T('df.noMsg','Henüz mesajınız yok.') });

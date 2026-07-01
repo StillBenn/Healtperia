@@ -1000,3 +1000,15 @@ create index if not exists idx_messages_sender   on public.messages(sender_id);
 
 -- 17j) OWNER HESABI (kullanıcı kendi şifresiyle hesabı oluşturduktan SONRA çalıştırır):
 --   update public.profiles set role='owner', status='active' where email='bunyamin.katkatt@gmail.com';
+
+
+-- ============================================================================
+-- BÖLÜM 18 — (GERİ ALINDI) facility_options fonksiyonu kaldırıldı
+-- ----------------------------------------------------------------------------
+-- Kısa süre denendi: doktor kayıt seçicisinde TÜM tesisleri (pending dâhil)
+-- göstermek için SECURITY DEFINER facility_options() eklenmişti. Karar
+-- değişti: onaylanmamış hesaplar HİÇBİR listede görünmemeli. hospitals/clinics
+-- RLS'i (anon+authenticated → status='published' | owner | admin) zaten yalnız
+-- onaylı tesisleri gösterdiği için düz listHospitals/listClinics yeterli.
+-- Fonksiyonu SİL (bir kez çalıştırıldıysa):
+drop function if exists public.facility_options();
