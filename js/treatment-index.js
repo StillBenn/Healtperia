@@ -50,6 +50,7 @@
   /* ---------- state ---------- */
   var state = { countryId: null, cityId: null, unitId: null, treatmentId: null, methodId: null };
   var STEP_ORDER = ['country', 'city', 'unit', 'treatment', 'method'];
+  var STEP_LABEL = { country: 'Ülke', city: 'Şehir', unit: 'Tıbbi Birim', treatment: 'Tedavi', method: 'Yöntem' };
   var steps = {};
   STEP_ORDER.forEach(function (key) {
     var el = cascade.querySelector('.ti-step[data-step="' + key + '"]');
@@ -111,9 +112,9 @@
     var opts = optionsFor(key);
     var sel = selId != null ? opts.filter(function (o) { return o.id === selId; })[0] : null;
 
-    /* trigger value text */
+    /* trigger value text — dx-pill: seçim yoksa kriter adı placeholder gibi görünür */
     s.el.classList.toggle('is-filled', !!sel);
-    s.value.textContent = sel ? dispName(key, sel) : T('ti.choose', 'Seçiniz');
+    s.value.textContent = sel ? dispName(key, sel) : T('ti.step.' + key, STEP_LABEL[key]);
     fitValue(s.value);
 
     /* list items */

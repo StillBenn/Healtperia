@@ -110,10 +110,12 @@
     var secs = [];
     if (l.process) secs.push(sec('process', SVG.process, T('td.s.process','Tedavi Süreci'), '<div class="td-rich">' + processHtml(l.process) + '</div>', arr(sp.process), true));
     if (doc.name || doc.bio) secs.push(sec('doctor', SVG.doctor, T('td.s.doctor','Doktor Bilgisi'),
-      '<div class="td-doc"><div class="td-doc-meta"><strong>' + esc(doc.name || '') + '</strong>' +
+      '<div class="td-docgrid"><div class="td-docgrid-text">' +
+        '<div class="td-doc-meta"><strong>' + esc(doc.name || '') + '</strong>' +
         (doc.specialty ? '<span class="td-doc-spec">' + esc(doc.specialty) + '</span>' : '') + '</div>' +
-        '<span class="td-doc-photo"><img src="' + DOCTOR_IMG + '" alt=""></span></div>' +
-        (doc.bio ? '<div class="td-rich">' + paras(doc.bio) + '</div>' : ''),
+        (doc.bio ? '<div class="td-rich">' + paras(doc.bio) + '</div>' : '') +
+      '</div>' +
+      '<div class="td-doc-photo"><img src="' + DOCTOR_IMG + '" alt=""></div></div>',
       [], false));
     var hospName = (l.hospital && l.hospital.name) || l.location_name;
     var hospMaps = (l.hospital && l.hospital.maps_url) || l.location_maps_url;
