@@ -91,11 +91,11 @@
 
     var right = '<aside class="pd-col-right">' + logo + gallery +
       '<div class="dd-actbar">' +
+        '<button class="btn-primary pd-contact" type="button">' + ICON.msg + '<span>' + esc(T(P.contact,'İletişime Geç')) + '</span></button>' +
         '<div class="dd-actrow">' +
           '<button class="td-act pd-share" type="button">' + ICON.share + '<span>' + esc(T(P.share,'Paylaş')) + '</span></button>' +
           '<button class="td-act dd-fav pd-fav' + (isFav ? ' is-on' : '') + '" type="button">' + ICON.heart + '<span>' + esc(isFav ? T('td.favOn','Favorilerde') : T(P.fav,'Favorilere Ekle')) + '</span><i class="dd-favc">' + favCount + '</i></button>' +
         '</div>' +
-        '<button class="btn-primary pd-contact" type="button">' + ICON.msg + '<span>' + esc(T(P.contact,'İletişime Geç')) + '</span></button>' +
       '</div>' +
     '</aside>';
 

@@ -52,7 +52,7 @@ body {
   background: var(--navy-950);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;   /* yatay taşmayı keser ama scroll-container oluşturmaz → sticky çalışır */
 }
 a   { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
@@ -924,6 +924,8 @@ button {
    FOOTER (minimal · compact · ANASAYFA-style)
    ============================================================ */
 .site-footer {
+  position: relative;
+  z-index: 5;                /* fixed sidebar'ı alttan örter */
   background: var(--navy-950);
   border-top: 1px solid var(--line);
   padding: 18px 0 14px;      /* kompakt, dengeli alt boşluk */
@@ -3443,13 +3445,18 @@ body.help-body { overflow: hidden; height: 100vh; }
 .td-chip i { font-style: normal; font-size: 15px; font-weight: 700; color: var(--white); white-space: nowrap; }
 /* actions BELOW the summary card, aligned right */
 .td-actbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; margin: -6px 0 24px; }
-.td-actbar .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; }
+.td-actbar .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; }
 .td-actbar .btn-primary svg { width: 18px; height: 18px; }
-.td-act { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
-.td-act svg { width: 17px; height: 17px; }
-.td-act:hover { background: rgba(78,168,255,.12); color: #fff; }
-.td-fav.is-on { color: #ff6b8a; border-color: rgba(255,107,138,.5); background: rgba(255,107,138,.12); }
-.td-fav.is-on svg { fill: #ff6b8a; stroke: #ff6b8a; }
+/* ---- birleşik aksiyon butonları (tüm detay sayfaları) ---- */
+/* ikincil "glass" buton: Paylaş / Favorilere Ekle */
+.td-act { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .18s ease, border-color .18s ease, color .18s ease, transform .15s ease; }
+.td-act svg { width: 17px; height: 17px; flex: 0 0 auto; }
+.td-act:hover { background: rgba(78,168,255,.10); border-color: rgba(78,168,255,.45); color: #fff; transform: translateY(-1px); }
+/* favori: kalp hover/aktifte kırmızı dolar (td-fav ve dd-fav ortak) */
+.td-fav:hover, .dd-fav:hover { color: #ff5a5f; border-color: rgba(255,90,95,.45); background: rgba(255,90,95,.10); }
+.td-fav:hover svg, .dd-fav:hover svg { stroke: #ff5a5f; }
+.td-fav.is-on, .dd-fav.is-on { color: #ff5a5f; border-color: rgba(255,90,95,.45); background: rgba(255,90,95,.10); }
+.td-fav.is-on svg, .dd-fav.is-on svg { fill: #ff5a5f; stroke: #ff5a5f; }
 
 /* accordion — each section carries its own text + photo column */
 .td-acc-list { display: flex; flex-direction: column; gap: 14px; }
@@ -3583,15 +3590,17 @@ body.td-lb-open { overflow: hidden; }
    DOCTOR INDEX (dx-*) + DOCTOR PROFILE (dd-*)
    ============================================================ */
 /* mavi strok yalnızca ana hatta (tedavi barındaki his); iç alanlarda çerçeve yok */
+/* geniş kapsayıcı — bar treatment-index gibi ~1200px olabilsin (page-hero-inner 820 sınırından çıktı) */
+.dx-finder { max-width: 1240px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 5; }
 .dx-search { position: relative; display: flex; align-items: stretch; gap: 0; max-width: 1200px; margin: 20px auto 0; background: rgba(255,255,255,.05); border: 1px solid transparent; border-radius: 999px; padding: 6px; box-shadow: 0 14px 34px rgba(0,0,0,.28); }
-.dx-field { flex: 1; display: flex; align-items: center; border-right: 1px solid var(--line); position: relative; }
+.dx-field { flex: 1; min-width: 0; display: flex; align-items: center; border-right: 1px solid var(--line); position: relative; }
 .dx-field:last-of-type { border-right: none; }
 .dx-field input { width: 100%; background: none; border: none; color: var(--text); font: inherit; font-size: 14px; font-weight: 700; text-align: left; padding: 11px 20px; outline: none; }
 .dx-field input::placeholder { color: var(--text-dim); font-weight: 700; }
 /* cascade dropdowns inside the bar */
 .dx-drop { padding: 0; }
 .dx-drop-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: none; border: none; color: var(--text); font: inherit; font-size: 14px; text-align: left; padding: 11px 20px; cursor: pointer; }
-.dx-drop-val { font-weight: 700; }   /* bardaki kriter yazısı bold (menü seçenekleri değil) */
+.dx-drop-val { flex: 1; min-width: 0; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* bold + uzun değer tek satır (sarmaz) */
 .dx-drop-val[data-ph] { color: var(--text-dim); }
 .dx-drop-caret { width: 11px; height: 11px; flex: 0 0 auto; color: var(--text-dim); transition: transform .2s; }
 .dx-drop.is-open .dx-drop-caret { transform: rotate(180deg); }
@@ -3659,12 +3668,12 @@ body.td-lb-open { overflow: hidden; }
 
 .dd-main { padding: 110px 0 60px; min-height: 60vh; }
 .dd-code { text-align: center; color: var(--accent-soft); font-size: 20px; font-weight: 800; letter-spacing: 1px; margin-bottom: 26px; }
-.dd-layout { display: grid; grid-template-columns: 1fr 300px; gap: 34px; align-items: start; }
-@media (max-width: 880px){ .dd-layout { grid-template-columns: 1fr; } }
-.dd-sec { margin-bottom: 28px; }
-.dd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 12px; padding-bottom: 10px; }
+.dd-layout { display: grid; grid-template-columns: 1fr 280px; gap: 30px; align-items: start; }
+@media (max-width: 600px){ .dd-layout { grid-template-columns: 1fr; } }
+.dd-sec { margin-bottom: 44px; }
+.dd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 14px; padding-bottom: 12px; }
 /* Hakkımızda sayfasındaki gibi: ince, glow'lu accent gradient çizgi */
-.dd-sec-head::after { content: ""; display: block; height: 2px; margin-top: 10px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); box-shadow: 0 0 14px rgba(78, 168, 255, 0.40); }
+.dd-sec-head::after { content: ""; display: block; width: 52px; height: 2px; margin-top: 12px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); box-shadow: 0 0 14px rgba(78, 168, 255, 0.45); }
 .dd-rich p { color: var(--text); font-size: 14px; line-height: 1.7; margin: 0 0 10px; }
 .dd-bullets { list-style: none; margin: 0; padding: 0; }
 .dd-bullets li { position: relative; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.9; }
@@ -3672,49 +3681,48 @@ body.td-lb-open { overflow: hidden; }
 .dd-treat-cols .dd-bullets { columns: 3; column-gap: 26px; }
 @media (max-width: 700px){ .dd-treat-cols .dd-bullets { columns: 2; } }
 
-.dd-col-right { position: sticky; top: 90px; }
+/* TAM sabit sidebar: scroll'da hiç hareket etmez (fixed); footer z-index ile alttan örter.
+   right = container sağ kenarına hizala (merkezlenmiş container'a göre) */
+/* kart sayfada kendi yerinde kalır; scroll'da kullanıcıyı TAKİP ETMEZ (ne sticky ne fixed) */
+.dd-col-right { position: static; }
 .dd-id { display: flex; flex-direction: column; align-items: center; text-align: center; }
 /* çerçevesiz/serbest cut-out — arka plan/çerçeve yok, indeksle aynı dil */
 .dd-photo { width: 240px; height: 300px; display: flex; align-items: flex-end; justify-content: center; overflow: visible; }
 .dd-photo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; object-position: bottom center; filter: drop-shadow(0 16px 26px rgba(0,0,0,.5)); }
 .dd-photo.is-ph { color: var(--accent-soft); font-size: 56px; font-weight: 800; align-items: center; }
 .dd-name { color: var(--white); font-size: 22px; font-weight: 800; margin: 16px 0 0; }
-.dd-loc { color: var(--text-muted); font-size: 14px; margin-top: 6px; padding-bottom: 14px; border-bottom: 1px solid var(--line); width: 82%; }
-/* aksiyon barı — tedavi-detay buton stiliyle aynı: üstte Paylaş + Favori, altta İletişime Geç */
-.dd-actbar { display: flex; flex-direction: column; gap: 10px; width: 82%; margin-top: 18px; }
+.dd-loc { color: var(--text-muted); font-size: 14px; margin-top: 6px; padding-bottom: 14px; border-bottom: 1px solid var(--line); width: 100%; }
+/* aksiyon barı — üstte İletişime Geç (tam genişlik), altta Paylaş + Favorilere Ekle (eşit) */
+.dd-actbar { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 18px; }
 .dd-actrow { display: flex; gap: 10px; }
-/* iki kutu BİREBİR eşit genişlik (min-width:0 → favori min-content'i payı aşmasın) + eşit yükseklik (stretch) */
-.dd-actbar .td-act { flex: 1 1 0; min-width: 0; justify-content: center; text-align: center; position: relative; }
-.dd-actbar .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+.dd-actbar .td-act { flex: 1 1 0; min-width: 0; }
+.dd-actbar .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; }
 .dd-actbar .btn-primary svg { width: 18px; height: 18px; }
-/* favori: yazı normal (ortalı) yerinde; altta küçük bir şerit — kalp SOL-ALT, sayaç SAĞ-ALT, aynı hizada */
-.dd-fav { padding-bottom: 30px; }
-.dd-fav svg { position: absolute; left: 16px; bottom: 8px; width: 20px; height: 20px; }
-.dd-favc { position: absolute; bottom: 10px; right: 14px; font-style: normal; font-size: 11px; font-weight: 700; line-height: 16px; min-width: 16px; text-align: center; color: var(--accent-soft); background: rgba(78,168,255,.16); border-radius: 999px; padding: 0 5px; }
-/* kalp: hover'da ve favorilenince kırmızı */
-.dd-fav:hover { color: #ff5a5f; border-color: rgba(255,90,95,.45); background: rgba(255,90,95,.10); }
-.dd-fav:hover svg { stroke: #ff5a5f; }
-.dd-fav.is-on { color: #ff5a5f; border-color: rgba(255,90,95,.45); }
-.dd-fav.is-on svg { fill: #ff5a5f; stroke: #ff5a5f; }
+/* favori sayacı: etiketin yanında küçük inline pill */
+.dd-favc { font-style: normal; font-size: 11px; font-weight: 700; line-height: 16px; min-width: 16px; text-align: center; color: var(--accent-soft); background: rgba(78,168,255,.16); border-radius: 999px; padding: 0 6px; }
 .dd-fav.is-on .dd-favc { color: #ff5a5f; background: rgba(255,90,95,.16); }
 .dd-share.copied { color: #4caf7d; }
 
 .dd-listings { margin-top: 42px; }
 .dd-listings-head { color: var(--white); font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin: 0 0 18px; }
-.dd-listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; }
+/* liste kartları tam genişlik, treatment-index gibi 4/sıra */
+.dd-listings-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 1240px){ .dd-listings-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 920px) { .dd-listings-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .dd-listings-grid { grid-template-columns: 1fr; } }
 .dd-lcard { text-decoration: none; cursor: pointer; }
 
 /* ============================================================
    PLACE DETAIL (hastane & klinik detay) — .pd-*
    ============================================================ */
 .pd-code { text-align: center; color: var(--accent-soft); font-size: 22px; font-weight: 800; letter-spacing: 1px; margin-bottom: 28px; }
-.pd-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; align-items: start; }
-@media (max-width: 920px){ .pd-layout { grid-template-columns: 1fr; } }
+.pd-layout { display: grid; grid-template-columns: 1fr 280px; gap: 30px; align-items: start; }
+@media (max-width: 600px){ .pd-layout { grid-template-columns: 1fr; } }
 .pd-name { color: var(--white); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; letter-spacing: .5px; margin: 0 0 18px; }
 .pd-rich p { color: var(--text); font-size: 14px; line-height: 1.8; margin: 0 0 12px; }
-.pd-sec { margin: 30px 0; }
-.pd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 14px; padding-bottom: 10px; }
-.pd-sec-head::after { content: ""; display: block; height: 2px; margin-top: 10px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); box-shadow: 0 0 14px rgba(78, 168, 255, 0.40); }
+.pd-sec { margin: 44px 0; }
+.pd-sec-head { color: var(--white); font-size: 17px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin: 0 0 14px; padding-bottom: 12px; }
+.pd-sec-head::after { content: ""; display: block; width: 52px; height: 2px; margin-top: 12px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); box-shadow: 0 0 14px rgba(78, 168, 255, 0.45); }
 .pd-loc-line { color: var(--text); font-size: 14px; margin: 0 0 4px; }
 .pd-maps { color: var(--accent-soft); font-size: 13px; word-break: break-all; }
 .pd-bullets { list-style: none; margin: 0; padding: 0; }
@@ -3733,7 +3741,7 @@ body.td-lb-open { overflow: hidden; }
 .pd-cap li b { color: var(--white); font-weight: 700; }
 
 /* sağ sütun */
-.pd-col-right { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 18px; }
+.pd-col-right { position: static; display: flex; flex-direction: column; gap: 18px; }
 .pd-logo { background: #fff; border-radius: 18px; min-height: 150px; display: grid; place-items: center; padding: 18px; }
 .pd-logo img { max-width: 100%; max-height: 130px; object-fit: contain; }
 .pd-logo.is-ph { color: #1c2c54; flex-direction: column; gap: 8px; }
@@ -3749,11 +3757,6 @@ body.td-lb-open { overflow: hidden; }
 .pd-stat svg { width: 22px; height: 22px; }
 .pd-stat:hover { color: #fff; }
 .pd-stat i { font-style: normal; }
-.pd-fav.is-on { color: #ffcf5a; }
-.pd-fav.is-on svg { fill: #ffcf5a; stroke: #ffcf5a; }
-.pd-contact { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; align-self: center; background: none; border: none; color: var(--accent-soft); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
-.pd-contact svg { width: 30px; height: 30px; }
-.pd-contact:hover { color: #fff; }
 
 /* lightbox */
 .pd-lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(3,7,18,.92); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; }

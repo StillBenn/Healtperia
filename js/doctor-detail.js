@@ -69,11 +69,11 @@
         '<h2 class="dd-name">' + esc(d.name || '—') + '</h2>' +
         (loc ? '<div class="dd-loc">' + esc(loc) + '</div>' : '') +
         '<div class="dd-actbar">' +
+          '<button class="btn-primary dd-contact" type="button">' + ICON.msg + '<span>' + esc(T('dd.contact','İletişime Geç')) + '</span></button>' +
           '<div class="dd-actrow">' +
             '<button class="td-act dd-share" type="button">' + ICON.share + '<span>' + esc(T('td.share','Paylaş')) + '</span></button>' +
             '<button class="td-act dd-fav' + (isFav ? ' is-on' : '') + '" type="button">' + ICON.heart + '<span>' + esc(isFav ? T('td.favOn','Favorilerde') : T('td.fav','Favorilere Ekle')) + '</span><i class="dd-favc">' + favCount + '</i></button>' +
           '</div>' +
-          '<button class="btn-primary dd-contact" type="button">' + ICON.msg + '<span>' + esc(T('dd.contact','İletişime Geç')) + '</span></button>' +
         '</div>' +
       '</div></aside>';
 

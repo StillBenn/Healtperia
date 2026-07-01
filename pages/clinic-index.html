@@ -5,7 +5,7 @@
   <meta name="google" content="notranslate" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Klinik İndeksi — Healthperia</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/style.css?v=10" />
 </head>
 <body>
 
@@ -50,6 +50,8 @@
       <h1 class="page-title" data-i18n="card.clinic.title">Klinik İndeksi</h1>
       <p class="page-lead" data-i18n="cli.lead">Uzmanlık alanına göre güvenilir klinikleri keşfedin.</p>
 
+    </div>
+    <div class="dx-finder">
       <div class="dx-search" id="cxSearch" aria-label="Klinik ara">
         <div class="dx-field dx-drop" data-key="country">
           <button class="dx-drop-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="dx-drop-val" data-ph data-i18n="cli.country">Ülke</span><svg class="dx-drop-caret" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -83,16 +85,23 @@
     <div class="container footer-mini">
       <div class="footer-top">
         <div class="foot-block question">
-          <span class="foot-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7v.5"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg></span>
+          <span class="foot-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7v.5"/>
+              <circle cx="12" cy="17" r="1" fill="currentColor"/>
+            </svg>
+          </span>
           <span class="foot-text" data-i18n="footer.question">Bir sorunuz mu var?</span>
         </div>
+
         <div class="foot-block follow">
           <span class="foot-text" data-i18n="footer.follow">Bizi takip edin</span>
           <ul class="foot-socials">
-            <li><a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21H18.6v-5.6c0-1.34-.02-3.07-1.87-3.07-1.88 0-2.17 1.47-2.17 2.98V21H10z"/></svg></a></li>
             <li><a href="https://instagram.com/healthperia" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></li>
+            <li><a href="https://facebook.com/healthperia" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.25-1.5 1.5-1.5h1.6V4.4c-.28-.04-1.23-.12-2.34-.12-2.32 0-3.9 1.42-3.9 4v2.22H7.8v3h2.5V21h3.2z"/></svg></a></li>
             <li><a href="https://x.com/healthperia" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.8l-5.34-6.83L4.3 22H1.04l8.02-9.16L1.5 2H8.4l4.83 6.22L18.244 2zm-2.39 18h1.93L7.25 4H5.18l10.674 16z"/></svg></a></li>
-            <li><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2s-.2-1.6-.9-2.3c-.8-.9-1.7-.9-2.2-1C16.6 3.6 12 3.6 12 3.6s-4.6 0-7.9.3c-.5.1-1.4.1-2.2 1C1.2 5.6 1 7.2 1 7.2S.8 9 .8 10.8v1.4C.8 14 1 15.8 1 15.8s.2 1.6.9 2.3c.8.9 1.9.9 2.4 1 1.7.2 7.7.3 7.7.3s4.6 0 7.9-.3c.5-.1 1.4-.1 2.2-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.6v-1.4c0-1.8-.2-3.6-.2-3.6zM9.7 14.6V8.4l6 3.1-6 3.1z"/></svg></a></li>
+            <li><a href="https://wa.me/" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.95A10 10 0 0 0 4 18.16L2.5 22l3.94-1.46A10 10 0 1 0 19.05 4.95zM12 20.2a8.2 8.2 0 0 1-4.2-1.16l-.3-.18-2.34.87.79-2.41-.2-.31a8.2 8.2 0 1 1 6.25 3.19zm4.69-6.16c-.26-.13-1.52-.75-1.76-.83-.24-.09-.41-.13-.59.13-.17.26-.67.83-.82 1-.15.17-.3.19-.56.06-.26-.13-1.08-.4-2.06-1.27-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.4.11-.53.11-.11.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.42-.81-1.94-.21-.51-.43-.44-.59-.45h-.5c-.17 0-.45.06-.69.32-.24.26-.9.88-.9 2.14 0 1.26.92 2.48 1.05 2.65.13.17 1.8 2.74 4.36 3.85.61.26 1.08.42 1.45.54.61.19 1.16.17 1.6.1.49-.07 1.52-.62 1.74-1.22.22-.6.22-1.11.15-1.22-.07-.11-.24-.17-.5-.3z"/></svg></a></li>
           </ul>
         </div>
       </div>
