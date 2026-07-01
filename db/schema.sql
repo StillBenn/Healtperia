@@ -864,3 +864,139 @@ update public.listings
   set price_min = price_amount,
       price_max = round(price_amount * 1.2)
   where price_min is null and price_amount is not null;
+
+-- ============================================================
+-- BÖLÜM 17 — Owner rolü + admin yetkileri + doktor↔tesis bağı + denetim RPC'leri
+-- Kullanıcı (Bünyamin) sistem SAHİBİ (owner); yalnız owner admin atar/siler/yetki verir.
+-- Adminler tüm denetim yetkilerine sahip ama admin yönetimi yapamaz. Re-runnable.
+-- ============================================================
+
+-- 17a) roller: owner ekle
+alter table public.profiles drop constraint if exists profiles_role_check;
+alter table public.profiles add constraint profiles_role_check
+  check (role in ('patient','doctor','hospital','clinic','admin','owner'));
+
+-- 17b) admin yetki listesi + doktor↔tesis bağı kolonları
+alter table public.profiles add column if not exists permissions jsonb not null default '[]'::jsonb;
+alter table public.profiles add column if not exists facility_kind text;   -- 'hospital' | 'clinic'
+alter table public.profiles add column if not exists facility_id uuid;
+alter table public.profiles drop constraint if exists profiles_facility_status_check;
+alter table public.profiles add column if not exists facility_status text default 'pending';
+alter table public.profiles add constraint profiles_facility_status_check
+  check (facility_status is null or facility_status in ('pending','approved','rejected'));
+
+-- 17c) owner helper + is_admin owner'ı da kapsar (owner = tüm admin yetkileri)
+create or replace function public.is_owner()
+returns boolean language sql security definer stable set search_path = public as $$
+  select exists (select 1 from public.profiles where id = auth.uid() and role = 'owner');
+$$;
+create or replace function public.is_admin()
+returns boolean language sql security definer stable set search_path = public as $$
+  select exists (select 1 from public.profiles where id = auth.uid() and role in ('admin','owner'));
+$$;
+
+-- 17d) guard: admin YÖNETİMİ (role admin/owner yapma-çıkarma + permissions) YALNIZ owner.
+--      Adminler kullanıcı status'unu (approve/suspend/delete) değiştirebilir ama admin atayamaz/silemez.
+create or replace function public.guard_profile_update()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null then
+    return new;                       -- server-side / SQL editor: serbest
+  elsif not public.is_admin() then
+    new.role := old.role; new.status := old.status; new.permissions := old.permissions;
+  elsif not public.is_owner() then    -- admin ama owner değil
+    if (new.role in ('admin','owner')) or (old.role in ('admin','owner')) then new.role := old.role; end if;
+    new.permissions := old.permissions;
+  end if;
+  return new;
+end; $$;
+
+-- 17e) handle_new_user: doktor kayıtta tesis seçer → facility_kind/facility_id sakla
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer set search_path = public as $$
+declare r text := coalesce(new.raw_user_meta_data->>'role','patient');
+begin
+  if r not in ('patient','doctor','hospital','clinic') then r := 'patient'; end if;  -- asla self-admin/owner
+  insert into public.profiles (id, role, status, name, email, phone, country, specialty, license, facility_kind, facility_id)
+  values (
+    new.id, r,
+    case when r in ('doctor','hospital','clinic') then 'pending' else 'active' end,
+    new.raw_user_meta_data->>'name', new.email,
+    new.raw_user_meta_data->>'phone', new.raw_user_meta_data->>'country',
+    new.raw_user_meta_data->>'specialty', new.raw_user_meta_data->>'license',
+    nullif(new.raw_user_meta_data->>'facility_kind',''),
+    nullif(new.raw_user_meta_data->>'facility_id','')::uuid
+  );
+  return new;
+end; $$;
+
+-- 17f) RPC: tesis owner'ı kendi doktorunun facility_status'unu ayarlar (approve/reject)
+create or replace function public.facility_set_doctor_status(p_doctor uuid, p_status text)
+returns boolean language plpgsql security definer set search_path = public as $$
+declare me uuid := auth.uid(); owns boolean := false;
+begin
+  if p_status not in ('approved','rejected','pending') then return false; end if;
+  select exists (
+    select 1 from public.profiles d
+    where d.id = p_doctor and d.role = 'doctor' and (
+      (d.facility_kind = 'hospital' and exists (select 1 from public.hospitals h where h.id = d.facility_id and h.owner_id = me))
+      or (d.facility_kind = 'clinic' and exists (select 1 from public.clinics c where c.id = d.facility_id and c.owner_id = me))
+    )
+  ) into owns;
+  if not owns and not public.is_admin() then return false; end if;
+  update public.profiles set facility_status = p_status where id = p_doctor and role = 'doctor';
+  return true;
+end; $$;
+
+-- 17g) RPC: tesisin approved doktorları için mesaj sayaçları (içerik YOK, sadece sayı)
+create or replace function public.facility_doctor_stats(p_kind text, p_id uuid)
+returns table(doctor_id uuid, name text, avatar_url text, received bigint, replied bigint)
+language plpgsql security definer set search_path = public as $$
+declare me uuid := auth.uid(); owns boolean := false;
+begin
+  if p_kind = 'hospital' then
+    select exists(select 1 from public.hospitals h where h.id = p_id and h.owner_id = me) into owns;
+  elsif p_kind = 'clinic' then
+    select exists(select 1 from public.clinics c where c.id = p_id and c.owner_id = me) into owns;
+  end if;
+  if not owns and not public.is_admin() then return; end if;
+  return query
+    select d.id, d.name, d.avatar_url,
+      (select count(*) from public.messages m where m.receiver_id = d.id)::bigint,
+      (select count(distinct m1.sender_id) from public.messages m1
+         where m1.receiver_id = d.id
+           and exists (select 1 from public.messages m2 where m2.sender_id = d.id and m2.receiver_id = m1.sender_id))::bigint
+    from public.profiles d
+    where d.role = 'doctor' and d.facility_kind = p_kind and d.facility_id = p_id and d.facility_status = 'approved'
+    order by d.name;
+end; $$;
+
+-- 17h) RPC: owner/admin genel bakış sayımları (tek çağrı)
+create or replace function public.admin_overview_stats()
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare j jsonb;
+begin
+  if not public.is_admin() then return '{}'::jsonb; end if;
+  select jsonb_build_object(
+    'patients',  (select count(*) from public.profiles where role='patient'  and status<>'deleted'),
+    'doctors',   (select count(*) from public.profiles where role='doctor'   and status<>'deleted'),
+    'hospitals', (select count(*) from public.profiles where role='hospital' and status<>'deleted'),
+    'clinics',   (select count(*) from public.profiles where role='clinic'   and status<>'deleted'),
+    'admins',    (select count(*) from public.profiles where role='admin'),
+    'pending',   (select count(*) from public.profiles where status='pending'),
+    'listings_published', (select count(*) from public.listings where status='published'),
+    'listings_pending',   (select count(*) from public.listings where status='pending'),
+    'facilities', (select count(*) from public.hospitals) + (select count(*) from public.clinics),
+    'messages',   (select count(*) from public.messages),
+    'reports_open', (select count(*) from public.reports where status='open')
+  ) into j;
+  return j;
+end; $$;
+
+-- 17i) index'ler
+create index if not exists idx_profiles_facility on public.profiles(facility_kind, facility_id);
+create index if not exists idx_messages_receiver on public.messages(receiver_id);
+create index if not exists idx_messages_sender   on public.messages(sender_id);
+
+-- 17j) OWNER HESABI (kullanıcı kendi şifresiyle hesabı oluşturduktan SONRA çalıştırır):
+--   update public.profiles set role='owner', status='active' where email='bunyamin.katkatt@gmail.com';

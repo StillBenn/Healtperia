@@ -104,6 +104,40 @@
     var fs = document.getElementById('facFormStatus'); if (fs && facility) fs.innerHTML = statusBadge(facility.status);
   }
 
+  /* ---------- Doktorlarım: tesisi seçen doktorlar + mesaj sayaçları (içerik YOK) ---------- */
+  function renderDoctors() {
+    var box = document.getElementById('facDoctorsBody'); if (!box) return;
+    Promise.all([H.myFacilityDoctors(), H.facilityDoctorStats()]).then(function (r) {
+      var docs = r[0] || [], stats = r[1] || [], sm = {};
+      stats.forEach(function (s){ sm[s.doctor_id] = s; });
+      var badge = document.getElementById('facDocBadge');
+      var pendingN = docs.filter(function (d){ return d.facility_status === 'pending'; }).length;
+      if (badge) { badge.textContent = pendingN; badge.style.display = pendingN ? '' : 'none'; }
+      if (!docs.length) { box.innerHTML = '<div class="empty-state sm"><p>' + esc(T('df.doctors.empty','Henüz sizi seçen bir doktor yok. Doktorlar kayıt olurken tesisinizi seçtiğinde burada görünür.')) + '</p></div>'; return; }
+      box.innerHTML = '<div class="table-wrap"><table class="data-table"><thead><tr>' +
+        '<th>' + esc(T('df.doctors.name','Doktor')) + '</th><th>' + esc(T('df.doctors.status','Durum')) + '</th>' +
+        '<th>' + esc(T('df.doctors.msgs','Mesaj İstatistiği')) + '</th><th>' + esc(T('acc.actions','İşlemler')) + '</th></tr></thead><tbody>' +
+        docs.map(function (d) {
+          var st = sm[d.id];
+          var b = d.facility_status === 'approved' ? '<span class="badge badge-green">' + esc(T('df.doctors.approved','Onaylı')) + '</span>'
+            : d.facility_status === 'rejected' ? '<span class="badge badge-amber">' + esc(T('df.doctors.rejected','Reddedildi')) + '</span>'
+            : '<span class="badge badge-blue">' + esc(T('df.doctors.pending','Onay Bekliyor')) + '</span>';
+          var msgs = (d.facility_status === 'approved' && st)
+            ? '<span class="badge badge-blue">' + esc(T('df.doctors.received','Gelen')) + ': ' + st.received + '</span> ' +
+              '<span class="badge badge-green">' + esc(T('df.doctors.replied','Cevaplanan')) + ': ' + st.replied + '</span>'
+            : '<span class="muted-line sm">' + esc(T('df.doctors.approveToSee','Onaylayınca görünür')) + '</span>';
+          var act = d.facility_status === 'approved'
+            ? '<button class="btn-mini no" data-rej="' + d.id + '">' + esc(T('df.doctors.remove','Kaldır')) + '</button>'
+            : '<button class="btn-mini ok" data-appr="' + d.id + '">' + esc(T('df.doctors.approve','Onayla')) + '</button>' +
+              (d.facility_status !== 'rejected' ? ' <button class="btn-mini no" data-rej="' + d.id + '">' + esc(T('df.doctors.reject','Reddet')) + '</button>' : '');
+          return '<tr><td><span class="cell-user"><strong>' + esc(d.name || '—') + '</strong></span><div class="muted-line sm">' + esc([d.specialty, [d.city, d.country].filter(Boolean).join(', ')].filter(Boolean).join(' · ')) + '</div></td>' +
+            '<td>' + b + '</td><td>' + msgs + '</td><td><div class="row-actions">' + act + '</div></td></tr>';
+        }).join('') + '</tbody></table></div>';
+      box.querySelectorAll('[data-appr]').forEach(function (x){ x.addEventListener('click', function(){ H.facilitySetDoctorStatus(x.dataset.appr, 'approved').then(renderDoctors); }); });
+      box.querySelectorAll('[data-rej]').forEach(function (x){ x.addEventListener('click', function(){ H.facilitySetDoctorStatus(x.dataset.rej, 'rejected').then(renderDoctors); }); });
+    });
+  }
+
   H.guard(['hospital', 'clinic']).then(function (user) {
     if (!user) return;
     me = user;
@@ -116,6 +150,8 @@
       paintStatus();
       renderEditor();
     });
+
+    renderDoctors();
 
     /* messaging */
     if (window.HPChat) HPChat.mount(document.getElementById('facilityChat'), { excludeRole: 'admin', emptyText: T('df.noMsg','Henüz mesajınız yok.') });
@@ -147,6 +183,6 @@
       });
     });
 
-    if (window.HPI && HPI.onChange) HPI.onChange(function () { paintStatus(); renderEditor(); });
+    if (window.HPI && HPI.onChange) HPI.onChange(function () { paintStatus(); renderEditor(); renderDoctors(); });
   });
 })();

@@ -224,6 +224,13 @@
                   </span>
                 </label>
               </div>
+              <label class="field">
+                <span class="field-label" data-i18n="au.f.facility">Çalıştığınız Tesis (opsiyonel)</span>
+                <span class="field-box">
+                  <span class="field-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 21v-4h6v4M8 7h2M14 7h2M8 11h2M14 11h2"/></svg></span>
+                  <select name="facility" id="regFacility" class="auth-facility-select"><option value="" data-i18n="au.facility.none">— Hastane / Klinik seçin (opsiyonel) —</option></select>
+                </span>
+              </label>
             </div>
             <p class="doctor-note" data-provider-note hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -343,7 +350,7 @@
     var adminBack   = document.querySelector('[data-admin-close]');
     var adminShield = document.querySelector('.admin-shield');
 
-    var state = { mode: 'login', role: 'patient', providerRole: 'doctor', admin: false };
+    var state = { mode: 'login', seg: 'patient', role: 'patient', providerRole: 'doctor', admin: false };
 
     /* ---- alert ---- */
     var alertTimer;
@@ -367,13 +374,17 @@
       b.addEventListener('click', function () {
         segBtns.forEach(function (x) { x.classList.remove('is-active'); x.setAttribute('aria-selected', 'false'); });
         b.classList.add('is-active'); b.setAttribute('aria-selected', 'true');
-        var seg2 = b.dataset.role;                 // 'patient' veya 'provider'
-        if (seg2 === 'provider') { providerChips.hidden = false; state.role = state.providerRole; }
-        else { providerChips.hidden = true; state.role = 'patient'; }
+        state.seg = b.dataset.role;                 // 'patient' veya 'provider'
+        state.role = state.seg === 'provider' ? state.providerRole : 'patient';
         moveThumb();
+        updateChips();
         syncRole();
       });
     });
+    /* SHS alt seçimi (doktor/hastane/klinik) YALNIZ kayıt modunda görünür; girişte tek SHS sekmesi */
+    function updateChips() {
+      providerChips.hidden = !(state.seg === 'provider' && state.mode === 'register');
+    }
     /* provider sub-choice chips (doctor/hospital/clinic) */
     provChips.forEach(function (c) {
       c.addEventListener('click', function () {
@@ -391,15 +402,15 @@
       doctorFields.hidden = !(isDoc && reg);
       doctorFields.querySelectorAll('input').forEach(function (i) { i.required = (isDoc && reg); });
       if (providerNote) providerNote.hidden = !(isProvider && reg);
+      updateChips();
     }
     /* programatik: Sağlık Sağlayıcı sekmesi + belirli chip (demo/deeplink/kayıt sonrası) */
     function setProviderRole(prole) {
       segBtns.forEach(function (x) { x.classList.remove('is-active'); x.setAttribute('aria-selected', 'false'); });
       segBtns[1].classList.add('is-active'); segBtns[1].setAttribute('aria-selected', 'true');
-      providerChips.hidden = false;
       provChips.forEach(function (x) { x.classList.toggle('is-active', x.dataset.prole === prole); });
-      state.providerRole = prole; state.role = prole;
-      moveThumb(); syncRole();
+      state.seg = 'provider'; state.providerRole = prole; state.role = prole;
+      moveThumb(); updateChips(); syncRole();
     }
     window.addEventListener('resize', moveThumb);
 
@@ -488,7 +499,8 @@
     loginForm.addEventListener('submit', function (e) {
       e.preventDefault();
       clearAlert();
-      var role = state.admin ? 'admin' : state.role;
+      /* giriş: hasta → patient, SHS → provider (doktor/hastane/klinik), yönetici → admin(+owner) */
+      var role = state.admin ? 'admin' : (state.seg === 'provider' ? 'provider' : 'patient');
       var sbtn = loginForm.querySelector('.auth-submit'); if (sbtn) sbtn.disabled = true;
       H.login(loginForm.email.value, loginForm.password.value, role).then(function (r) {
         if (sbtn) sbtn.disabled = false;
@@ -503,6 +515,9 @@
       clearAlert();
       if (!regForm.terms.checked) { showAlert(T('au.alert.terms', 'Devam etmek için şartları kabul etmelisiniz.')); return; }
       var sbtn = regForm.querySelector('.auth-submit'); if (sbtn) sbtn.disabled = true;
+      /* doktor kayıtta tesis seçtiyse "hospital:<id>" / "clinic:<id>" ayrıştır */
+      var facVal = (regForm.facility && regForm.facility.value) || '', facKind = '', facId = '';
+      if (facVal.indexOf(':') > 0) { var fp = facVal.split(':'); facKind = fp[0]; facId = fp[1]; }
       H.register({
         role: state.role,
         name: regForm.name.value,
@@ -512,7 +527,9 @@
         password: regForm.password.value,
         confirm: regForm.confirm.value,
         specialty: regForm.specialty.value,
-        license: regForm.license.value
+        license: regForm.license.value,
+        facilityKind: facKind,
+        facilityId: facId
       }).then(function (r) {
         if (sbtn) sbtn.disabled = false;
         if (!r.ok) { showAlert(tErr(r)); return; }
@@ -539,6 +556,21 @@
     if (qrole === 'doctor' || qrole === 'hospital' || qrole === 'clinic') { setProviderRole(qrole); }
     if (params.get('mode') === 'register' || location.hash === '#register') { setMode('register'); }
     if (params.get('admin') === '1' || location.hash === '#admin') { setAdminMode(true); }
+
+    /* kayıt formundaki tesis seçicisini doldur (hastaneler + klinikler) */
+    if (H && H.listHospitals && H.listClinics) {
+      var escOpt = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      Promise.all([H.listHospitals(), H.listClinics()]).then(function (rs) {
+        var sel = document.getElementById('regFacility'); if (!sel) return;
+        function grp(label, arr, kind) {
+          arr = arr || []; if (!arr.length) return '';
+          return '<optgroup label="' + escOpt(label) + '">' + arr.map(function (x) {
+            return '<option value="' + kind + ':' + x.id + '">' + escOpt(x.name) + (x.city ? ' — ' + escOpt(x.city) : '') + '</option>';
+          }).join('') + '</optgroup>';
+        }
+        sel.insertAdjacentHTML('beforeend', grp('Hastaneler', rs[0], 'hospital') + grp('Klinikler', rs[1], 'clinic'));
+      });
+    }
 
     applyDynamicTexts();
     /* re-render the JS-driven title/subtitle/switch when the language changes */

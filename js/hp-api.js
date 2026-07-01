@@ -61,7 +61,16 @@
   HP.dashboardFor = function (role) {
     return role === 'doctor' ? 'dashboard-doctor.html'
       : (role === 'hospital' || role === 'clinic') ? 'dashboard-facility.html'
-      : role === 'admin' ? 'admin.html' : 'dashboard-patient.html';
+      : (role === 'admin' || role === 'owner') ? 'admin.html' : 'dashboard-patient.html';
+  };
+  HP.isOwner = function () { return !!(HP._profile && HP._profile.role === 'owner'); };
+  /* yetki kapısı: owner her şeye yetkili; admin yalnız permissions listesindekilere */
+  HP.can = function (perm) {
+    var p = HP._profile; if (!p) return false;
+    if (p.role === 'owner') return true;
+    if (p.role !== 'admin') return false;
+    var perms = Array.isArray(p.permissions) ? p.permissions : [];
+    return perms.indexOf(perm) >= 0;
   };
 
   /* ---------- AUTH ---------- */
@@ -86,7 +95,11 @@
       phone: String(data.phone || '').trim(),
       country: String(data.country || '').trim()
     };
-    if (role === 'doctor') { meta.specialty = String(data.specialty || '').trim(); meta.license = String(data.license || '').trim(); }
+    if (role === 'doctor') {
+      meta.specialty = String(data.specialty || '').trim(); meta.license = String(data.license || '').trim();
+      /* doktor kayıtta çalıştığı tesisi seçer (opsiyonel) → panelde tesis onaylar */
+      if (data.facilityKind && data.facilityId) { meta.facility_kind = String(data.facilityKind); meta.facility_id = String(data.facilityId); }
+    }
 
     return sb.auth.signUp({ email: email, password: pw, options: { data: meta } }).then(function (r) {
       if (r.error) return fail(mapAuthError(r.error.message) || 'err.emailExists', r.error.message);
@@ -107,7 +120,13 @@
       if (r.error) return fail(mapAuthError(r.error.message) || 'err.badCreds', r.error.message);
       return loadProfile(r.data.user.id).then(function (p) {
         if (!p) return sb.auth.signOut().then(function () { return fail('err.account'); });
-        if (role && p.role !== role) return sb.auth.signOut().then(function () { return { ok: false, key: 'err.wrongTab', data: { role: p.role } }; });
+        /* role = 'patient' | 'provider' (doctor/hospital/clinic) | 'admin' (admin/owner) | tam rol */
+        var PROV = ['doctor', 'hospital', 'clinic'];
+        var roleOk = !role
+          || (role === 'provider' ? PROV.indexOf(p.role) >= 0
+              : role === 'admin' ? (p.role === 'admin' || p.role === 'owner')
+              : p.role === role);
+        if (!roleOk) return sb.auth.signOut().then(function () { return { ok: false, key: 'err.wrongTab', data: { role: p.role } }; });
         if (p.status === 'pending')   return sb.auth.signOut().then(function () { return fail('err.pending'); });
         if (p.status === 'suspended') return sb.auth.signOut().then(function () { return fail('err.suspended'); });
         if (p.status === 'deleted')   return sb.auth.signOut().then(function () { return fail('err.deleted'); });
@@ -216,6 +235,73 @@
   HP.approveDoctor = function (id) { return HP.setStatus(id, 'active'); };
   HP.rejectDoctor = function (id) { return HP.setStatus(id, 'suspended'); };
   HP.removeUser = function (id) { return HP.setStatus(id, 'deleted'); };
+
+  /* ---------- OWNER: admin yönetimi (server-guard: yalnız owner) ---------- */
+  HP.listAdmins = function () {
+    return sb.from('profiles').select('id,name,email,role,status,permissions,created_at')
+      .in('role', ['admin', 'owner']).neq('status', 'deleted').order('created_at')
+      .then(function (r) { return r.data || []; });
+  };
+  HP.createAdmin = function (d) {
+    var email = String(d.email || '').trim().toLowerCase();
+    var pw = String(d.password || ''); var name = String(d.name || '').trim();
+    var perms = Array.isArray(d.permissions) ? d.permissions : [];
+    if (!HP.isOwner()) return Promise.resolve(fail('err.forbidden'));
+    if (name.length < 2) return Promise.resolve(fail('err.nameInvalid'));
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return Promise.resolve(fail('err.emailInvalid'));
+    if (pw.length < 6) return Promise.resolve(fail('err.pwLen'));
+    /* efemer 2. client → owner oturumu bozulmadan yeni auth kullanıcısı oluştur */
+    var tmp = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+    return tmp.auth.signUp({ email: email, password: pw, options: { data: { role: 'patient', name: name } } }).then(function (r) {
+      if (r.error) return fail(mapAuthError(r.error.message) || 'err.emailExists', r.error.message);
+      var uid = r.data && r.data.user && r.data.user.id;
+      if (!uid) return fail('err.account');
+      try { tmp.auth.signOut(); } catch (e) {}
+      /* owner (ana client) profili admin'e yükseltir + yetkiler (guard owner'a izin verir) */
+      return sb.from('profiles').update({ role: 'admin', status: 'active', permissions: perms, name: name }).eq('id', uid)
+        .then(function (u) { return u.error ? fail('err.account', u.error.message) : ok({ id: uid }); });
+    });
+  };
+  HP.setAdminPermissions = function (id, perms) {
+    return sb.from('profiles').update({ permissions: Array.isArray(perms) ? perms : [] }).eq('id', id)
+      .then(function (r) { return { ok: !r.error, error: r.error && r.error.message }; });
+  };
+  HP.removeAdmin = function (id) {
+    return sb.from('profiles').update({ role: 'patient', status: 'deleted', permissions: [] }).eq('id', id)
+      .then(function (r) { return { ok: !r.error, error: r.error && r.error.message }; });
+  };
+  HP.adminOverview = function () {
+    return sb.rpc('admin_overview_stats').then(function (r) { return r.data || {}; });
+  };
+
+  /* ---------- FACILITY: kendi doktorlarım + mesaj sayaçları ---------- */
+  function myFacilityIds() {
+    var p = HP._profile; if (!p || (p.role !== 'hospital' && p.role !== 'clinic')) return Promise.resolve(null);
+    var tbl = p.role === 'hospital' ? 'hospitals' : 'clinics';
+    return sb.from(tbl).select('id').eq('owner_id', p.id).then(function (r) {
+      return { kind: p.role, ids: (r.data || []).map(function (x) { return x.id; }) };
+    });
+  }
+  HP.myFacilityDoctors = function () {
+    return myFacilityIds().then(function (f) {
+      if (!f || !f.ids.length) return [];
+      return sb.from('profiles').select('id,name,specialty,avatar_url,facility_id,facility_status,city,country')
+        .eq('role', 'doctor').eq('facility_kind', f.kind).in('facility_id', f.ids).order('name')
+        .then(function (r) { return r.data || []; });
+    });
+  };
+  HP.facilitySetDoctorStatus = function (doctorId, status) {
+    return sb.rpc('facility_set_doctor_status', { p_doctor: doctorId, p_status: status })
+      .then(function (r) { return { ok: !r.error && r.data === true, error: r.error && r.error.message }; });
+  };
+  HP.facilityDoctorStats = function () {
+    return myFacilityIds().then(function (f) {
+      if (!f || !f.ids.length) return [];
+      return Promise.all(f.ids.map(function (fid) {
+        return sb.rpc('facility_doctor_stats', { p_kind: f.kind, p_id: fid }).then(function (r) { return r.data || []; });
+      })).then(function (arrs) { return [].concat.apply([], arrs); });
+    });
+  };
 
   /* ---------- DOCTORS list (for patients) ---------- */
   HP.listDoctors = function () {

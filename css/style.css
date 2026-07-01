@@ -2694,6 +2694,12 @@ body.help-body { overflow: hidden; height: 100vh; }
 .field-box textarea{ padding:13px 0; line-height:1.6; }
 .field-box input::placeholder, .field-box textarea::placeholder{ color:var(--text-dim); }
 .field-box input:disabled{ color:var(--text-dim); cursor:not-allowed; }
+.field-box .auth-facility-select{
+  flex:1; width:100%; background:transparent; border:0; outline:0; color:var(--text);
+  font-family:inherit; font-size:14.5px; padding:13px 0; cursor:pointer;
+  -webkit-appearance:none; appearance:none;
+}
+.field-box .auth-facility-select option, .field-box .auth-facility-select optgroup{ background:#0d1730; color:var(--text); }
 .field-eye{
   flex:0 0 auto; width:26px; height:26px; border-radius:7px; display:grid; place-items:center; color:var(--text-dim);
   background:no-repeat center/18px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237d8bab' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
@@ -3818,3 +3824,17 @@ body.td-lb-open { overflow: hidden; }
 .rcm-msg.right .rcm-bubble { background: rgba(78,168,255,.16); border-color: rgba(78,168,255,.3); color: #fff; }
 .rcm-att { display: block; margin-top: 4px; font-size: 12px; color: var(--accent-soft); }
 .rcm-msg time { font-size: 10.5px; color: var(--text-dim); padding: 0 4px; }
+
+/* ============================================================
+   Kurucu (owner) paneli — sistem sayımları + admin yönetimi
+   ============================================================ */
+.stat-grid--mini { grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px; }
+.stat-grid--mini:empty { display: none; }
+.stat-card.mini { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; border-radius: 14px; background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); border: 1px solid var(--line); }
+.stat-card.mini strong { font-size: 1.5rem; font-weight: 800; color: var(--white); line-height: 1.1; }
+.stat-card.mini span { font-size: 12px; color: var(--text-muted); }
+@media (max-width: 900px){ .stat-grid--mini { grid-template-columns: repeat(2, 1fr); } }
+.perm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 18px; margin-top: 8px; }
+.perm-check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text); cursor: pointer; }
+.perm-check input { width: 16px; height: 16px; accent-color: var(--accent); flex: 0 0 auto; }
+@media (max-width: 620px){ .perm-grid { grid-template-columns: 1fr; } }

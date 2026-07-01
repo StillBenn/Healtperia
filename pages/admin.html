@@ -56,6 +56,12 @@
         <a class="side-link" data-section="announcements" href="#announcements">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l16-6v14L3 13zM3 11v2M11 8.5v7"/></svg>
           <span class="side-label" data-i18n="ann.nav">Duyurular</span></a>
+
+        <span class="sidebar-group" data-owner-only hidden data-i18n="ad.group.owner">Kurucu</span>
+        <a class="side-link" data-section="admins" data-owner-only hidden href="#admins">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span class="side-label" data-i18n="ad.nav.admins">Admin Yönetimi</span></a>
+
         <a class="side-link" data-section="settings" href="#settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 0 1-4 0v-.1A1.7 1.7 0 0 0 7 19.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.7 1.7 0 0 0 4.7 8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
           <span class="side-label" data-i18n="acc.nav.settings">Ayarlar</span></a>
@@ -125,6 +131,9 @@
             <article class="stat-card"><div class="stat-ico c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><div class="stat-meta"><strong id="stPatients">0</strong><span data-i18n="ad.stat.patients">Hastalar</span></div></article>
             <article class="stat-card"><div class="stat-ico c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div class="stat-meta"><strong id="stPending">0</strong><span data-i18n="ad.stat.pending">Onay Bekliyor</span></div></article>
           </div>
+
+          <!-- sistem geneli sayımlar (owner/admin denetim) -->
+          <div class="stat-grid stat-grid--mini" id="ownerOverview"></div>
 
           <div class="card">
             <div class="card-head"><h3 data-i18n="ad.recentTitle">Son Kayıtlar</h3><button class="link-btn" data-jump="users" data-i18n="ad.allBtn">Tümü</button></div>
@@ -261,6 +270,16 @@
           </div>
         </section>
 
+        <!-- ADMIN YÖNETİMİ (yalnız kurucu/owner) -->
+        <section class="panel" data-panel="admins">
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="ad.admins.title">Admin Yönetimi</h3><button class="btn-primary sm" id="newAdminBtn" data-i18n="ad.admins.new">+ Yeni Admin</button></div>
+            <p class="muted-line sm" data-i18n="ad.admins.intro">Yalnız siz (kurucu) admin oluşturabilir, yetkilerini belirleyebilir ve kaldırabilirsiniz. Adminler birbirini yönetemez.</p>
+            <div id="adminEditorCard" hidden></div>
+            <div id="adminMgmtBody"><div class="empty-state sm"><p>…</p></div></div>
+          </div>
+        </section>
+
         <!-- SETTINGS -->
         <section class="panel" data-panel="settings">
           <div class="card">
@@ -292,6 +311,7 @@
   <script src="../js/i18n-core.js"></script>
   <script src="../js/admin-facilities.js"></script>
   <script src="../js/admin-approvals.js"></script>
+  <script src="../js/admin-owner.js"></script>
   <script>
   (function () {
     var H = window.HP;
@@ -401,10 +421,10 @@
       if (p) p.then(render);
     });
 
-    H.guard('admin').then(function (user) {
+    H.guard(['admin', 'owner']).then(function (user) {
       if (!user) return;
       me = user;
-      Dashboard.init(user, { role: 'Yönetim' });
+      Dashboard.init(user, { role: user.role === 'owner' ? 'Kurucu' : 'Yönetim' });
       render();
       if (window.HPI && window.HPI.onChange) window.HPI.onChange(render);
 

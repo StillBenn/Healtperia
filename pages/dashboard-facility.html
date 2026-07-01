@@ -23,6 +23,9 @@
         <a class="side-link" data-section="facility" href="#facility">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M9 21v-5h6v5M8 4h8v4M12 11v3M10.5 12.5h3"/></svg>
           <span class="side-label" data-i18n="df.nav.profile">Tesis Profilim</span></a>
+        <a class="side-link" data-section="doctors" href="#doctors">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M12 8v6M9 11h6"/></svg>
+          <span class="side-label" data-i18n="df.nav.doctors">Doktorlarım</span><span class="side-badge alt" id="facDocBadge" style="display:none"></span></a>
         <a class="side-link" data-section="messages" href="#messages">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="side-label" data-i18n="acc.nav.messages">Mesajlar</span><span class="side-badge alt" id="msgBadge" style="display:none"></span></a>
@@ -97,6 +100,15 @@
           <div class="card">
             <div class="card-head"><h3 data-i18n="df.nav.profile">Tesis Profilim</h3><span id="facFormStatus"></span></div>
             <div id="facilityForm"><div class="empty-state sm"><p>…</p></div></div>
+          </div>
+        </section>
+
+        <!-- DOCTORS (Doktorlarım) -->
+        <section class="panel" data-panel="doctors">
+          <div class="card">
+            <div class="card-head"><h3 data-i18n="df.nav.doctors">Doktorlarım</h3></div>
+            <p class="muted-line sm" data-i18n="df.doctors.intro">Kayıt sırasında tesisinizi seçen doktorlar burada listelenir. Onaylayın; her doktora gelen ve doktorun cevapladığı mesaj sayısını görün (sohbet içeriği görünmez).</p>
+            <div id="facDoctorsBody"><div class="empty-state sm"><p>…</p></div></div>
           </div>
         </section>
 
